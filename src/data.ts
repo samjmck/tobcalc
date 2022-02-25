@@ -14,12 +14,13 @@ export function formatDate(date: Date): string {
     return `${date.getFullYear()}-${addZero(date.getMonth() + 1)}-${addZero(date.getDate())}`;
 }
 
+// A two-dimensional `Map` where each key in the first dimension is a currency code
+// and each key in the second dimension being a date formatted in YYYY-MM-DD and finally,
+// the value of each entry in the second dimension being the exchange rate
 export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
 export const exchangeRatesMap: ExchangeRatesMap = new Map();
 
-// Returns a two-dimensional `Map` where each key in the first dimension is a currency code
-// and each key in the second dimension being a date formatted in YYYY-MM-DD and finally, the value of each entry in
-// the second dimension being the exchange rate
+// Caches data in exchangesRatesMap
 export async function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode) {
     // See https://sdw-wsrest.ecb.europa.eu/help/
 

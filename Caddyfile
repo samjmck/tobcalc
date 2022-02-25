@@ -1,7 +1,0 @@
-testing.com {
-	tls internal
-	file_server
-	header {
-		Access-Control-Allow-Origin https://www.investing.com
-	}
-}

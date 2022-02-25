@@ -1,3 +1,6 @@
 .DS_Store
 .idea
 Trades.csv
+.vscode
+node_modules
+public/build
