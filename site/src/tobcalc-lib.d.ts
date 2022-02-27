@@ -401,10 +401,12 @@ export enum CurrencyCode {
     ZWL = 'ZWL',
 }
 
-function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode): void;
-function getSecurity(isin: string): Promise<Security>;
+export function setECBHostname(hostname: string): void;
+export function setInvestingComHostname(hostname: string): void;
+export function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode): void;
+export function getSecurity(isin: string): Promise<Security>;
 
-function fillPdf(
+export function fillPdf(
     pdfFile: Uint8Array,
     params: {
         start: Date,
@@ -446,6 +448,12 @@ export interface ServiceAdapter {
 
 export function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]>;
 
+export interface TaxableTransaction {
+    value: number; // EUR
+    security: Security;
+    countryCode: CountryCode;
+}
+
 export interface FormRow {
     quantity: number;
     taxableAmount: number;
@@ -453,5 +461,3 @@ export interface FormRow {
 }
 
 export function getTaxFormData(taxableTransactions: TaxableTransaction[]): Map<number, FormRow>;
-
-export function consoleLog(): void;

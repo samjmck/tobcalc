@@ -2,10 +2,10 @@
 	import { selectedServices } from "./stores";
 	import { Service, services } from "./service";
 	import IBKRAdapter from "./IBKRAdapter.svelte";
+	import { getSecurity, INVESTING_COM_HOSTNAME } from "./tobcalc-lib.js";
 
-	import { consoleLog } from "./tobcalc-lib.js";
-
-	consoleLog();
+	INVESTING_COM_HOSTNAME = "localhost:8080";
+	getSecurity("IE00B4L5Y983").then(result => console.log(result));
 </script>
 
 <form>

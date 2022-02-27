@@ -5,8 +5,16 @@ import { SecurityType, CurrencyCode, Security } from "./enums.ts";
 // due to CORS, so the way to make this script work in a
 // web app is to change these variables to proxies for the
 // original hostnames
-export let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
-export let INVESTING_COM_HOSTNAME = "investing.com";
+let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
+let INVESTING_COM_HOSTNAME = "investing.com";
+
+export function setECBHostname(hostname: string) {
+    ECB_HOSTNAME = hostname;
+}
+
+export function setInvestingComHostname(hostname: string) {
+    INVESTING_COM_HOSTNAME = hostname;
+}
 
 interface ECBTimePeriod {
     id: string;
