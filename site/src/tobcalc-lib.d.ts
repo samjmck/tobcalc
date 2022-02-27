@@ -1,31 +1,31 @@
-interface ECBTimePeriod {
+export interface ECBTimePeriod {
     id: string;
     name: string;
     start: string;
     end: string;
 }
 
-enum TransactionType {
+export enum TransactionType {
     Buy,
     Sell
 }
 
-enum SecurityType {
+export enum SecurityType {
     ETF,
     Stock,
 }
 
-interface ETF {
+export interface ETF {
     type: SecurityType.ETF;
     accumulating: boolean;
 }
 
-interface Stock {
+export interface Stock {
     type: SecurityType.Stock;
 }
 
-type Security = ETF | Stock;
-enum CountryCode {
+export type Security = ETF | Stock;
+export enum CountryCode {
     UnitedStates = 'US',
     Afghanistan = 'AF',
     AlandIslands = 'AX',
@@ -277,9 +277,9 @@ enum CountryCode {
     Zimbabwe = 'ZW',
 }
 
-const eeaCountries: CountryCode[];
+export const eeaCountries: CountryCode[];
 
-enum CurrencyCode {
+export enum CurrencyCode {
     USD = 'USD',
     CAD = 'CAD',
     EUR = 'EUR',
@@ -433,23 +433,25 @@ function fillPdf(
     }
 ): Promise<Uint8Array>;
 
-interface ServiceTransaction {
+export interface ServiceTransaction {
     date: Date;
     isin: string;
     currency: CurrencyCode;
     value: number;
 }
 
-interface ServiceAdapter {
+export interface ServiceAdapter {
     (data: Blob): Promise<ServiceTransaction[]>;
 }
 
-function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]>;
+export function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]>;
 
-interface FormRow {
+export interface FormRow {
     quantity: number;
     taxableAmount: number;
     taxValue: number;
 }
 
-function getTaxFormData(taxableTransactions: TaxableTransaction[]): Map<number, FormRow>;
+export function getTaxFormData(taxableTransactions: TaxableTransaction[]): Map<number, FormRow>;
+
+export function consoleLog(): void;

@@ -2,6 +2,10 @@
 	import { selectedServices } from "./stores";
 	import { Service, services } from "./service";
 	import IBKRAdapter from "./IBKRAdapter.svelte";
+
+	import { consoleLog } from "./tobcalc-lib.js";
+
+	consoleLog();
 </script>
 
 <form>
