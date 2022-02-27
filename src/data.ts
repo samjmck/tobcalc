@@ -1,5 +1,13 @@
 import { SecurityType, CurrencyCode, Security } from "./enums.ts";
 
+// Why do we need these variables and not make them constants?
+// Browsers will not be able to make requests to these origins
+// due to CORS, so the way to make this script work in a
+// web app is to change these variables to proxies for the
+// original hostnames
+export let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
+export let INVESTING_COM_HOSTNAME = "investing.com";
+
 interface ECBTimePeriod {
     id: string;
     name: string;
@@ -35,7 +43,7 @@ export async function cacheExchangeRates(start: Date, end: Date, currencyCode: C
     };
     const urlParamsString = new URLSearchParams(params).toString();
 
-    const response = await fetch(`https://sdw-wsrest.ecb.europa.eu/service/data/EXR/D.${currencyCode}.EUR.SP00.A?${urlParamsString}`);
+    const response = await fetch(`https://${ECB_HOSTNAME}/service/data/EXR/D.${currencyCode}.EUR.SP00.A?${urlParamsString}`);
     if(response.status !== 200) {
         throw new Error(`response from ECB RESTful API returned status code ${response.status}`);
     }
@@ -74,7 +82,7 @@ export async function getSecurity(isin: string): Promise<Security> {
         return security;
     }
 
-    const response = await fetch("https://www.investing.com/search/service/searchTopBar", {
+    const response = await fetch(`https://${INVESTING_COM_HOSTNAME}/search/service/searchTopBar`, {
         headers: {
             "X-Requested-With": "XMLHttpRequest",
             "Content-Type": "application/x-www-form-urlencoded",

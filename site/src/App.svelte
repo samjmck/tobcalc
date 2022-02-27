@@ -1,11 +1,7 @@
 <script lang="ts">
-	let adapterNumber = 1;
-	const selectedAdapters = [
-			"Interactive Brokers",
-	];
-	const adapterNames = [
-			"Interactive Brokers",
-	];
+	import { selectedServices } from "./stores";
+	import { Service, services } from "./service";
+	import IBKRAdapter from "./IBKRAdapter.svelte";
 </script>
 
 <form>
@@ -17,7 +13,20 @@
 	<input name="address_line_2" type="text" />
 	<input name="address_line_3" type="text" />
 	<input name="national_registration_number" type="text" />
-	{#each selectedAdapters as selectedAdapter, i}
-		<input name={selectedAdapter, } type="file" />
+	<input name="signature_name" type="text" />
+	<input name="signature_capacity" type="text" />
+	<button on:click|preventDefault={() => selectedServices.add(Service.InteractiveBrokers)}>New service</button>
+	{#each $selectedServices as selectedService, i}
+		<div>
+			<select bind:value={selectedService}>
+				{#each services as service}
+				<option value={service}>{service}</option>
+				{/each}
+			</select>
+			<button on:click|preventDefault={() => selectedServices.remove(i)}>Remove</button>
+			{#if selectedService === Service.InteractiveBrokers}
+				<IBKRAdapter id={i} />
+			{/if}
+		</div>
 	{/each}
 </form>

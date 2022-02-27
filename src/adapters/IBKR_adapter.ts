@@ -1,11 +1,13 @@
 import { CurrencyCode } from "../enums.ts";
-import { ServiceTransaction } from "../service_adapter.ts";
+import { ServiceAdapter, ServiceTransaction } from "../service_adapter.ts";
 
-export async function IBKRAdapter(data: Blob): Promise<ServiceTransaction[]> {
+// Ugly syntax but is there any other way to type annotate a function signature?
+// <ServiceAdapter> async function IBKRAdapter(...) { ...} doesn't work
+export const IBKRAdapter: ServiceAdapter = async data => {
     const text = await data.text();
     const rows = text.split("\n");
     const columnNames = rows[0].split(",");
-    const brokerTransactions: ServiceTransaction[] = [];
+    const serviceTransactions: ServiceTransaction[] = [];
     const dateColumnIndex = columnNames.indexOf(`"TradeDate"`);
     const isinColumnIndex = columnNames.indexOf(`"ISIN"`);
     const valueColumnIndex = columnNames.indexOf(`"Amount"`);
@@ -13,12 +15,12 @@ export async function IBKRAdapter(data: Blob): Promise<ServiceTransaction[]> {
     for (const rowString of rows.slice(1, -1)) {
         const row = rowString.split(",").map(s => s.substring(1, s.length - 1));
         const dateString = row[dateColumnIndex];
-        brokerTransactions.push({
+        serviceTransactions.push({
             date: new Date(`${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`),
             isin: row[isinColumnIndex],
             currency: <CurrencyCode>row[currencyCodeColumnIndex],
             value: Number(row[valueColumnIndex]),
         });
     }
-    return brokerTransactions;
-}
+    return serviceTransactions;
+};

@@ -73,7 +73,7 @@ export async function getTaxableTransactions(serviceTransactions: ServiceTransac
     return taxableTransactions;
 }
 
-interface TaxableTransaction {
+export interface TaxableTransaction {
     value: number; // EUR
     security: Security;
     countryCode: CountryCode;
