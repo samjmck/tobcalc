@@ -1,3 +1,5 @@
+import { Service } from "./service.ts";
+
 export interface ECBTimePeriod {
     id: string;
     name: string;
@@ -461,3 +463,5 @@ export interface FormRow {
 }
 
 export function getTaxFormData(taxableTransactions: TaxableTransaction[]): Map<number, FormRow>;
+
+export const IBKRAdapter: ServiceAdapter;

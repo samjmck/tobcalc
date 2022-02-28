@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { selectedServices } from "./stores";
 	import { Service, services } from "./service";
-	import IBKRAdapter from "./IBKRAdapter.svelte";
-	import { getSecurity, INVESTING_COM_HOSTNAME } from "./tobcalc-lib.js";
+	import Adapter from "./Adapter.svelte";
+	import { getSecurity, setECBHostname, setInvestingComHostname, IBKRAdapter } from "./tobcalc-lib.js";
 
-	INVESTING_COM_HOSTNAME = "localhost:8080";
-	getSecurity("IE00B4L5Y983").then(result => console.log(result));
+	setECBHostname("localhost:8081/ecb")
+	setInvestingComHostname("localhost:8081/investing_com");
 </script>
 
 <form>
@@ -29,7 +29,7 @@
 			</select>
 			<button on:click|preventDefault={() => selectedServices.remove(i)}>Remove</button>
 			{#if selectedService === Service.InteractiveBrokers}
-				<IBKRAdapter id={i} />
+				<Adapter id={i} service={selectedService} serviceAdapter={IBKRAdapter} />
 			{/if}
 		</div>
 	{/each}

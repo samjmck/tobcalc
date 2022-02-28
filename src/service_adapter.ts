@@ -14,4 +14,3 @@ export interface ServiceTransaction {
 export interface ServiceAdapter {
     (data: Blob): Promise<ServiceTransaction[]>;
 }
-

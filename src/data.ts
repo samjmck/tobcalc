@@ -106,7 +106,7 @@ export async function getSecurity(isin: string): Promise<Security> {
         const pairType = json.quotes[0].pair_type;
         switch(pairType) {
             case "etf":
-                const securityDataResponse = await fetch(`https://investing.com${json.quotes[0].link}`);
+                const securityDataResponse = await fetch(`https://${INVESTING_COM_HOSTNAME}${json.quotes[0].link}`);
                 const html = await securityDataResponse.text();
                 const accumulating = /<span class="float_lang_base_1">Dividend\sYield<\/span><span class="float_lang_base_2 bold">N\/A<\/span>/g.test(html);
                 security = {
