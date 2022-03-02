@@ -1,31 +1,44 @@
 <script lang="ts">
+    import { globalTaxFormData } from "./stores";
     import { Service } from "./service";
     import type { ServiceAdapter, ServiceTransaction, TaxableTransaction, FormRow } from "./tobcalc-lib";
-    import { getTaxFormData, getTaxableTransactions } from "./tobcalc-lib.js";
+    import { getTaxFormData, getTaxableTransactions, getTaxRate } from "./tobcalc-lib.js";
 
-    export let id: number;
     export let service: Service;
+    export let selectedServiceNumber: number;
     export let serviceAdapter: ServiceAdapter;
 
     let files: File[] = [];
     let serviceTransactions: ServiceTransaction[] = [];
     let taxableTransactions: TaxableTransaction[] = [];
-    let taxFormRows: FormRow[] = [];
+    let taxFormData: Map<number, FormRow> = new Map();
     async function loadedFile() {
         serviceTransactions = await serviceAdapter(files[0]);
         taxableTransactions = await getTaxableTransactions(serviceTransactions);
-        const taxFormData = await getTaxFormData(taxableTransactions);
-        for(const [_, formRow] of taxFormData) {
-            taxFormRows.push(formRow);
-        }
+        taxFormData = await getTaxFormData(taxableTransactions);
+        globalTaxFormData.setTaxFormData(selectedServiceNumber, taxFormData);
     }
 </script>
 
-<label for={`adapter_${id}`}>Choose {service} csv</label>
-<input name={`adapter_${id}`} type="file" accept="text/csv, .csv" bind:files on:change={loadedFile} />
-<ul class="taxable-transactions">
+<label for={`adapter_${selectedServiceNumber}`}>Choose {service} csv</label>
+<input name={`adapter_${selectedServiceNumber}`} type="file" accept="text/csv, .csv" bind:files on:change={loadedFile} />
+<table class="taxable-transactions">
     {#each taxableTransactions as taxableTransaction}
-    <li>Value {taxableTransaction.value} EUR, security type {taxableTransaction.security.type}, country code {taxableTransaction.countryCode}</li>
+    <tr>
+        <td>{taxableTransaction.value}</td>
+        <td>{taxableTransaction.security.type}</td>
+        <td>{taxableTransaction.countryCode}</td>
+        <td>{getTaxRate(taxableTransaction) * 100}%</td>
+    </tr>
     {/each}
-</ul>
-
+</table>
+<table class="tax-form-data">
+    {#each [...taxFormData.entries()] as [taxRate, formRow]}
+        <tr>
+            <td>{taxRate * 100}%</td>
+            <td>{formRow.quantity}</td>
+            <td>{formRow.taxableAmount}</td>
+            <td>{formRow.taxValue}</td>
+        </tr>
+    {/each}
+</table>

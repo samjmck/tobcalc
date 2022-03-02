@@ -1,38 +1,34 @@
 import { Writable, writable } from "svelte/store";
 import type { Service } from "./service";
 import { services } from "./service";
+import type { FormRow, TaxFormData } from "./tobcalc-lib";
 
-type CustomSelectedServiceStoreMethods = {
+type CustomGlobalTaxFormDataMethods = {
     remove: (index: number) => void;
-    add: (service: Service) => void;
+    setTaxFormData: (serviceNumber: number, taxFormData: TaxFormData) => void;
 }
 
-function createSelectedServicesStore(): Writable<Service[]> & CustomSelectedServiceStoreMethods {
-    const { subscribe, set, update } = writable<Service[]>([
-        services[0],
-    ]);
+function createGlobalTaxFormDataStore(): Writable<Map<number, TaxFormData>> & CustomGlobalTaxFormDataMethods {
+    const { subscribe, set, update } = writable<Map<number, TaxFormData>>(new Map());
 
     return {
         subscribe,
         set,
         update,
-        remove: (index: number) => {
-            console.log(`${index}`);
-            update(services => {
-                services.splice(index, 1);
-                console.log(services);
-                return services;
+        remove: (serviceNumber: number) => {
+            update(globalTaxFormData => {
+                globalTaxFormData.delete(serviceNumber);
+                return globalTaxFormData;
             });
         },
-        add: (service: Service) => {
-            update(services => {
-                services.push(service);
-                return services;
+        setTaxFormData: (serviceNumber: number, taxFormData: TaxFormData) => {
+            update(globalTaxFormData => {
+                globalTaxFormData.set(serviceNumber, taxFormData);
+                return globalTaxFormData;
             });
         },
-    }
+    };
 }
 
-export const selectedServices = createSelectedServicesStore();
+export const globalTaxFormData = createGlobalTaxFormDataStore();
 export const adapterNumber = writable(0);
-export const adapterCount = writable(1);

@@ -79,7 +79,7 @@ export interface TaxableTransaction {
     countryCode: CountryCode;
 }
 
-function getTaxRate(taxableTransaction: TaxableTransaction): number {
+export function getTaxRate(taxableTransaction: TaxableTransaction): number {
     switch (taxableTransaction.security.type) {
         case SecurityType.ETF:
             if (taxableTransaction.countryCode === CountryCode.Belgium) {

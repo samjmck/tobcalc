@@ -456,12 +456,16 @@ export interface TaxableTransaction {
     countryCode: CountryCode;
 }
 
+type TaxFormData = Map<number, FormRow>;
+
 export interface FormRow {
     quantity: number;
     taxableAmount: number;
     taxValue: number;
 }
 
-export function getTaxFormData(taxableTransactions: TaxableTransaction[]): Map<number, FormRow>;
+export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFormData;
+
+export function getTaxRate(taxableTransaction: TaxableTransaction): number;
 
 export const IBKRAdapter: ServiceAdapter;
