@@ -106,7 +106,9 @@ interface FormRow {
     taxValue: number;
 }
 
-export function getTaxFormData(taxableTransactions: TaxableTransaction[]): Map<number, FormRow> {
+export type TaxFormData = Map<number, FormRow>;
+
+export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFormData {
     const map: Map<number, FormRow> = new Map();
     for (const taxableTransaction of taxableTransactions) {
         const taxRate = getTaxRate(taxableTransaction);

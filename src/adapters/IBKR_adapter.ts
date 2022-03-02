@@ -2,8 +2,8 @@ import { CurrencyCode } from "../enums.ts";
 import { ServiceAdapter, ServiceTransaction } from "../service_adapter.ts";
 
 // Ugly syntax but is there any other way to type annotate a function signature?
-// <ServiceAdapter> async function IBKRAdapter(...) { ...} doesn't work
-export const IBKRAdapter: ServiceAdapter = async data => {
+// <ServiceAdapter> async function IBKR_adapter(...) { ...} doesn't work
+export const IBKR_adapter: ServiceAdapter = async data => {
     const text = await data.text();
     const rows = text.split("\n");
     const columnNames = rows[0].split(",");

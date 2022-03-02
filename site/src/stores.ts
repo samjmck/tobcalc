@@ -1,10 +1,8 @@
 import { Writable, writable } from "svelte/store";
-import type { Service } from "./service";
-import { services } from "./service";
-import type { FormRow, TaxFormData } from "./tobcalc-lib";
+import type { TaxFormData } from "./tobcalc-lib";
 
 type CustomGlobalTaxFormDataMethods = {
-    remove: (index: number) => void;
+    delete: (index: number) => void;
     setTaxFormData: (serviceNumber: number, taxFormData: TaxFormData) => void;
 }
 
@@ -15,7 +13,7 @@ function createGlobalTaxFormDataStore(): Writable<Map<number, TaxFormData>> & Cu
         subscribe,
         set,
         update,
-        remove: (serviceNumber: number) => {
+        delete: (serviceNumber: number) => {
             update(globalTaxFormData => {
                 globalTaxFormData.delete(serviceNumber);
                 return globalTaxFormData;
