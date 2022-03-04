@@ -42,36 +42,36 @@
 	let dateValue: string;
 	async function downloadPdf() {
 		const aggregatedTaxForms: { [taxRate: number]: FormRow } = {
-			"012": {
+			"0.0012": {
 				quantity: 0,
-				taxableAmount: 0,
+				taxableValue: 0,
 				taxValue: 0,
 			},
-			"035": {
+			"0.0035": {
 				quantity: 0,
-				taxableAmount: 0,
+				taxableValue: 0,
 				taxValue: 0,
 			},
-			"132": {
+			"0.0132": {
 				quantity: 0,
-				taxableAmount: 0,
+				taxableValue: 0,
 				taxValue: 0,
 			},
 		};
 		let totalTaxValue = 0;
 		for(const [_, taxFormData] of $globalTaxFormData) {
-			for(const [taxRate, { quantity, taxableAmount, taxValue }] of taxFormData) {
+			for(const [taxRate, { quantity, taxableValue, taxValue }] of taxFormData) {
 				const aggregatedFormRow = aggregatedTaxForms[taxRate];
 				aggregatedFormRow.quantity += quantity;
-				aggregatedFormRow.taxableAmount += taxableAmount;
+				aggregatedFormRow.taxableValue += taxableValue;
 				aggregatedFormRow.taxValue += taxValue;
 				totalTaxValue += taxValue;
 			}
 		}
 
-		const tax012FormRow = aggregatedTaxForms["012"];
-		const tax035FormRow = aggregatedTaxForms["035"];
-		const tax132FormRow = aggregatedTaxForms["132"];
+		const tax012FormRow = aggregatedTaxForms["0.0012"];
+		const tax035FormRow = aggregatedTaxForms["0.0035"];
+		const tax132FormRow = aggregatedTaxForms["0.0132"];
 		const bytes = await fillPdf(pdfBytes, {
 			start: new Date(startDateValue),
 			end: new Date(endDateValue),
@@ -83,9 +83,9 @@
 			tableATax012Quantity: tax012FormRow.quantity,
 			tableATax035Quantity: tax035FormRow.quantity,
 			tableATax132Quantity: tax132FormRow.quantity,
-			tableATax012TaxableValue: tax012FormRow.taxableAmount,
-			tableATax035TaxableValue: tax035FormRow.taxableAmount,
-			tableATax132TaxableValue: tax132FormRow.taxableAmount,
+			tableATax012TaxableValue: tax012FormRow.taxableValue,
+			tableATax035TaxableValue: tax035FormRow.taxableValue,
+			tableATax132TaxableValue: tax132FormRow.taxableValue,
 			tableATax012TaxValue: tax012FormRow.taxValue,
 			tableATax035TaxValue: tax012FormRow.taxValue,
 			tableATax132TaxValue: tax012FormRow.taxValue,
@@ -105,9 +105,11 @@
 </script>
 
 <form>
-	<input name="start" type="date" bind:value={startDateValue} />
-	<input name="end" type="date" bind:value={endDateValue} />
-	<input name="national_registration_number" type="text" bind:value={nationalRegistrationNumberValue} />
+	<label for="start">Start date</label>
+	<input id="start" name="start" type="date" bind:value={startDateValue} />
+	<label for="end">End date</label>
+	<input id="end" name="end" type="date" bind:value={endDateValue} />
+	<input name="national_registration_number" placeholder="National registration number" type="text" bind:value={nationalRegistrationNumberValue} />
 	<input name="full_name" placeholder="Full name" type="text" bind:value={fullName} />
 	<input name="address_line_1" placeholder="Address line 1" type="text" bind:value={addressLine1Value} />
 	<input name="address_line_2" placeholder="Address line 2" type="text" bind:value={addressLine2Value} />
@@ -121,6 +123,7 @@
 	<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} />
 
 	<button on:click|preventDefault={() => addSelectedService(Service.InteractiveBrokers)}>New service</button>
+
 	{#each [...selectedServices.entries()] as [selectedServiceNumber, selectedService] (selectedServiceNumber)}
 		<div>
 			<select bind:value={selectedService}>
@@ -140,7 +143,25 @@
 </form>
 
 <style>
+	form {
+		padding-bottom: 10em;
+	}
 	#download-link {
 		display: none;
+	}
+	input {
+		display: block;
+		margin: 1em 0;
+	}
+	input[type="file"], input[type="date"] {
+		margin-top: 0;
+		margin-bottom: 1em;
+	}
+	label {
+		margin-top: 1em;
+		margin-bottom: 0.25em;
+	}
+	button {
+		margin: 1em 0;
 	}
 </style>

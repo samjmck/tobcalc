@@ -104,7 +104,7 @@ export async function fillPdf(
     locationField.setText(params.location);
     dateField.setText(params.date);
 
-    // signatureField.setImage(await document.embedPng(params.signaturePng));
+    signatureField.setImage(await document.embedPng(params.signaturePng));
     signatureNameField.setText(params.signatureName);
     signatureCapacityField.setText(params.signatureCapacity);
 

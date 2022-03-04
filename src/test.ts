@@ -1,6 +1,6 @@
 const bytes = await Deno.readFile("Trades.csv");
 const blob = new Blob([bytes]);
-const brokerTransactions = await IBKR_adapter(blob);
+const brokerTransactions = await IBKRAdapter(blob);
 console.log(brokerTransactions);
 
 const taxableTransactions = await getTaxableTransactions(brokerTransactions);
@@ -13,7 +13,7 @@ for(const [key, value] of taxFormData) {
 
 import { PDFDocument } from "https://cdn.skypack.dev/pdf-lib@1.17.1?dts";
 import { getTaxableTransactions, getTaxFormData } from "./tax.ts";
-import { IBKR_adapter } from "./adapters/IBKR_adapter.ts";
+import { IBKRAdapter } from "./adapters/IBKR_adapter.ts";
 
 const file = await Deno.readFile("TD-OB1-NL-empty-fillable-pdfa.pdf");
 const signatureFile = await Deno.readFile("signature.png");

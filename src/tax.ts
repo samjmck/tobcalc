@@ -102,7 +102,7 @@ export function getTaxRate(taxableTransaction: TaxableTransaction): number {
 
 interface FormRow {
     quantity: number;
-    taxableAmount: number;
+    taxableValue: number;
     taxValue: number;
 }
 
@@ -116,13 +116,13 @@ export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFo
         if (formRow === undefined) {
             formRow = {
                 quantity: 0,
-                taxableAmount: 0,
+                taxableValue: 0,
                 taxValue: 0,
             };
             map.set(taxRate, formRow);
         }
         formRow.quantity += 1;
-        formRow.taxableAmount += taxableTransaction.value;
+        formRow.taxableValue += taxableTransaction.value;
         formRow.taxValue = taxableTransaction.value * taxRate;
     }
     return map;

@@ -23,6 +23,12 @@
 <label for={`adapter_${selectedServiceNumber}`}>Choose {service} csv</label>
 <input name={`adapter_${selectedServiceNumber}`} type="file" accept="text/csv, .csv" bind:files on:change={loadedFile} />
 <table class="taxable-transactions">
+    <tr>
+        <th>Value</th>
+        <th>Security type</th>
+        <th>Country</th>
+        <th>Tax</th>
+    </tr>
     {#each taxableTransactions as taxableTransaction}
     <tr>
         <td>{taxableTransaction.value}</td>
@@ -33,12 +39,18 @@
     {/each}
 </table>
 <table class="tax-form-data">
+    <tr>
+        <th>Tax</th>
+        <th>Quantity</th>
+        <th>Taxable value</th>
+        <th>Tax value</th>
+    </tr>
     {#each [...taxFormData.entries()] as [taxRate, formRow]}
-        <tr>
-            <td>{taxRate * 100}%</td>
-            <td>{formRow.quantity}</td>
-            <td>{formRow.taxableAmount}</td>
-            <td>{formRow.taxValue}</td>
-        </tr>
+    <tr>
+        <td>{taxRate * 100}%</td>
+        <td>{formRow.quantity}</td>
+        <td>{formRow.taxableAmount}</td>
+        <td>{formRow.taxValue}</td>
+    </tr>
     {/each}
 </table>

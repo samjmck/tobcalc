@@ -1,5 +1,3 @@
-import { Service } from "./service.ts";
-
 export interface ECBTimePeriod {
     id: string;
     name: string;
@@ -460,7 +458,7 @@ type TaxFormData = Map<number, FormRow>;
 
 export interface FormRow {
     quantity: number;
-    taxableAmount: number;
+    taxableValue: number;
     taxValue: number;
 }
 
