@@ -49,9 +49,11 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 - [ ] Work out if Deno Deploy can work as a (free) proxy
 - [ ] Finish `README.md`
 - [ ] Write documentation on how contributors can help with adding brokers
+- [ ] Add basic tests within browser to check if security data is correct for popular funds
 - [ ] Reduce browser bundle size
   - [ ] Use more advanced package bundler such as webpack instead of `deno bundle`
 - [ ] Improve bundling and site generation workflow
 - [ ] Figure out how to do automatic type exports
 - [ ] Add tastyworks
 - [ ] Add Trading 212
+- See if SvelteKit can be used for improved loading times and SEO

@@ -6,7 +6,7 @@ import { SecurityType, CurrencyCode, Security } from "./enums.ts";
 // web app is to change these variables to proxies for the
 // original hostnames
 let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
-let INVESTING_COM_HOSTNAME = "investing.com";
+let INVESTING_COM_HOSTNAME = "www.investing.com";
 
 export function setECBHostname(hostname: string) {
     ECB_HOSTNAME = hostname;
@@ -77,7 +77,7 @@ export async function cacheExchangeRates(start: Date, end: Date, currencyCode: C
     }
     for(let i = 0; i < timePeriods.length; i++) {
         const date = timePeriods[i].name;
-        const exchangeRate = <number> json.dataSets[0].observations[`0:0:0:0:0:${i}`];
+        const exchangeRate = <number> json.dataSets[0].observations[`0:0:0:0:0:${i}`][0];
         currencyMap.set(date, exchangeRate);
     }
 }
