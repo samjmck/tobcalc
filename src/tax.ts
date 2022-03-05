@@ -100,7 +100,7 @@ export function getTaxRate(taxableTransaction: TaxableTransaction): number {
     }
 }
 
-interface FormRow {
+export interface FormRow {
     quantity: number;
     taxableValue: number;
     taxValue: number;
@@ -110,10 +110,10 @@ export type TaxFormData = Map<number, FormRow>;
 
 export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFormData {
     const map: Map<number, FormRow> = new Map();
-    for (const taxableTransaction of taxableTransactions) {
+    for(const taxableTransaction of taxableTransactions) {
         const taxRate = getTaxRate(taxableTransaction);
         let formRow = map.get(taxRate);
-        if (formRow === undefined) {
+        if(formRow === undefined) {
             formRow = {
                 quantity: 0,
                 taxableValue: 0,
@@ -123,7 +123,10 @@ export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFo
         }
         formRow.quantity += 1;
         formRow.taxableValue += taxableTransaction.value;
-        formRow.taxValue = taxableTransaction.value * taxRate;
+    }
+    // Calculate taxValue at the end so we only suffer from one floating point error and aren't constantly adding them together
+    for(const [taxRate, formRow] of map.entries()) {
+        formRow.taxValue = formRow.taxableValue * taxRate;
     }
     return map;
 }
