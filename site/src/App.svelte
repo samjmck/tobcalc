@@ -2,10 +2,22 @@
 	import { adapterNumber, globalTaxFormData } from "./stores";
 	import { Service, services } from "./service";
 	import Adapter from "./Adapter.svelte";
-	import { setECBHostname, setInvestingComHostname, IBKRAdapter, fillPdf } from "./tobcalc-lib.js";
+	import { setECBHostname, setInvestingComHostname, IBKRAdapter } from "./tobcalc-lib.js";
+	import type { fillPdf } from "./tobcalc-lib.js";
 	import type { FormRow } from "./tobcalc-lib";
 
-	setECBHostname("localhost:8081/ecb")
+	const pdfWorker = new Worker("tobcalc-lib-pdf.js");
+
+	let resolveFillPdfPromise: (result: Awaited<ReturnType<typeof fillPdf>>) => void;
+	const workerFillPdf = (...params: Parameters<typeof fillPdf>): ReturnType<typeof fillPdf> => {
+		pdfWorker.postMessage(params);
+		return new Promise(resolve => resolveFillPdfPromise = resolve);
+	};
+	pdfWorker.onmessage = event => {
+		resolveFillPdfPromise(event.data);
+	};
+
+	setECBHostname("localhost:8081/ecb");
 	setInvestingComHostname("localhost:8081/investing_com");
 
 	let selectedServices: Map<number, Service> = new Map();
@@ -72,7 +84,7 @@
 		const tax012FormRow = aggregatedTaxForms["0.0012"];
 		const tax035FormRow = aggregatedTaxForms["0.0035"];
 		const tax132FormRow = aggregatedTaxForms["0.0132"];
-		const bytes = await fillPdf(pdfBytes, {
+		const bytes = await workerFillPdf(pdfBytes, {
 			start: new Date(startDateValue),
 			end: new Date(endDateValue),
 			nationalRegistrationNumber: nationalRegistrationNumberValue,
