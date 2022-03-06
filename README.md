@@ -56,4 +56,4 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 - [ ] Figure out how to do automatic type exports
 - [ ] Add tastyworks
 - [ ] Add Trading 212
-- See if SvelteKit can be used for improved loading times and SEO
+- [ ] See if SvelteKit can be used for improved loading times and SEO
