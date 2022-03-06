@@ -44,7 +44,7 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 ## To do (order of high to low priority)
 
 - [x] Use Web Worker to run CPU intensive code such as PDF generation on a different thread to keep UI smooth
-- [ ] Write tests
+- [x] Write tests
 - [ ] Add error handling in important and critical parts of code
 - [ ] Fix PDF forms
 - [ ] Change layout of web page so services are new column next to input boxes
