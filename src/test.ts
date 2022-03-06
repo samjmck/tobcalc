@@ -1,4 +1,4 @@
-const bytes = await Deno.readFile("Trades.csv");
+const bytes = await Deno.readFile("IBKR_adapter_test.csv");
 const blob = new Blob([bytes]);
 const brokerTransactions = await IBKRAdapter(blob);
 console.log(brokerTransactions);

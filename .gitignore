@@ -1,6 +1,6 @@
 .DS_Store
 .idea
-Trades.csv
+src/adapters/IBKR_adapter_test.csv
 .vscode
 node_modules
 public/build

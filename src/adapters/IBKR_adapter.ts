@@ -19,7 +19,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
             date: new Date(`${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`),
             isin: row[isinColumnIndex],
             currency: <CurrencyCode>row[currencyCodeColumnIndex],
-            value: Number(row[valueColumnIndex]),
+            value: Number(row[valueColumnIndex]) * 100,
         });
     }
     return serviceTransactions;
