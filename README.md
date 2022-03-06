@@ -4,7 +4,7 @@ tobcalc is a project that calculates the Belgian transaction tax on securities f
 
 ## Why does this project exist?
 
-Belgian brokers pay the transaction tax, also known as the TOB, automatically for you. However, if you use a foreign broker, such as Interactive Brokers or tastyworks, you will have to calculate, pay and file this tax manually for every transaction you made in the period of 2 months. This process can be time-consuming and frustrating, which is why many Belgian investors decide not to use foreign brokers despite them possibly fitting their needs better. 
+Belgian brokers pay the transaction tax, also known as the TOB, automatically for you. However, if you use a foreign broker, such as Interactive Brokers or tastyworks, you will have to calculate, pay and file this tax manually for every transaction you made in the period of 2 months. This process can be time-consuming and frustrating, which is why many Belgian investors decide not to use foreign brokers despite them possibly fitting their needs better than domestic brokers. 
 
 The goal of this project is to simplify the process of calculating and filing the TOB. By doing so, one of the barriers for choosing foreign brokers is partially removed and investors may have more brokers to choose from.
 
@@ -15,19 +15,19 @@ Currently, the following brokers are supported:
 
 ## How does it work?
 
-Nearly all brokers allow you to export your transactions as a CSV or Excel file. That file will then be read by tobcalc converted into a simplified format which only includes the data needed to calculate the tax on the transactions. If necessary, the security's data will be fetched from an investing site so the parameters needed to accurately calculate the tax rate can be determined. And if the transaction was made in a foreign currency, the exchange rate for that day will be fetched from the European Central Bank.
+Nearly all brokers allow you to export your transactions as a CSV or Excel file. That file will then be read by tobcalc and converted into a simplified format which only includes the data needed to calculate the tax on the transactions. If necessary, the data relating to a transaction's security will be fetched from an investing site so the parameters needed to accurately calculate the tax rate can be determined. If the transaction was made in a foreign currency, the exchange rate for that day will be fetched from the European Central Bank.
 
 Once the data is complete with the parameters needed to calculate the tax rates and has been converted into the right format, the actual taxes will be calculated and the PDF form will be filled in. 
 
 ## Is it secure?
 
-The transactions file gets processed locally. For transactions in a foreign currency, the exchange rate on the date of the transaction will be fetched from the European Central Bank. This means that the date of the transaction and the currency will be sent to their server. For securities such as ETFs, it's required to know whether the fund is accumulating or distributing to be able calculate the correct tax rate. For this, the ISIN of the security will be sent to Investing.com's server.
+The transactions file gets processed locally. For transactions in a foreign currency, the exchange rate on the date of the transaction will be fetched from the European Central Bank. This means that the date of the transaction and the currency will be sent to their server. For securities such as ETFs, it's required to know whether the fund is accumulating or distributing to be able to calculate the correct tax rate. For this, the ISIN of the security will be sent to Investing.com's server.
 
 ## Technical explanations
 
 ### Design
 
-tobcalc's code was written to be used with Deno. The reason Deno is being used instead of Node.js is primarily because of [Deno's implementation of web API's](https://deno.land/manual@v1.8.3/runtime/web_platform_apis) which means that if the code is relatively easy to port if the target platform is the web instead of Deno. In fact, because of [Deno's `bundle` command](https://deno.land/manual/tools/bundler), no porting is necessary as a single ES module is outputted which can be natively used within a browser. Other reasons why Deno was chosen instead of Node.js were Deno's more secure defaults and the fact that no Node modules were needed to make this project possible.
+tobcalc's code was written to be used with Deno. The reason Deno is being used instead of Node.js is primarily because of [Deno's implementation of web API's](https://deno.land/manual@v1.8.3/runtime/web_platform_apis) which means that the codebase is relatively easy to port if the target platform is the web instead of Deno. In fact, because of [Deno's `bundle` command](https://deno.land/manual/tools/bundler), no porting is necessary as a single ES module is outputted which can be natively used within a browser. Other reasons why Deno was chosen instead of Node.js were Deno's more secure defaults and the fact that no Node modules were needed to make this project possible.
 
 ### Possible attack vectors and measures taken to safeguard
 
