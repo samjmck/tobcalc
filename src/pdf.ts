@@ -1,7 +1,9 @@
 import { PDFDocument } from "https://cdn.skypack.dev/pdf-lib@1.17.1?dts";
 
 function formatMoney(value: number) {
-    return `€ ${value - value % 100},${Math.ceil(value % 100)}`;
+    const remainder = Math.ceil(value % 100);
+    const formattedRemainder = remainder < 10 ? `0${remainder}` : `${remainder}`;
+    return `€ ${Math.floor((value - value % 100) / 100)},${formattedRemainder}`;
 }
 
 // Given a PDF file that has the text fields we except in a TOB pdf
@@ -74,9 +76,9 @@ export async function fillPdf(
     const signatureNameField = form.getTextField("signature_name");
     const signatureCapacityField = form.getTextField("signature_capacity");
     
-    startMonthField.setText(`${params.start.getDay()}`);
+    startMonthField.setText(`${params.start.getMonth() + 1}`);
     startYearField.setText(`${params.start.getFullYear()}`);
-    endMonthField.setText(`${params.end.getDay()}`);
+    endMonthField.setText(`${params.end.getMonth() + 1}`);
     endYearField.setText(`${params.end.getFullYear()}`);
 
     nationalRegistrationNumberField.setText(params.nationalRegistrationNumber);

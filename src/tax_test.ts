@@ -1,5 +1,5 @@
 import { ServiceTransaction } from "./service_adapter.ts";
-import { CountryCode, CurrencyCode, ETF, SecurityType } from "./enums.ts";
+import { CountryCode, CurrencyCode, SecurityType } from "./enums.ts";
 import { FormRow, getTaxableTransactions, getTaxFormData, getTaxRate, TaxableTransaction } from "./tax.ts";
 import { assertEquals } from "https://deno.land/std@0.128.0/testing/asserts.ts";
 
