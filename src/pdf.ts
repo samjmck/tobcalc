@@ -31,7 +31,7 @@ export async function fillPdf(
         tableATax132TaxValue: number,
         tableATotalTaxValue: number,
         totalTaxValue: number,
-        signaturePng: Uint8Array,
+        signaturePng: Uint8Array | null,
         signatureName: string,
         signatureCapacity: string,
         location: string,
@@ -106,7 +106,9 @@ export async function fillPdf(
     locationField.setText(params.location);
     dateField.setText(params.date);
 
-    signatureField.setImage(await document.embedPng(params.signaturePng));
+    if(params.signaturePng !== null) {
+        signatureField.setImage(await document.embedPng(params.signaturePng));
+    }
     signatureNameField.setText(params.signatureName);
     signatureCapacityField.setText(params.signatureCapacity);
 

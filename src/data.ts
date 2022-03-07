@@ -1,4 +1,5 @@
 import { SecurityType, CurrencyCode, Security } from "./enums.ts";
+import { InformativeError } from "./InformativeError.ts";
 
 // Why do we need these variables and not make them constants?
 // Browsers will not be able to make requests to these origins
@@ -99,7 +100,7 @@ export async function getSecurity(isin: string): Promise<Security> {
         method: "POST",
     });
     if(response.status !== 200) {
-        throw new Error(`response from investing.com returned status code ${response.status} while searching for ISIN ${isin}`);
+        throw new InformativeError("security.fetch.response_code", { status: response.status, isin });
     }
     const json = await response.json();
     if(json.quotes !== undefined && json.quotes.length > 0) {
@@ -121,10 +122,11 @@ export async function getSecurity(isin: string): Promise<Security> {
                 break;
         }
     } else {
+        throw new InformativeError("security.fetch.response_format", { isin, json });
         throw new Error(`could not find security type for ISIN ${isin}`);
     }
     if(security === undefined) {
-        throw new Error(`could not recognise security type for ISIN ${isin}`);
+        throw new InformativeError("security.fetch.undefined", { isin, json });
     }
     isinsMap.set(isin, security);
     return security;

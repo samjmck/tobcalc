@@ -1,6 +1,7 @@
 import { CountryCode, CurrencyCode, eeaCountries, Security, SecurityType } from "./enums.ts";
 import { cacheExchangeRates, exchangeRatesMap, formatDate, getSecurity } from "./data.ts";
 import { ServiceTransaction } from "./service_adapter.ts";
+import { InformativeError } from "./InformativeError.ts";
 
 export async function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]> {
     const currencyCodeEarliestDate: Map<CurrencyCode, Date> = new Map();
@@ -48,21 +49,21 @@ export async function getTaxableTransactions(serviceTransactions: ServiceTransac
         if (brokerTransaction.currency !== CurrencyCode.EUR) {
             const currencyExchangeRates = exchangeRates.get(brokerTransaction.currency);
             if (currencyExchangeRates === undefined) {
-                throw new Error(`exchange rates for currency ${brokerTransaction.currency} are undefined`);
+                throw new InformativeError("exchange_rates.undefined", brokerTransaction);
             }
             const exchangeRate = currencyExchangeRates.get(formatDate(brokerTransaction.date));
             if (exchangeRate === undefined) {
-                throw new Error(`exchange rate for currency ${brokerTransaction.currency} at ${formatDate(brokerTransaction.date)} are undefined`);
+                throw new InformativeError("exchange_rates.undefined_at_date", brokerTransaction);
             }
             value = value * exchangeRate;
         }
         const countryCodeMatches = brokerTransaction.isin.match(/[A-Z][A-Z]/g);
         if (countryCodeMatches === null) {
-            throw new Error(`could not find ISIN match in ${brokerTransaction.isin}`);
+            throw new InformativeError("isin.no_match", brokerTransaction);
         }
         const security = securitiesByIsin.get(brokerTransaction.isin);
         if (security === undefined) {
-            throw new Error(`security data for ISIN ${brokerTransaction.isin} is undefined`);
+            throw new InformativeError("security.no_data", brokerTransaction);
         }
         taxableTransactions.push({
             value,
@@ -96,7 +97,7 @@ export function getTaxRate(taxableTransaction: TaxableTransaction): number {
         case SecurityType.Stock:
             return 0.0035;
         default:
-            throw new Error(`could not find tax rate for security type ${taxableTransaction.security}`);
+            throw new InformativeError("tax_rate.not_found", taxableTransaction);
     }
 }
 
