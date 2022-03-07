@@ -23,9 +23,9 @@ export async function fillPdf(
         tableATax012Quantity: number,
         tableATax035Quantity: number,
         tableATax132Quantity: number,
-        tableATax012TaxableValue: number,
-        tableATax035TaxableValue: number,
-        tableATax132TaxableValue: number,
+        tableATax012TaxBase: number,
+        tableATax035TaxBase: number,
+        tableATax132TaxBase: number,
         tableATax012TaxValue: number,
         tableATax035TaxValue: number,
         tableATax132TaxValue: number,
@@ -55,15 +55,15 @@ export async function fillPdf(
     const addressLine3Field = form.getTextField("address_line_3");
 
     const tableATax012QuantityField = form.getTextField("table_a_tax_012_quantity");
-    const tableATax012TaxableValueField = form.getTextField("table_a_tax_012_taxable_value");
+    const tableATax012TaxBaseField = form.getTextField("table_a_tax_012_tax_base");
     const tableATax012TaxValueField = form.getTextField("table_a_tax_012_tax_value");
 
     const tableATax035QuantityField = form.getTextField("table_a_tax_035_quantity");
-    const tableATax035TaxableValueField = form.getTextField("table_a_tax_035_taxable_value");
+    const tableATax035TaxBaseField = form.getTextField("table_a_tax_035_tax_base");
     const tableATax035TaxValueField = form.getTextField("table_a_tax_035_tax_value");
 
     const tableATax132QuantityField = form.getTextField("table_a_tax_132_quantity");
-    const tableATax132TaxableValueField = form.getTextField("table_a_tax_132_taxable_value");
+    const tableATax132TaxBaseField = form.getTextField("table_a_tax_132_tax_base");
     const tableATax132TaxValueField = form.getTextField("table_a_tax_132_tax_value");
     
     const tableATotalTaxValue = form.getTextField("table_a_total_tax_value");
@@ -90,15 +90,15 @@ export async function fillPdf(
     addressLine3Field.setText(params.addressLine3);
     
     tableATax012QuantityField.setText(`${params.tableATax012Quantity}`);
-    tableATax012TaxableValueField.setText(`${formatMoney(params.tableATax012TaxableValue)}`);
+    tableATax012TaxBaseField.setText(`${formatMoney(params.tableATax012TaxBase)}`);
     tableATax012TaxValueField.setText(`${formatMoney(params.tableATax012TaxValue)}`);
 
     tableATax035QuantityField.setText(`${params.tableATax035Quantity}`);
-    tableATax035TaxableValueField.setText(`${formatMoney(params.tableATax035TaxableValue)}`);
+    tableATax035TaxBaseField.setText(`${formatMoney(params.tableATax035TaxBase)}`);
     tableATax035TaxValueField.setText(`${formatMoney(params.tableATax035TaxValue)}`);
 
     tableATax132QuantityField.setText(`${params.tableATax132Quantity}`);
-    tableATax132TaxableValueField.setText(`${formatMoney(params.tableATax132TaxableValue)}`);
+    tableATax132TaxBaseField.setText(`${formatMoney(params.tableATax132TaxBase)}`);
     tableATax132TaxValueField.setText(`${formatMoney(params.tableATax132TaxValue)}`);
 
     tableATotalTaxValue.setText(`${formatMoney(params.tableATotalTaxValue)}`);
