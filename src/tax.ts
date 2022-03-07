@@ -103,7 +103,7 @@ export function getTaxRate(taxableTransaction: TaxableTransaction): number {
 
 export interface FormRow {
     quantity: number;
-    taxableValue: number;
+    taxBase: number;
     taxValue: number;
 }
 
@@ -117,17 +117,17 @@ export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFo
         if(formRow === undefined) {
             formRow = {
                 quantity: 0,
-                taxableValue: 0,
+                taxBase: 0,
                 taxValue: 0,
             };
             map.set(taxRate, formRow);
         }
         formRow.quantity += 1;
-        formRow.taxableValue += taxableTransaction.value;
+        formRow.taxBase += taxableTransaction.value;
     }
     // Calculate taxValue at the end so we only suffer from one floating point error and aren't constantly adding them together
     for(const [taxRate, formRow] of map.entries()) {
-        formRow.taxValue = formRow.taxableValue * taxRate;
+        formRow.taxValue = formRow.taxBase * taxRate;
     }
     return map;
 }

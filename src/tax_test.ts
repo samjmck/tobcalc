@@ -177,17 +177,17 @@ Deno.test({
         const taxFormData = getTaxFormData(taxableTransactions);
         assertEquals(taxFormData.get(0.0012), <FormRow> {
             quantity: 3,
-            taxableValue: 300_00,
+            taxBase: 300_00,
             taxValue: 0.0012 * 300_00,
         });
         assertEquals(taxFormData.get(0.0035), <FormRow> {
             quantity: 3,
-            taxableValue: 300_00,
+            taxBase: 300_00,
             taxValue: 0.0035 * 300_00,
         });
         assertEquals(taxFormData.get(0.0132), <FormRow> {
             quantity: 1,
-            taxableValue: 100_00,
+            taxBase: 100_00,
             taxValue: 0.0132 * 100_00,
         });
     },

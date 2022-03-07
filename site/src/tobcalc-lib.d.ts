@@ -458,7 +458,7 @@ type TaxFormData = Map<number, FormRow>;
 
 export interface FormRow {
     quantity: number;
-    taxableValue: number;
+    taxBase: number;
     taxValue: number;
 }
 

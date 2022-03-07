@@ -56,26 +56,26 @@
 		const aggregatedTaxForms: { [taxRate: number]: FormRow } = {
 			"0.0012": {
 				quantity: 0,
-				taxableValue: 0,
+				taxBase: 0,
 				taxValue: 0,
 			},
 			"0.0035": {
 				quantity: 0,
-				taxableValue: 0,
+				taxBase: 0,
 				taxValue: 0,
 			},
 			"0.0132": {
 				quantity: 0,
-				taxableValue: 0,
+				taxBase: 0,
 				taxValue: 0,
 			},
 		};
 		let totalTaxValue = 0;
 		for(const [_, taxFormData] of $globalTaxFormData) {
-			for(const [taxRate, { quantity, taxableValue, taxValue }] of taxFormData) {
+			for(const [taxRate, { quantity, taxBase, taxValue }] of taxFormData) {
 				const aggregatedFormRow = aggregatedTaxForms[taxRate];
 				aggregatedFormRow.quantity += quantity;
-				aggregatedFormRow.taxableValue += taxableValue;
+				aggregatedFormRow.taxBase += taxBase;
 				aggregatedFormRow.taxValue += taxValue;
 				totalTaxValue += taxValue;
 			}
@@ -95,9 +95,9 @@
 			tableATax012Quantity: tax012FormRow.quantity,
 			tableATax035Quantity: tax035FormRow.quantity,
 			tableATax132Quantity: tax132FormRow.quantity,
-			tableATax012TaxableValue: tax012FormRow.taxableValue,
-			tableATax035TaxableValue: tax035FormRow.taxableValue,
-			tableATax132TaxableValue: tax132FormRow.taxableValue,
+			tableATax012TaxableValue: tax012FormRow.taxBase,
+			tableATax035TaxableValue: tax035FormRow.taxBase,
+			tableATax132TaxableValue: tax132FormRow.taxBase,
 			tableATax012TaxValue: tax012FormRow.taxValue,
 			tableATax035TaxValue: tax012FormRow.taxValue,
 			tableATax132TaxValue: tax012FormRow.taxValue,
