@@ -42,14 +42,14 @@
     <tr>
         <th>Tax</th>
         <th>Quantity</th>
-        <th>Taxable value</th>
+        <th>Tax base</th>
         <th>Tax value</th>
     </tr>
     {#each [...taxFormData.entries()] as [taxRate, formRow]}
     <tr>
         <td>{taxRate * 100}%</td>
         <td>{formRow.quantity}</td>
-        <td>{formRow.taxableAmount}</td>
+        <td>{formRow.taxBase}</td>
         <td>{formRow.taxValue}</td>
     </tr>
     {/each}

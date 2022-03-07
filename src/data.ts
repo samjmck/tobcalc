@@ -123,7 +123,6 @@ export async function getSecurity(isin: string): Promise<Security> {
         }
     } else {
         throw new InformativeError("security.fetch.response_format", { isin, json });
-        throw new Error(`could not find security type for ISIN ${isin}`);
     }
     if(security === undefined) {
         throw new InformativeError("security.fetch.undefined", { isin, json });

@@ -24,7 +24,7 @@ Deno.test({
         for(const date in expectedRates) {
             assertEquals(expectedRates[date], rates.get(date));
         }
-    }
+    },
 });
 
 // Test most popular ETFs within BEFIRE
