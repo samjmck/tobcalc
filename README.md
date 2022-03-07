@@ -48,7 +48,7 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 - [x] Add error handling in important and critical parts of code
 - [ ] Fix PDF forms
 - [ ] Add checks for errors/throws in tests
-- [ ] Change layout of web page so services are new column next to input boxes
+- [x] Change layout of web page so services are new column next to input boxes
 - [ ] Work out if Deno Deploy can work as a (free) proxy
 - [ ] Finish `README.md`
 - [ ] Write documentation on how contributors can help with adding brokers

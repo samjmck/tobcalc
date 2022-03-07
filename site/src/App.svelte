@@ -28,6 +28,10 @@
 		// Force reactivity change
 		selectedServices = selectedServices;
 	}
+	function setSelectedService(selectedServiceNumber: number, service: Service) {
+		selectedServices.set(selectedServiceNumber, service);
+		selectedServices = selectedServices;
+	}
 	function removeSelectedService(selectedServiceNumber: number) {
 		selectedServices.delete(selectedServiceNumber);
 		globalTaxFormData.delete(selectedServiceNumber)
@@ -116,7 +120,7 @@
 	}
 </script>
 
-<form>
+<div class="column">
 	<label for="start">Start date</label>
 	<input id="start" name="start" type="date" bind:value={startDateValue} />
 	<label for="end">End date</label>
@@ -134,32 +138,38 @@
 	<label for="signature_png">Choose signature png</label>
 	<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} />
 
+	<button on:click|preventDefault={downloadPdf}>Download pdf</button>
+	<a id="download-link" bind:this={downloadElement} download="tob-filled.pdf">Download pdf</a>
+</div>
+
+<div class="column">
 	<button on:click|preventDefault={() => addSelectedService(Service.InteractiveBrokers)}>New service</button>
 
 	{#each [...selectedServices.entries()] as [selectedServiceNumber, selectedService] (selectedServiceNumber)}
-		<div>
-			<select bind:value={selectedService}>
-				{#each services as service}
+	<div class="selected-service">
+		<select on:change={event => setSelectedService(selectedServiceNumber, event.target.value)}>
+			{#each services as service}
 				<option value={service}>{service}</option>
-				{/each}
-			</select>
-			<button on:click|preventDefault={() => removeSelectedService(selectedServiceNumber)}>Remove</button>
-			{#if selectedService === Service.InteractiveBrokers}
-				<Adapter selectedServiceNumber={selectedServiceNumber} service={selectedService} serviceAdapter={IBKRAdapter} />
-			{/if}
-		</div>
+			{/each}
+		</select>
+		<button on:click|preventDefault={() => removeSelectedService(selectedServiceNumber)}>Remove</button>
+		{#if selectedService === Service.InteractiveBrokers}
+			<Adapter selectedServiceNumber={selectedServiceNumber} service={selectedService} serviceAdapter={IBKRAdapter} />
+		{/if}
+	</div>
 	{/each}
-
-	<button on:click|preventDefault={downloadPdf}>Download pdf</button>
-	<a id="download-link" bind:this={downloadElement} download="tob-filled.pdf">Download pdf</a>
-</form>
+</div>
 
 <style>
-	form {
+	div.column {
 		padding-bottom: 10em;
+		margin-right: 3em;
 	}
 	#download-link {
 		display: none;
+	}
+	div.selected-service {
+		margin: 1em 0;
 	}
 	input {
 		display: block;

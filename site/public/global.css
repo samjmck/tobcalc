@@ -10,6 +10,8 @@ body {
 	padding: 1em;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	display: flex;
+	flex-direction: row;
 }
 
 a {
