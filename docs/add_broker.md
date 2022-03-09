@@ -1,20 +1,48 @@
-import { CurrencyCode } from "../enums.ts";
-import { ServiceAdapter, ServiceTransaction } from "../service_adapter.ts";
-import { InformativeError } from "../InformativeError.ts";
+# How to add a broker
 
+To add a broker, you need to write a `ServiceAdapter` which takes a data `Blob` as input and outputs an array of `ServiceTransaction`s. 
+
+The interfaces for `ServiceAdapter` and `ServiceTransaction` are defined in `src/service_adapter` as followed:
+
+```ts
+interface ServiceTransaction {
+    date: Date;
+    isin: string;
+    currency: CurrencyCode;
+    value: number;
+}
+interface ServiceAdapter {
+    (data: Blob): Promise<ServiceTransaction[]>;
+}
+```
+
+On a higher level, you should view a service adapter as a function that simply receives data representing the transactions on a given service (such as a broker or bank) and converts that data into a format the codebase understands. The data the function receives is normally in the form of a `csv` or `xlsx` file with raw data wrapped in a `Blob` object.
+
+Start with defining a function that implements the `SeriviceAdapter` interface, as such:
+
+```ts
+const MyAdapter: ServiceAdapter = async (data) => {
+    const serviceTransactions: ServiceTransaction[] = [];
+    return serviceTransactions;
+};
+```
+
+The `data` parameter is of the [`Blob` type](https://developer.mozilla.org/en-US/docs/Web/API/Blob), meaning you can call methods such as `text()` to get the file as a string or `stream()` to get a `ReadableStream`. See `src/adapters/IBKR_adapter.ts` for a concrete example of how to process a `csv` file:
+
+```ts
 export const IBKRAdapter: ServiceAdapter = async data => {
     // Convert data blob to a string
     const text = await data.text();
-
+    
     // Rows are separated by a line break or "\n", we want to split the string up into the rows
     // separated by \n
     const rows = text.split("\n");
-
+    
     // The first row of a csv contains the names of columns
     const columnNamesRow = rows[0];
-
+    
     // Each column in a row is seperated by a comma - we can get the column names by splitting
-    // the first row by
+    // the first row by 
     const columnNames = rows[0].split(",");
 
     // Recall the properties of a ServiceTransaction: date, isin, currency and value
@@ -26,38 +54,15 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     const currencyCodeColumnIndex = columnNames.indexOf(`"CurrencyPrimary"`);
     const valueColumnIndex = columnNames.indexOf(`"Amount"`);
 
-    if(dateColumnIndex === -1) {
-        throw new InformativeError("ibkr_adapter.date_column_index", columnNames);
-    }
-    if(isinColumnIndex === -1) {
-        throw new InformativeError("ibkr_adapter.isin_column_index", columnNames);
-    }
-    if(valueColumnIndex === -1) {
-        throw new InformativeError("ibkr_adapter.value_column_index", columnNames);
-    }
-    if(currencyCodeColumnIndex === -1) {
-        throw new InformativeError("ibkr_adapter.currency_code_column_index", columnNames);
-    }
-
     const serviceTransactions: ServiceTransaction[] = [];
     // Now we want to loop over all the rows except the header row, hence the slice(1, -1)
     for(const rowString of rows.slice(1, -1)) {
         // Split the columns of the row into an array
         // And then remove the quotes which encapsulate every column value
         const row = rowString.split(",").map(s => s.substring(1, s.length - 1));
-
+        
         // Save date in a variable so we can easily reuse while creating a Date object
         const dateString = row[dateColumnIndex];
-
-        if(row[isinColumnIndex] === undefined) {
-            throw new InformativeError("ibkr_adapter.isin_undefined", { row, columnNames });
-        }
-        if(row[currencyCodeColumnIndex] === undefined) {
-            throw new InformativeError("ibkr_adapter.currency_code_undefined", { row, columnNames });
-        }
-        if(row[valueColumnIndex] === undefined) {
-            throw new InformativeError("ibkr_adapter.value_undefined", { row, columnNames });
-        }
 
         serviceTransactions.push({
             // Date is in format YYYYMMDD
@@ -70,3 +75,4 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     }
     return serviceTransactions;
 };
+```
