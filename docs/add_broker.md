@@ -18,7 +18,7 @@ interface ServiceAdapter {
 
 On a higher level, you should view a service adapter as a function that simply receives data representing the transactions on a given service (such as a broker or bank) and converts that data into a format the codebase understands. The data the function receives is normally in the form of a `csv` or `xlsx` file with raw data wrapped in a `Blob` object.
 
-Start with defining a function that implements the `SeriviceAdapter` interface, as such:
+Start with defining a function that implements the `SeriviceAdapter` interface, as follows:
 
 ```ts
 const MyAdapter: ServiceAdapter = async (data) => {
