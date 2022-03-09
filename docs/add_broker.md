@@ -1,6 +1,6 @@
 # How to add a broker
 
-To add a broker, you need to write a `ServiceAdapter` which takes a data `Blob` as input and outputs an array of `ServiceTransaction`s. 
+To add a broker, you need to write a `ServiceAdapter` which takes a data `Blob` as input and outputs an array of `ServiceTransaction`. 
 
 The interfaces for `ServiceAdapter` and `ServiceTransaction` are defined in `src/service_adapter` as followed:
 
