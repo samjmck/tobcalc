@@ -76,3 +76,26 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     return serviceTransactions;
 };
 ```
+
+Once you have written the adapter for the service, you should add a unit test for it. `src/IBKR_adapter_test.ts` provides a good template or starting point for doing so:
+
+```ts
+Deno.test({
+    name: "adapter converting csv to taxable transactions",
+    permissions: {
+        read: true,
+    },
+    fn: async () => {
+        const data = await Deno.readFile("src/adapters/service_adapter_test.csv");
+        const serviceTransactions = await IBKRAdapter(new Blob([data]));
+
+        assertEquals(serviceTransactions[0], <ServiceTransaction> {
+            // Depending on the example data in your file
+            date: new Date("2022-02-02"),
+            isin: "IE00BFY0GT14",
+            currency: CurrencyCode.EUR,
+            value: 1381_75,
+        });
+    },
+});
+```

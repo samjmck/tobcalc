@@ -401,9 +401,12 @@ export enum CurrencyCode {
     ZWL = 'ZWL',
 }
 
+export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
+export const exchangeRatesMap: ExchangeRatesMap;
+
 export function setECBHostname(hostname: string): void;
 export function setInvestingComHostname(hostname: string): void;
-export function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode): void;
+export async function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode): Promise<void>;
 export function getSecurity(isin: string): Promise<Security>;
 
 export function fillPdf(
@@ -455,6 +458,8 @@ export interface TaxableTransaction {
 }
 
 type TaxFormData = Map<number, FormRow>;
+
+export class InformativeError extends Error {}
 
 export interface FormRow {
     quantity: number;

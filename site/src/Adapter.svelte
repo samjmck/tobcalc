@@ -12,16 +12,22 @@
     let serviceTransactions: ServiceTransaction[] = [];
     let taxableTransactions: TaxableTransaction[] = [];
     let taxFormData: Map<number, FormRow> = new Map();
+    let adapterError = "";
     async function loadedFile() {
-        serviceTransactions = await serviceAdapter(files[0]);
-        taxableTransactions = await getTaxableTransactions(serviceTransactions);
-        taxFormData = await getTaxFormData(taxableTransactions);
-        globalTaxFormData.setTaxFormData(selectedServiceNumber, taxFormData);
+        try {
+            serviceTransactions = await serviceAdapter(files[0]);
+            taxableTransactions = await getTaxableTransactions(serviceTransactions);
+            taxFormData = await getTaxFormData(taxableTransactions);
+            globalTaxFormData.setTaxFormData(selectedServiceNumber, taxFormData);
+        } catch(error) {
+            adapterError = error.message;
+        }
     }
 </script>
 
 <label for={`adapter_${selectedServiceNumber}`}>Choose {service} csv</label>
 <input name={`adapter_${selectedServiceNumber}`} type="file" accept="text/csv, .csv" bind:files on:change={loadedFile} />
+<p class="adapter-error">{adapterError}</p>
 <table class="taxable-transactions">
     <tr>
         <th>Row no.</th>

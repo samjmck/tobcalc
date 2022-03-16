@@ -49,10 +49,9 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 - [ ] Fix PDF forms
 - [ ] Add checks for errors/throws in tests
 - [x] Change layout of web page so services are new column next to input boxes
-- [ ] Work out if Deno Deploy can work as a (free) proxy
 - [ ] Finish `README.md`
 - [ ] Write documentation on how contributors can help with adding brokers
-- [ ] Add basic tests within browser to check if security data is correct for popular funds
+- [x] Add basic tests within browser to check if security data is correct for popular funds
 - [ ] Reduce browser bundle size
   - [ ] Use more advanced package bundler such as webpack instead of `deno bundle`
 - [ ] Improve bundling and site generation workflow
