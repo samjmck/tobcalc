@@ -2,16 +2,13 @@
 	import { adapterNumber, globalTaxFormData } from "./stores";
 	import { Service, services } from "./service";
 	import Adapter from "./Adapter.svelte";
-	import type { ETF, fillPdf, FormRow } from "./tobcalc-lib.js";
+	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
 	import {
-		cacheExchangeRates,
-		CurrencyCode,
-		exchangeRatesMap,
-		getSecurity,
 		IBKRAdapter,
 		setECBHostname,
 		setInvestingComHostname
 	} from "./tobcalc-lib.js";
+	import { runTests } from "./tests";
 
 	const pdfWorker = new Worker("tobcalc-lib-pdf.js");
 
@@ -27,55 +24,11 @@
 	setECBHostname("localhost:8081/ecb");
 	setInvestingComHostname("localhost:8081/investing_com");
 
-	// Basic tests
 	let failedTestsError = "";
-	getSecurity("IWDA").then(security => {
-		if(security.type !== "ETF") {
-			failedTestsError = "Wrong security type for IWDA";
-			return;
+	runTests().then(result => {
+		if(result !== null) {
+			failedTestsError = result;
 		}
-		if(!(<ETF> security).accumulating) {
-			failedTestsError = "Wrong security data for IWDA (showing as distributing)";
-			return;
-		}
-	}).catch(error => {
-		failedTestsError = "Could not get IWDA security data";
-	});
-	getSecurity("VWCE").then(security => {
-		if(security.type !== "ETF") {
-			failedTestsError = "Wrong security type for VWCE";
-			return;
-		}
-		if(!(<ETF> security).accumulating) {
-			failedTestsError = "Wrong security data for VWCE (showing as distributing)";
-			return;
-		}
-	}).catch(error => {
-		failedTestsError = "Could not get VWCE security data";
-	});
-	const start = new Date("21 February 2022 00:00:00 GMT");
-	const end = new Date("25 February 2022 00:00:00 GMT");
-	const expectedRates: { [date: string]: number} = {
-		"2022-02-21": 1.1338,
-		"2022-02-22": 1.1342,
-		"2022-02-23": 1.1344,
-		"2022-02-24": 1.1163,
-		"2022-02-25": 1.1216,
-	};
-	cacheExchangeRates(start, end, CurrencyCode.USD).then(result => {
-		const rates = exchangeRatesMap.get(CurrencyCode.USD);
-		if(rates === undefined) {
-			failedTestsError = "Failed exchange rates test";
-			return;
-		}
-		for(const date in expectedRates) {
-			if(expectedRates[date] !== rates.get(date)) {
-				failedTestsError = "Failed exchange rates test";
-				return;
-			}
-		}
-	}).catch(error => {
-		failedTestsError = "Failed exchange rates test";
 	});
 
 	let selectedServices: Map<number, Service> = new Map();
@@ -104,6 +57,7 @@
 	let pdfObjectUrl = "";
 
 	let downloadElement: HTMLAnchorElement;
+	let embedElement: HTMLEmbedElement;
 	let startDateValue: string;
 	let endDateValue: string;
 	let nationalRegistrationNumberValue: string;
@@ -177,6 +131,7 @@
 			});
 			pdfObjectUrl = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }))
 			downloadElement.href = pdfObjectUrl;
+			embedElement.src = pdfObjectUrl;
 			downloadElement.click();
 			URL.revokeObjectURL(pdfObjectUrl);
 		} catch(error) {
@@ -231,7 +186,7 @@
 </div>
 
 <div class="column">
-	<embed bind:src={pdfObjectUrl} width="250" height="600" />
+	<embed bind:this={embedElement} width="250" height="600" />
 </div>
 
 <style>

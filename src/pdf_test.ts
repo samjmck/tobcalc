@@ -52,15 +52,15 @@ Deno.test({
         assertEquals(form.getTextField("address_line_3").getText(), params.addressLine3);
 
         assertEquals(form.getTextField("table_a_tax_012_quantity").getText(), `${params.tableATax012Quantity}`);
-        assertEquals(form.getTextField("table_a_tax_012_taxable_value").getText(), "€ 100,00");
+        assertEquals(form.getTextField("table_a_tax_012_tax_base").getText(), "€ 100,00");
         assertEquals(form.getTextField("table_a_tax_012_tax_value").getText(), "€ 1,00");
 
         assertEquals(form.getTextField("table_a_tax_035_quantity").getText(), `${params.tableATax035Quantity}`);
-        assertEquals(form.getTextField("table_a_tax_035_taxable_value").getText(), "€ 200,00");
+        assertEquals(form.getTextField("table_a_tax_035_tax_base").getText(), "€ 200,00");
         assertEquals(form.getTextField("table_a_tax_035_tax_value").getText(), "€ 2,00");
 
         assertEquals(form.getTextField("table_a_tax_132_quantity").getText(), `${params.tableATax132Quantity}`);
-        assertEquals(form.getTextField("table_a_tax_132_taxable_value").getText(), "€ 300,00");
+        assertEquals(form.getTextField("table_a_tax_132_tax_base").getText(), "€ 300,00");
         assertEquals(form.getTextField("table_a_tax_132_tax_value").getText(), "€ 3,00");
 
         assertEquals(form.getTextField("table_a_total_tax_value").getText(), "€ 5,00");
