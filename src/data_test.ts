@@ -1,6 +1,7 @@
-import { assertEquals, assertNotEquals } from "https://deno.land/std@0.128.0/testing/asserts.ts";
+import { assertEquals, assertNotEquals, assertRejects } from "https://deno.land/std@0.128.0/testing/asserts.ts";
 import { cacheExchangeRates, exchangeRatesMap, getSecurity } from "./data.ts";
 import { CurrencyCode, ETF, SecurityType } from "./enums.ts";
+import { InformativeError } from "./InformativeError.ts";
 
 Deno.test({
     name: "EURUSD exchange rates between 21 February 2022 and 25 February 2022",
@@ -80,5 +81,20 @@ Deno.test({
     fn: async () => {
         const security = <ETF> (await getSecurity("US0378331005"));
         assertEquals(security.type, SecurityType.Stock);
+    },
+});
+Deno.test({
+    name: "Non-existent ISIN",
+    permissions: {
+        net: true,
+    },
+    fn: async () => {
+        await assertRejects(
+            () => {
+                return getSecurity("US037833100X");
+            },
+            InformativeError,
+            "security.fetch.not_found",
+        );
     },
 });

@@ -102,31 +102,37 @@ export async function getSecurity(isin: string): Promise<Security> {
     if(response.status !== 200) {
         throw new InformativeError("security.fetch.response_code", { status: response.status, isin });
     }
+
     const json = await response.json();
-    if(json.quotes !== undefined && json.quotes.length > 0) {
-        const pairType = json.quotes[0].pair_type;
-        switch(pairType) {
-            case "etf":
-                const securityDataResponse = await fetch(`https://${INVESTING_COM_HOSTNAME}${json.quotes[0].link}`);
-                const html = await securityDataResponse.text();
-                const accumulating = /<span class="float_lang_base_1">Dividend\sYield<\/span><span class="float_lang_base_2 bold">N\/A<\/span>/g.test(html);
-                security = {
-                    type: SecurityType.ETF,
-                    accumulating,
-                }
-                break;
-            case "equities":
-                security = {
-                    type: SecurityType.Stock,
-                };
-                break;
-        }
-    } else {
+    if(json.quotes === undefined) {
         throw new InformativeError("security.fetch.response_format", { isin, json });
     }
+    if(json.quotes.length <= 0) {
+        throw new InformativeError("security.fetch.not_found", { isin, json });
+    }
+
+    const pairType = json.quotes[0].pair_type;
+    switch(pairType) {
+        case "etf":
+            const securityDataResponse = await fetch(`https://${INVESTING_COM_HOSTNAME}${json.quotes[0].link}`);
+            const html = await securityDataResponse.text();
+            const accumulating = /<span class="float_lang_base_1">Dividend\sYield<\/span><span class="float_lang_base_2 bold">N\/A<\/span>/g.test(html);
+            security = {
+                type: SecurityType.ETF,
+                accumulating,
+            }
+            break;
+        case "equities":
+            security = {
+                type: SecurityType.Stock,
+            };
+            break;
+    }
+
     if(security === undefined) {
         throw new InformativeError("security.fetch.undefined", { isin, json });
     }
+
     isinsMap.set(isin, security);
     return security;
 }

@@ -46,11 +46,11 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 - [x] Use Web Worker to run CPU intensive code such as PDF generation on a different thread to keep UI smooth
 - [x] Write tests
 - [x] Add error handling in important and critical parts of code
-- [ ] Fix PDF forms
-- [ ] Add checks for errors/throws in tests
+- [x] Fix PDF forms
+- [x] Add checks for errors/throws in tests
 - [x] Change layout of web page so services are new column next to input boxes
 - [ ] Finish `README.md`
-- [ ] Write documentation on how contributors can help with adding brokers
+- [x] Write documentation on how contributors can help with adding brokers
 - [x] Add basic tests within browser to check if security data is correct for popular funds
 - [ ] Reduce browser bundle size
   - [ ] Use more advanced package bundler such as webpack instead of `deno bundle`
