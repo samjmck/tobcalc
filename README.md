@@ -29,6 +29,10 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 tobcalc's code was written to be used with Deno. The reason Deno is being used instead of Node.js is primarily because of [Deno's implementation of web API's](https://deno.land/manual@v1.8.3/runtime/web_platform_apis) which means that the codebase is relatively easy to port if the target platform is the web instead of Deno. In fact, because of [Deno's `bundle` command](https://deno.land/manual/tools/bundler), no porting is necessary as a single ES module is outputted which can be natively used within a browser. Other reasons why Deno was chosen instead of Node.js were Deno's more secure defaults and the fact that no Node modules were needed to make this project possible.
 
+### Hosting
+
+tobcalc is currently hosted by Netlify. The reason for this is that they allow reverse proxies to external APIs, such as the European Central Bank and Investing.com. Without a reverse proxy, a client on tobcalc.com would not be able to contact these APIs directly due to Cross Origin Resource Sharing policies. Cloudflare Pages was another static site hosting option but unfortunately, it seemed like their servers had been blacklisted from making requests to Investing.com. Deno Deploy was also an option but their Terms & Conditions do not allow proxies.
+
 ### Possible attack vectors and measures taken to safeguard
 
 - Web app
