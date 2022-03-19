@@ -2,7 +2,7 @@
     import { globalTaxFormData } from "./stores";
     import { Service } from "./service";
     import type { ServiceAdapter, ServiceTransaction, TaxableTransaction, FormRow } from "./tobcalc-lib";
-    import { getTaxFormData, getTaxableTransactions, getTaxRate } from "./tobcalc-lib.js";
+    import { getTaxFormData, getTaxableTransactions, getTaxRate, formatMoney } from "./tobcalc-lib.js";
 
     export let service: Service;
     export let selectedServiceNumber: number;
@@ -39,7 +39,7 @@
     {#each taxableTransactions as taxableTransaction, i}
     <tr>
         <td>{i + 1}</td>
-        <td>{taxableTransaction.value}</td>
+        <td>{formatMoney(taxableTransaction.value)}</td>
         <td>{taxableTransaction.security.type}</td>
         <td>{taxableTransaction.countryCode}</td>
         <td>{getTaxRate(taxableTransaction) * 100}%</td>
@@ -59,8 +59,8 @@
         <td>{i + 1}</td>
         <td>{taxRate * 100}%</td>
         <td>{formRow.quantity}</td>
-        <td>{formRow.taxBase}</td>
-        <td>{formRow.taxValue}</td>
+        <td>{formatMoney(formRow.taxBase)}</td>
+        <td>{formatMoney(formRow.taxValue)}</td>
     </tr>
     {/each}
 </table>

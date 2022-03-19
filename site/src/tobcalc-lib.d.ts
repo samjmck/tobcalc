@@ -438,6 +438,8 @@ export function fillPdf(
     }
 ): Promise<Uint8Array>;
 
+export function formatMoney(value: number, currencyCode = "€"): string;
+
 export interface ServiceTransaction {
     date: Date;
     isin: string;

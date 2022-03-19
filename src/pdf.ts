@@ -1,9 +1,9 @@
 import { PDFDocument } from "https://cdn.skypack.dev/pdf-lib@1.17.1?dts";
 
-function formatMoney(value: number) {
+export function formatMoney(value: number, currencyCode = "€") {
     const remainder = Math.ceil(value % 100);
     const formattedRemainder = remainder < 10 ? `0${remainder}` : `${remainder}`;
-    return `€ ${Math.floor((value - value % 100) / 100)},${formattedRemainder}`;
+    return `${currencyCode} ${Math.floor((value - value % 100) / 100)},${formattedRemainder}`;
 }
 
 // Given a PDF file that has the text fields we except in a TOB pdf
