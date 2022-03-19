@@ -4,5 +4,5 @@ export DENO_INSTALL="/opt/buildhome/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 ./web_bundle.sh
 cd site
-npm run install
+npm install
 npm run build
