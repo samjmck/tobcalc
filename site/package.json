@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "rollup, -c",
+    "build": "rollup -c",
     "dev": "ECB_HOSTNAME=localhost:8081/ecb INVESTING_COM_HOSTNAME=localhost:8081/investing_com rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json"
