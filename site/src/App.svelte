@@ -10,6 +10,8 @@
 	} from "./tobcalc-lib.js";
 	import { runTests } from "./tests";
 
+	declare const process: { env: { [key: string]: string } };
+
 	const pdfWorker = new Worker("tobcalc-lib-pdf.js");
 
 	let resolveFillPdfPromise: (result: Awaited<ReturnType<typeof fillPdf>>) => void;
@@ -21,8 +23,8 @@
 		resolveFillPdfPromise(event.data);
 	};
 
-	setECBHostname("localhost:8081/ecb");
-	setInvestingComHostname("localhost:8081/investing_com");
+	setECBHostname(process.env.ECB_HOSTNAME);
+	setInvestingComHostname(process.env.INVESTING_COM_HOSTNAME);
 
 	let failedTestsError = "";
 	runTests().then(result => {

@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -40,6 +41,12 @@ export default {
 	},
 	external: ['./tobcalc-lib.js'],
 	plugins: [
+		replace({
+			values: {
+				"process.env.ECB_HOSTNAME": `"${process.env.ECB_HOSTNAME}"`,
+				"process.env.INVESTING_COM_HOSTNAME": `"${process.env.INVESTING_COM_HOSTNAME}"`,
+			},
+		}),
 		svelte({
 			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {
