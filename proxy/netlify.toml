@@ -1,0 +1,13 @@
+[[redirects]]
+from = "/proxy/ecb/*"
+to = "https://sdw-wsrest.ecb.europa.eu/:splat"
+status = 200
+[redirects.headers]
+Host = "sdw-wsrest.ecb.europa.eu"
+
+[[redirects]]
+from = "proxy/investing_com/*"
+to = "https://www.investing.com/:splat"
+status = 200
+[redirects.headers]
+Host = "www.investing.com"
