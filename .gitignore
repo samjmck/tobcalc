@@ -1,6 +1,5 @@
 .DS_Store
 .idea
-src/adapters/IBKR_adapter_test.csv
 .vscode
 node_modules
 public/build
