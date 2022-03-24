@@ -5,6 +5,7 @@
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
 	import {
 		IBKRAdapter,
+		Trading212Adapter,
 		setECBHostname,
 		setInvestingComHostname
 	} from "./tobcalc-lib.js";
@@ -191,6 +192,8 @@
 		<button on:click|preventDefault={() => removeSelectedService(selectedServiceNumber)}>Remove</button>
 		{#if selectedService === Service.InteractiveBrokers}
 			<Adapter selectedServiceNumber={selectedServiceNumber} service={selectedService} serviceAdapter={IBKRAdapter} />
+		{:else if selectedService === Service.Trading212}
+			<Adapter selectedServiceNumber={selectedServiceNumber} service={selectedService} serviceAdapter={Trading212Adapter} />
 		{/if}
 	</div>
 	{/each}

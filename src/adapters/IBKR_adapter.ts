@@ -10,11 +10,8 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     // separated by \n
     const rows = text.split("\n");
 
-    // The first row of a csv contains the names of columns
-    const columnNamesRow = rows[0];
-
     // Each column in a row is seperated by a comma - we can get the column names by splitting
-    // the first row by
+    // the first row
     const columnNames = rows[0].split(",");
 
     // Recall the properties of a ServiceTransaction: date, isin, currency and value
