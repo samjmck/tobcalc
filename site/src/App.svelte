@@ -9,6 +9,7 @@
 		setInvestingComHostname
 	} from "./tobcalc-lib.js";
 	import { runTests } from "./tests";
+	import type { TaxFormData } from "./tobcalc-lib.js";
 
 	declare const process: { env: { [key: string]: string } };
 
@@ -73,7 +74,8 @@
 	let locationValue: string;
 	let dateValue: string;
 	let pdfError = "";
-	async function downloadPdf() {
+	let previousObjectUrl = null;
+	async function preparePdf(globalTaxFormData: Map<number, TaxFormData>) {
 		const aggregatedTaxForms: { [taxRate: number]: FormRow } = {
 			"0.0012": {
 				quantity: 0,
@@ -92,7 +94,7 @@
 			},
 		};
 		let totalTaxValue = 0;
-		for(const [_, taxFormData] of $globalTaxFormData) {
+		for(const [_, taxFormData] of globalTaxFormData) {
 			for(const [taxRate, { quantity, taxBase, taxValue }] of taxFormData) {
 				const aggregatedFormRow = aggregatedTaxForms[taxRate];
 				aggregatedFormRow.quantity += quantity;
@@ -134,12 +136,23 @@
 			pdfObjectUrl = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }))
 			downloadElement.href = pdfObjectUrl;
 			embedElement.src = pdfObjectUrl;
-			downloadElement.click();
-			URL.revokeObjectURL(pdfObjectUrl);
+			if(previousObjectUrl !== null) {
+				URL.revokeObjectURL(pdfObjectUrl);
+			}
+			previousObjectUrl = pdfObjectUrl;
 		} catch(error) {
 			pdfError = error.message;
 		}
 	}
+
+	async function downloadPdf() {
+		await preparePdf($globalTaxFormData);
+		downloadElement.click();
+	}
+
+	globalTaxFormData.subscribe(taxFormData => {
+		preparePdf(taxFormData);
+	});
 </script>
 
 {#if failedTestsError !== ""}
@@ -163,10 +176,6 @@
 
 	<label for="signature_png">Choose signature png</label>
 	<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} />
-
-	<button on:click|preventDefault={downloadPdf}>Download pdf</button>
-	<a id="download-link" bind:this={downloadElement} download="tob-filled.pdf">Download pdf</a>
-	<p class="pdf-error">{pdfError}</p>
 </div>
 
 <div class="column">
@@ -188,7 +197,10 @@
 </div>
 
 <div class="column">
-	<embed bind:this={embedElement} width="250" height="600" />
+	<button on:click|preventDefault={downloadPdf}>Download pdf</button>
+	<a id="download-link" bind:this={downloadElement} download="tob-filled.pdf">Download pdf</a>
+	<p class="pdf-error">{pdfError}</p>
+	<embed bind:this={embedElement} width="500" height="700" />
 </div>
 
 <style>

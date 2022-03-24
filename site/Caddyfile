@@ -1,5 +1,6 @@
 localhost:8081 {
     reverse_proxy localhost:8080
+    reverse_proxy /livereload* http://localhost:35729
     route /ecb/* {
         uri strip_prefix /ecb
         reverse_proxy https://sdw-wsrest.ecb.europa.eu {

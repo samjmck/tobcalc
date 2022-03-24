@@ -36,7 +36,7 @@ tobcalc is currently hosted by Netlify. The reason for this is that they allow r
 ### Possible attack vectors and measures taken to safeguard
 
 - Web app
-  - Third party analytics script (SimpleAnalytics/Plausible) will be loaded from webpage
+  - Third party analytics script will be loaded from webpage
     - We cannot trust any third party - their CDN or script may be compromised
     - Content Security Policy (CSP) will not help in this case
     - Prevent that the code in the script gets changed into something malicious by using Subresource Integrity which checks that the loaded script matches the hash given in the web page
