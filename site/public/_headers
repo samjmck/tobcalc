@@ -2,7 +2,7 @@
     X-Frame-Options: SAMEORIGIN
     X-Content-Type-Options: nosniff
     Referrer-Policy: origin
-    Content-Security-Policy: default-src 'self' *.tobcalc.com; object-src 'self' blob
+    Content-Security-Policy: default-src 'self' *.tobcalc.com; object-src 'self' :blob
     Feature-Policy: autoplay 'none'; microphone 'none'; geolocation 'none'; camera 'none'; battery 'none'; fullscreen 'none'
     Permissions-Policy: autoplay=(), microphone=(), geolocation=(), camera=(), battery=(), fullscreen=()
     Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
