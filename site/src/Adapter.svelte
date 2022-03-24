@@ -4,6 +4,10 @@
     import type { ServiceAdapter, ServiceTransaction, TaxableTransaction, FormRow } from "./tobcalc-lib";
     import { getTaxFormData, getTaxableTransactions, getTaxRate, formatMoney } from "./tobcalc-lib.js";
 
+    function formatPercentage(value: number) {
+        return `${(value * 100).toFixed(2)}%`
+    }
+
     export let service: Service;
     export let selectedServiceNumber: number;
     export let serviceAdapter: ServiceAdapter;
@@ -42,7 +46,7 @@
         <td>{formatMoney(taxableTransaction.value)}</td>
         <td>{taxableTransaction.security.type}</td>
         <td>{taxableTransaction.countryCode}</td>
-        <td>{getTaxRate(taxableTransaction) * 100}%</td>
+        <td>{formatPercentage(getTaxRate(taxableTransaction))}</td>
     </tr>
     {/each}
 </table>
@@ -57,7 +61,7 @@
     {#each [...taxFormData.entries()] as [taxRate, formRow], i}
     <tr>
         <td>{i + 1}</td>
-        <td>{taxRate * 100}%</td>
+        <td>{formatPercentage(taxRate)}</td>
         <td>{formRow.quantity}</td>
         <td>{formatMoney(formRow.taxBase)}</td>
         <td>{formatMoney(formRow.taxValue)}</td>

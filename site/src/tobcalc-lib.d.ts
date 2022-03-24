@@ -474,3 +474,4 @@ export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFo
 export function getTaxRate(taxableTransaction: TaxableTransaction): number;
 
 export const IBKRAdapter: ServiceAdapter;
+export const Trading212Adapter: ServiceAdapter;

@@ -16,8 +16,8 @@
 
 	const pdfWorker = new Worker("tobcalc-lib-pdf.js");
 
-	let resolveFillPdfPromise: (result: Awaited<ReturnType<typeof fillPdf>>) => void;
-	const workerFillPdf = (...params: Parameters<typeof fillPdf>): ReturnType<typeof fillPdf> => {
+	let resolveFillPdfPromise: (result: string) => void;
+	const workerFillPdf = (...params: Parameters<typeof fillPdf>): Promise<string> => {
 		pdfWorker.postMessage(params);
 		return new Promise(resolve => resolveFillPdfPromise = resolve);
 	};
@@ -71,47 +71,44 @@
 	let addressLine3Value: string;
 	let signatureNameValue: string;
 	let signatureCapacityValue: string;
-	let signatureFiles: File[];
+	let signatureFiles: File[] = [];
 	let locationValue: string;
 	let dateValue: string;
 	let pdfError = "";
-	let previousObjectUrl = null;
-	async function preparePdf(globalTaxFormData: Map<number, TaxFormData>) {
-		const aggregatedTaxForms: { [taxRate: number]: FormRow } = {
-			"0.0012": {
-				quantity: 0,
-				taxBase: 0,
-				taxValue: 0,
-			},
-			"0.0035": {
-				quantity: 0,
-				taxBase: 0,
-				taxValue: 0,
-			},
-			"0.0132": {
-				quantity: 0,
-				taxBase: 0,
-				taxValue: 0,
-			},
+	async function setPdfUrl(pdfTaxFormData: Map<number, TaxFormData>) {
+		const emptyFormRow: FormRow = {
+			quantity: 0,
+			taxBase: 0,
+			taxValue: 0,
 		};
+		const tax012FormRow: FormRow = Object.assign({}, emptyFormRow);
+		const tax035FormRow: FormRow = Object.assign({}, emptyFormRow);
+		const tax132FormRow: FormRow = Object.assign({}, emptyFormRow);
 		let totalTaxValue = 0;
-		for(const [_, taxFormData] of globalTaxFormData) {
+		for(const [_, taxFormData] of pdfTaxFormData) {
 			for(const [taxRate, { quantity, taxBase, taxValue }] of taxFormData) {
-				const aggregatedFormRow = aggregatedTaxForms[taxRate];
+				let aggregatedFormRow: FormRow;
+				switch(taxRate) {
+					case 0.0012:
+						aggregatedFormRow = tax012FormRow;
+						break;
+					case 0.0035:
+						aggregatedFormRow = tax035FormRow;
+						break;
+					default:
+						aggregatedFormRow = tax132FormRow;
+				}
 				aggregatedFormRow.quantity += quantity;
 				aggregatedFormRow.taxBase += taxBase;
 				aggregatedFormRow.taxValue += taxValue;
 				totalTaxValue += taxValue;
 			}
 		}
-		const tax012FormRow = aggregatedTaxForms["0.0012"];
-		const tax035FormRow = aggregatedTaxForms["0.0035"];
-		const tax132FormRow = aggregatedTaxForms["0.0132"];
 
 		try {
-			const bytes = await workerFillPdf(pdfBytes, {
-				start: new Date(startDateValue),
-				end: new Date(endDateValue),
+			const objectUrl = await workerFillPdf(pdfBytes, {
+				start: startDateValue ? new Date(startDateValue) : new Date(),
+				end: startDateValue ? new Date(endDateValue) : new Date(),
 				nationalRegistrationNumber: nationalRegistrationNumberValue,
 				fullName: fullName,
 				addressLine1: addressLine1Value,
@@ -128,32 +125,34 @@
 				tableATax132TaxValue: tax132FormRow.taxValue,
 				tableATotalTaxValue: totalTaxValue,
 				totalTaxValue: totalTaxValue,
-				signaturePng: new Uint8Array(await signatureFiles[0].arrayBuffer()),
+				signaturePng: signatureFiles[0] ? new Uint8Array(await signatureFiles[0].arrayBuffer()) : undefined,
 				signatureName: signatureNameValue,
 				signatureCapacity: signatureCapacityValue,
 				location: locationValue,
 				date: dateValue,
 			});
-			pdfObjectUrl = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }))
-			downloadElement.href = pdfObjectUrl;
-			embedElement.src = pdfObjectUrl;
-			if(previousObjectUrl !== null) {
-				URL.revokeObjectURL(pdfObjectUrl);
-			}
-			previousObjectUrl = pdfObjectUrl;
+			downloadElement.href = objectUrl;
+			embedElement.src = objectUrl;
 		} catch(error) {
 			pdfError = error.message;
 		}
 	}
 
-	async function downloadPdf() {
-		await preparePdf($globalTaxFormData);
-		downloadElement.click();
+	$: {
+		if(pdfBytes !== undefined) {
+			setPdfUrl($globalTaxFormData);
+		}
 	}
 
-	globalTaxFormData.subscribe(taxFormData => {
-		preparePdf(taxFormData);
-	});
+	let previousTimeoutId: number;
+	function delayedPdfUpdate() {
+		if(previousTimeoutId !== undefined) {
+			clearTimeout(previousTimeoutId);
+		}
+		previousTimeoutId = setTimeout(() => {
+			setPdfUrl($globalTaxFormData);
+		}, 500);
+	}
 </script>
 
 {#if failedTestsError !== ""}
@@ -162,21 +161,21 @@
 
 <div class="column">
 	<label for="start">Start date</label>
-	<input id="start" name="start" type="date" bind:value={startDateValue} />
+	<input id="start" name="start" type="date" bind:value={startDateValue} on:input={delayedPdfUpdate} />
 	<label for="end">End date</label>
-	<input id="end" name="end" type="date" bind:value={endDateValue} />
-	<input name="national_registration_number" placeholder="National registration number" type="text" bind:value={nationalRegistrationNumberValue} />
-	<input name="full_name" placeholder="Full name" type="text" bind:value={fullName} />
-	<input name="address_line_1" placeholder="Address line 1" type="text" bind:value={addressLine1Value} />
-	<input name="address_line_2" placeholder="Address line 2" type="text" bind:value={addressLine2Value} />
-	<input name="address_line_3" placeholder="Address line 3" type="text" bind:value={addressLine3Value} />
-	<input name="signature_name" placeholder="Signature name" type="text" bind:value={signatureNameValue} />
-	<input name="signature_capacity" placeholder="Signature capacity" type="text" bind:value={signatureCapacityValue} />
-	<input name="location" placeholder="Location" type="text" bind:value={locationValue} />
-	<input name="date" placeholder="Date" type="text" bind:value={dateValue} />
+	<input id="end" name="end" type="date" bind:value={endDateValue} on:input={delayedPdfUpdate} />
+	<input name="national_registration_number" placeholder="National registration number" type="text" bind:value={nationalRegistrationNumberValue} on:input={delayedPdfUpdate} />
+	<input name="full_name" placeholder="Full name" type="text" bind:value={fullName} on:input={delayedPdfUpdate} />
+	<input name="address_line_1" placeholder="Address line 1" type="text" bind:value={addressLine1Value} on:input={delayedPdfUpdate} />
+	<input name="address_line_2" placeholder="Address line 2" type="text" bind:value={addressLine2Value} on:input={delayedPdfUpdate} />
+	<input name="address_line_3" placeholder="Address line 3" type="text" bind:value={addressLine3Value} on:input={delayedPdfUpdate} />
+	<input name="signature_name" placeholder="Signature name" type="text" bind:value={signatureNameValue} on:input={delayedPdfUpdate} />
+	<input name="signature_capacity" placeholder="Signature capacity" type="text" bind:value={signatureCapacityValue} on:input={delayedPdfUpdate} />
+	<input name="location" placeholder="Location" type="text" bind:value={locationValue} on:input={delayedPdfUpdate} />
+	<input name="date" placeholder="Date" type="text" bind:value={dateValue} on:input={delayedPdfUpdate} />
 
 	<label for="signature_png">Choose signature png</label>
-	<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} />
+	<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} on:input={delayedPdfUpdate} />
 </div>
 
 <div class="column">
@@ -200,8 +199,8 @@
 </div>
 
 <div class="column">
-	<button on:click|preventDefault={downloadPdf}>Download pdf</button>
 	<a id="download-link" bind:this={downloadElement} download="tob-filled.pdf">Download pdf</a>
+	<button on:click|preventDefault={() => downloadElement.click()}>Download pdf</button>
 	<p class="pdf-error">{pdfError}</p>
 	<embed bind:this={embedElement} width="500" height="700" />
 </div>
