@@ -83,6 +83,8 @@ export interface TaxableTransaction {
 export function getTaxRate(taxableTransaction: TaxableTransaction): number {
     switch (taxableTransaction.security.type) {
         case SecurityType.ETF:
+            // TODO: this is not right - we need to check if fund is
+            // REGISTERED in Belgium, not domiciled
             if (taxableTransaction.countryCode === CountryCode.Belgium) {
                 if (taxableTransaction.security.accumulating) {
                     return 0.0132;
