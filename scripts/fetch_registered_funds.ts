@@ -14,13 +14,16 @@ if(rangeString !== undefined) {
         header: 1, // Generates a 2D array with format [[name1, name2], [name1, name2], [name1, name2], ...]
     });
     const names: string[] = [];
+    const lowerCaseNames = [];
     for(const [name1, name2] of values) {
         names.push(name1);
+        lowerCaseNames.push(name1.toLowerCase());
         if(name2 !== name1) {
             names.push(name2);
+            lowerCaseNames.push(name2.toLowerCase());
         }
     }
-    console.log(JSON.stringify(names));
+    await Deno.writeTextFile("src/registered_funds.ts", `export const registeredFunds: string[] = ${JSON.stringify(names)}; export const lowerCaseRegisteredFunds: string[] = ${JSON.stringify(lowerCaseNames)};`);
 } else {
     console.error("Sheet has undefined range");
 }

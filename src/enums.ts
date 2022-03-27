@@ -10,10 +10,12 @@ export enum SecurityType {
 
 export interface ETF {
     type: SecurityType.ETF;
+    name: string;
     accumulating: boolean;
 }
 
 export interface Stock {
+    name: string;
     type: SecurityType.Stock;
 }
 

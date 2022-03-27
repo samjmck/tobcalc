@@ -2,6 +2,12 @@ import { CountryCode, CurrencyCode, eeaCountries, Security, SecurityType } from 
 import { cacheExchangeRates, exchangeRatesMap, formatDate, getSecurity } from "./data.ts";
 import { ServiceTransaction } from "./service_adapter.ts";
 import { InformativeError } from "./InformativeError.ts";
+import { lowerCaseRegisteredFunds } from "./registered_funds.ts";
+
+// Case-insensitive
+export function isRegistered(name: string) {
+    return lowerCaseRegisteredFunds.includes(name.toLowerCase());
+}
 
 export async function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]> {
     const currencyCodeEarliestDate: Map<CurrencyCode, Date> = new Map();
@@ -83,9 +89,17 @@ export interface TaxableTransaction {
 export function getTaxRate(taxableTransaction: TaxableTransaction): number {
     switch (taxableTransaction.security.type) {
         case SecurityType.ETF:
-            // TODO: this is not right - we need to check if fund is
-            // REGISTERED in Belgium, not domiciled
-            if (taxableTransaction.countryCode === CountryCode.Belgium) {
+            // TODO: this is not right - we need to check if fund is registered in Belgium
+            // The FSMA list registered funds by NAME, not ISIN
+            // This makes determining whether a fund is registered or not quite difficult to do programmatically
+            // because different services and APIs can list funds with the same ISIN under slightly different names
+            // e.g "Vanguard FTSE All-World EUR" (Trading212)
+            // vs  "Vanguard FTSE All-World UCITS ETF USD Accumulation" (Investing.com & Yahoo Finance)
+            // vs  "Vanguard FTSE All-World UCITS ETF USD Acc" (Google Finance)
+            // So in practice, a security's name does NOT uniquely determine a security (or ISIN)
+            // an ISIN of course would
+            // (Please FSMA start using ISINs)
+            if (taxableTransaction.countryCode === CountryCode.Belgium || isRegistered(taxableTransaction.security.name)) {
                 if (taxableTransaction.security.accumulating) {
                     return 0.0132;
                 } else {
