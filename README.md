@@ -11,7 +11,7 @@ The goal of this project is to simplify the process of calculating and filing th
 ## Which brokers are currently supported?
 
 Currently, the following brokers are supported:
-- Interactive Brokers (last updated: 4 March 2022)
+- Interactive Brokers (last checked: 28 March 2022) [(guide)](docs/interactive-brokers-guide.md)
 
 ## How does it work?
 
