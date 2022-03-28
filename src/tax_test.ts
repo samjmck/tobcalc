@@ -5,18 +5,19 @@ import {
     getTaxableTransactions,
     getTaxFormData,
     getTaxRate,
-    isRegistered,
+    isNameRegistered,
     TaxableTransaction
 } from "./tax.ts";
 import { assertEquals, assertObjectMatch } from "https://deno.land/std@0.128.0/testing/asserts.ts";
 
 Deno.test({
-    name: "registered fund in Belgium",
+    name: "fund registered with FSMA",
     permissions: {
         net: true,
     },
     fn: async () => {
-        assertEquals(isRegistered("Vanguard FTSE All-World UCITS ETF"), true);
+        assertEquals(isNameRegistered("Vanguard FTSE All-World UCITS ETF"), true);
+        assertEquals(isNameRegistered("Vanguard FTSE All-World UCITS ETF Acc"), false);
     },
 });
 

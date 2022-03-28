@@ -5,7 +5,7 @@ import { InformativeError } from "./InformativeError.ts";
 import { lowerCaseRegisteredFunds } from "./registered_funds.ts";
 
 // Case-insensitive
-export function isRegistered(name: string) {
+export function isNameRegistered(name: string) {
     return lowerCaseRegisteredFunds.includes(name.toLowerCase());
 }
 
@@ -99,7 +99,7 @@ export function getTaxRate(taxableTransaction: TaxableTransaction): number {
             // So in practice, a security's name does NOT uniquely determine a security (or ISIN)
             // an ISIN of course would
             // (Please FSMA start using ISINs)
-            if (taxableTransaction.countryCode === CountryCode.Belgium || isRegistered(taxableTransaction.security.name)) {
+            if (taxableTransaction.countryCode === CountryCode.Belgium || isNameRegistered(taxableTransaction.security.name)) {
                 if (taxableTransaction.security.accumulating) {
                     return 0.0132;
                 } else {

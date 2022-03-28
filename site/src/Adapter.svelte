@@ -1,11 +1,26 @@
 <script lang="ts">
     import { globalTaxFormData } from "./stores";
     import { Service } from "./service";
-    import type { ServiceAdapter, ServiceTransaction, TaxableTransaction, FormRow } from "./tobcalc-lib";
-    import { getTaxFormData, getTaxableTransactions, getTaxRate, formatMoney } from "./tobcalc-lib.js";
+    import type { FormRow, ServiceAdapter, ServiceTransaction, TaxableTransaction } from "./tobcalc-lib";
+    import {
+        formatMoney,
+        getTaxableTransactions,
+        getTaxFormData,
+        getTaxRate,
+        isNameRegistered,
+        SecurityType,
+    } from "./tobcalc-lib.js";
 
     function formatPercentage(value: number) {
         return `${(value * 100).toFixed(2)}%`
+    }
+    function getSecurityTypeString(securityType: SecurityType) {
+        switch(securityType) {
+            case SecurityType.Stock:
+                return "Stock";
+            case SecurityType.ETF:
+                return "ETF";
+        }
     }
 
     export let service: Service;
@@ -34,19 +49,21 @@
 <p class="adapter-error">{adapterError}</p>
 <table class="taxable-transactions">
     <tr>
-        <th>Row no.</th>
+        <th>Name</th>
         <th>Value</th>
-        <th>Security type</th>
+        <th>Type</th>
         <th>Country</th>
         <th>Tax</th>
+        <th>Registered</th>
     </tr>
-    {#each taxableTransactions as taxableTransaction, i}
+    {#each taxableTransactions as taxableTransaction}
     <tr>
-        <td>{i + 1}</td>
+        <td>{taxableTransaction.security.name}</td>
         <td>{formatMoney(taxableTransaction.value)}</td>
-        <td>{taxableTransaction.security.type}</td>
+        <td>{getSecurityTypeString(taxableTransaction.security.type)}</td>
         <td>{taxableTransaction.countryCode}</td>
         <td>{formatPercentage(getTaxRate(taxableTransaction))}</td>
+        <td>{isNameRegistered(taxableTransaction.security.name) ? "Registered" : "Not registered"}</td>
     </tr>
     {/each}
 </table>

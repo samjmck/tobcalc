@@ -3,6 +3,7 @@ import { Trading212Adapter } from "./src/adapters/Trading212_adapter.ts";
 import { InformativeError } from "./src/InformativeError.ts";
 import { cacheExchangeRates, getSecurity, setECBHostname, setInvestingComHostname, exchangeRatesMap } from "./src/data.ts";
 import { getTaxableTransactions, getTaxFormData, getTaxRate } from "./src/tax.ts";
+import { isNameRegistered } from "./src/tax.ts";
 import { CurrencyCode, SecurityType } from "./src/enums.ts";
 import { formatMoney } from "./src/formatting.ts";
 
@@ -15,6 +16,7 @@ export {
     SecurityType,
     CurrencyCode,
     formatMoney,
+    isNameRegistered,
     cacheExchangeRates, getSecurity, setECBHostname, setInvestingComHostname,
     getTaxableTransactions, getTaxFormData, getTaxRate,
 };

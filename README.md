@@ -47,7 +47,7 @@ tobcalc is currently hosted by Netlify. The reason for this is that they allow r
 
 ## To do (order of high to low priority)
 
-- [ ] Check if fund is registered in Belgium
+- [x] Check if fund is registered in Belgium
 - [x] Use Web Worker to run CPU intensive code such as PDF generation on a different thread to keep UI smooth
 - [x] Write tests
 - [x] Add error handling in important and critical parts of code
