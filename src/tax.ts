@@ -1,6 +1,6 @@
 import { CountryCode, CurrencyCode, eeaCountries, Security, SecurityType } from "./enums.ts";
 import { cacheExchangeRates, exchangeRatesMap, formatDate, getSecurity } from "./data.ts";
-import { ServiceTransaction } from "./service_adapter.ts";
+import { BrokerTransaction } from "./broker_adapter.ts";
 import { InformativeError } from "./InformativeError.ts";
 import { lowerCaseRegisteredFunds } from "./registered_funds.ts";
 
@@ -9,24 +9,24 @@ export function isNameRegistered(name: string) {
     return lowerCaseRegisteredFunds.includes(name.toLowerCase());
 }
 
-export async function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]> {
+export async function getTaxableTransactions(brokerTransactions: BrokerTransaction[]): Promise<TaxableTransaction[]> {
     const currencyCodeEarliestDate: Map<CurrencyCode, Date> = new Map();
     const currencyCodeLatestDate: Map<CurrencyCode, Date> = new Map();
     const isins = new Set<string>();
-    for (const serviceTransaction of serviceTransactions) {
-        if (serviceTransaction.currency !== CurrencyCode.EUR) {
-            const earliestDateForCurrency = currencyCodeEarliestDate.get(serviceTransaction.currency);
-            if (earliestDateForCurrency === undefined || serviceTransaction.date.valueOf() < earliestDateForCurrency.valueOf()) {
-                currencyCodeEarliestDate.set(serviceTransaction.currency, serviceTransaction.date);
+    for (const brokerTransaction of brokerTransactions) {
+        if (brokerTransaction.currency !== CurrencyCode.EUR) {
+            const earliestDateForCurrency = currencyCodeEarliestDate.get(brokerTransaction.currency);
+            if (earliestDateForCurrency === undefined || brokerTransaction.date.valueOf() < earliestDateForCurrency.valueOf()) {
+                currencyCodeEarliestDate.set(brokerTransaction.currency, brokerTransaction.date);
             }
-            const latestDateForCurrency = currencyCodeLatestDate.get(serviceTransaction.currency);
-            if (latestDateForCurrency === undefined || serviceTransaction.date.valueOf() > latestDateForCurrency.valueOf()) {
-                const latestDate = new Date(serviceTransaction.date);
+            const latestDateForCurrency = currencyCodeLatestDate.get(brokerTransaction.currency);
+            if (latestDateForCurrency === undefined || brokerTransaction.date.valueOf() > latestDateForCurrency.valueOf()) {
+                const latestDate = new Date(brokerTransaction.date);
                 latestDate.setDate(latestDate.getDate() + 1);
-                currencyCodeLatestDate.set(serviceTransaction.currency, latestDate);
+                currencyCodeLatestDate.set(brokerTransaction.currency, latestDate);
             }
         }
-        isins.add(serviceTransaction.isin);
+        isins.add(brokerTransaction.isin);
     }
 
     const exchangeRatePromises: Promise<void>[] = [];
@@ -50,7 +50,7 @@ export async function getTaxableTransactions(serviceTransactions: ServiceTransac
     const exchangeRates = exchangeRatesMap;
 
     const taxableTransactions: TaxableTransaction[] = [];
-    for (const brokerTransaction of serviceTransactions) {
+    for (const brokerTransaction of brokerTransactions) {
         let value = brokerTransaction.value;
         if (brokerTransaction.currency !== CurrencyCode.EUR) {
             const currencyExchangeRates = exchangeRates.get(brokerTransaction.currency);

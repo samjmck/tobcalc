@@ -1,8 +1,8 @@
 import { CurrencyCode } from "../enums.ts";
-import { ServiceAdapter, ServiceTransaction } from "../service_adapter.ts";
+import { BrokerAdapter, BrokerTransaction } from "../broker_adapter.ts";
 import { InformativeError } from "../InformativeError.ts";
 
-export const IBKRAdapter: ServiceAdapter = async data => {
+export const IBKRAdapter: BrokerAdapter = async data => {
     // Convert data blob to a string
     const text = await data.text();
 
@@ -14,7 +14,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     // the first row
     const columnNames = rows[0].split(",");
 
-    // Recall the properties of a ServiceTransaction: date, isin, currency and value
+    // Recall the properties of a BrokerTransaction: date, isin, currency and value
     // We want to extract these properties from the input data
     // To do so, we need the indexes of the columns of those properties
     // We can find them by looking in the header row with the column names
@@ -36,7 +36,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
         throw new InformativeError("ibkr_adapter.currency_code_column_index", columnNames);
     }
 
-    const serviceTransactions: ServiceTransaction[] = [];
+    const brokerTransactions: BrokerTransaction[] = [];
     // Now we want to loop over all the rows except the header row, hence the slice(1, -1)
     for(const rowString of rows.slice(1, -1)) {
         // Split the columns of the row into an array
@@ -56,7 +56,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
             throw new InformativeError("ibkr_adapter.value_undefined", { row, columnNames });
         }
 
-        serviceTransactions.push({
+        brokerTransactions.push({
             // Date is in format YYYYMMDD
             date: new Date(`${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`),
             isin: row[isinColumnIndex],
@@ -65,5 +65,5 @@ export const IBKRAdapter: ServiceAdapter = async data => {
             value: Number(row[valueColumnIndex]) * 100,
         });
     }
-    return serviceTransactions;
+    return brokerTransactions;
 };

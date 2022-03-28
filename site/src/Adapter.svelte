@@ -1,7 +1,7 @@
 <script lang="ts">
     import { globalTaxFormData } from "./stores";
-    import { Service } from "./service";
-    import type { FormRow, ServiceAdapter, ServiceTransaction, TaxableTransaction } from "./tobcalc-lib";
+    import { Broker } from "./broker";
+    import type { FormRow, BrokerAdapter, BrokerTransaction, TaxableTransaction } from "./tobcalc-lib";
     import {
         formatMoney,
         getTaxableTransactions,
@@ -23,29 +23,29 @@
         }
     }
 
-    export let service: Service;
-    export let selectedServiceNumber: number;
-    export let serviceAdapter: ServiceAdapter;
+    export let broker: Broker;
+    export let selectedBrokerNumber: number;
+    export let brokerAdapter: BrokerAdapter;
 
     let files: File[] = [];
-    let serviceTransactions: ServiceTransaction[] = [];
+    let brokerTransactions: BrokerTransaction[] = [];
     let taxableTransactions: TaxableTransaction[] = [];
     let taxFormData: Map<number, FormRow> = new Map();
     let adapterError = "";
     async function loadedFile() {
         try {
-            serviceTransactions = await serviceAdapter(files[0]);
-            taxableTransactions = await getTaxableTransactions(serviceTransactions);
+            brokerTransactions = await brokerAdapter(files[0]);
+            taxableTransactions = await getTaxableTransactions(brokerTransactions);
             taxFormData = await getTaxFormData(taxableTransactions);
-            globalTaxFormData.setTaxFormData(selectedServiceNumber, taxFormData);
+            globalTaxFormData.setTaxFormData(selectedBrokerNumber, taxFormData);
         } catch(error) {
             adapterError = error.message;
         }
     }
 </script>
 
-<label for={`adapter_${selectedServiceNumber}`}>Choose {service} csv</label>
-<input name={`adapter_${selectedServiceNumber}`} type="file" accept="text/csv, .csv" bind:files on:change={loadedFile} />
+<label for={`adapter_${selectedBrokerNumber}`}>Choose {broker} csv</label>
+<input name={`adapter_${selectedBrokerNumber}`} type="file" accept="text/csv, .csv" bind:files on:change={loadedFile} />
 <p class="adapter-error">{adapterError}</p>
 <table class="taxable-transactions">
     <tr>

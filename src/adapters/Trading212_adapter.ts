@@ -1,8 +1,8 @@
 import { CurrencyCode } from "../enums.ts";
-import { ServiceAdapter, ServiceTransaction } from "../service_adapter.ts";
+import { BrokerAdapter, BrokerTransaction } from "../broker_adapter.ts";
 import { InformativeError } from "../InformativeError.ts";
 
-export const Trading212Adapter: ServiceAdapter = async data => {
+export const Trading212Adapter: BrokerAdapter = async data => {
     const text = await data.text();
 
     const rows = text.split("\n");
@@ -35,7 +35,7 @@ export const Trading212Adapter: ServiceAdapter = async data => {
         throw new InformativeError("trading212_adapter.prices_per_share_column_index", columnNames);
     }
 
-    const serviceTransactions: ServiceTransaction[] = [];
+    const brokerTransactions: BrokerTransaction[] = [];
     for(const rowString of rows.slice(1, -1)) {
         const row = rowString.split(",");
         if(row[actionColumnIndex] != `"Market sell` && row[actionColumnIndex] != "`Market buy") {
@@ -57,7 +57,7 @@ export const Trading212Adapter: ServiceAdapter = async data => {
             throw new InformativeError("trading212_adapter.price_per_share_undefined", { row, columnNames });
         }
 
-        serviceTransactions.push({
+        brokerTransactions.push({
             // Date is in format YYYY-MM-DD HH:mm:ss
             date: new Date(dateString.slice(0, 10)),
             isin: row[isinColumnIndex],
@@ -65,5 +65,5 @@ export const Trading212Adapter: ServiceAdapter = async data => {
             value: Number(row[pricePerShareColumnIndex]) * Number(row[numberOfSharesColumnIndex]) * 100,
         });
     }
-    return serviceTransactions;
+    return brokerTransactions;
 };

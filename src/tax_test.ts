@@ -1,4 +1,4 @@
-import { ServiceTransaction } from "./service_adapter.ts";
+import { BrokerTransaction } from "./broker_adapter.ts";
 import { CountryCode, CurrencyCode, SecurityType } from "./enums.ts";
 import {
     FormRow,
@@ -22,12 +22,12 @@ Deno.test({
 });
 
 Deno.test({
-    name: "service transactions -> taxable transactions with exchange rates and security types",
+    name: "broker transactions -> taxable transactions with exchange rates and security types",
     permissions: {
         net: true,
     },
     fn: async () => {
-        const serviceTransactions: ServiceTransaction[] = [
+        const brokerTransactions: BrokerTransaction[] = [
             {
                 date: new Date("21 February 2022 00:00:00 GMT"),
                 isin: "IE00B4L5Y983", // IWDA
@@ -41,7 +41,7 @@ Deno.test({
                 value: 100_00, // EURUSD on 25 Feb -> 1.1216
             },
         ];
-        const taxableTransactions = await getTaxableTransactions(serviceTransactions);
+        const taxableTransactions = await getTaxableTransactions(brokerTransactions);
 
         const taxableTransactionIWDA = taxableTransactions[0];
         // Why assertObjectMatch and not assertEquals?

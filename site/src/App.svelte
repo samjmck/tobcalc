@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { adapterNumber, globalTaxFormData } from "./stores";
-	import { Service, services } from "./service";
+	import { Broker, brokers } from "./broker";
 	import Adapter from "./Adapter.svelte";
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
 	import {
@@ -35,22 +35,22 @@
 		}
 	});
 
-	let selectedServices: Map<number, Service> = new Map();
-	selectedServices.set($adapterNumber++, Service.InteractiveBrokers);
+	let selectedBrokers: Map<number, Broker> = new Map();
+	selectedBrokers.set($adapterNumber++, Broker.InteractiveBrokers);
 
-	function addSelectedService(service: Service) {
-		selectedServices.set($adapterNumber++, service);
+	function addSelectedBroker(service: Broker) {
+		selectedBrokers.set($adapterNumber++, service);
 		// Force reactivity change
-		selectedServices = selectedServices;
+		selectedBrokers = selectedBrokers;
 	}
-	function setSelectedService(selectedServiceNumber: number, service: Service) {
-		selectedServices.set(selectedServiceNumber, service);
-		selectedServices = selectedServices;
+	function setSelectedBroker(selectedBrokerNumber: number, broker: Broker) {
+		selectedBrokers.set(selectedBrokerNumber, broker);
+		selectedBrokers = selectedBrokers;
 	}
-	function removeSelectedService(selectedServiceNumber: number) {
-		selectedServices.delete(selectedServiceNumber);
-		globalTaxFormData.delete(selectedServiceNumber)
-		selectedServices = selectedServices;
+	function removeSelectedBroker(selectedBrokerNumber: number) {
+		selectedBrokers.delete(selectedBrokerNumber);
+		globalTaxFormData.delete(selectedBrokerNumber)
+		selectedBrokers = selectedBrokers;
 	}
 
 	let pdfBytes: Uint8Array;
@@ -100,7 +100,7 @@
 				}
 				aggregatedFormRow.quantity += quantity;
 				aggregatedFormRow.taxBase += taxBase;
-				aggregatedFormRow.taxValue += taxValue;
+				aggregatedFormRow.taxValue += quantity * taxValue;
 				totalTaxValue += taxValue;
 			}
 		}
@@ -179,20 +179,20 @@
 </div>
 
 <div class="column">
-	<button on:click|preventDefault={() => addSelectedService(Service.InteractiveBrokers)}>New service</button>
+	<button on:click|preventDefault={() => addSelectedBroker(Broker.InteractiveBrokers)}>New service</button>
 
-	{#each [...selectedServices.entries()] as [selectedServiceNumber, selectedService] (selectedServiceNumber)}
+	{#each [...selectedBrokers.entries()] as [selectedBrokerNumber, selectedBroker] (selectedBrokerNumber)}
 	<div class="selected-service">
-		<select on:change={event => setSelectedService(selectedServiceNumber, event.target.value)}>
-			{#each services as service}
+		<select on:change={event => setSelectedBroker(selectedBrokerNumber, event.target.value)}>
+			{#each brokers as service}
 				<option value={service}>{service}</option>
 			{/each}
 		</select>
-		<button on:click|preventDefault={() => removeSelectedService(selectedServiceNumber)}>Remove</button>
-		{#if selectedService === Service.InteractiveBrokers}
-			<Adapter selectedServiceNumber={selectedServiceNumber} service={selectedService} serviceAdapter={IBKRAdapter} />
-		{:else if selectedService === Service.Trading212}
-			<Adapter selectedServiceNumber={selectedServiceNumber} service={selectedService} serviceAdapter={Trading212Adapter} />
+		<button on:click|preventDefault={() => removeSelectedBroker(selectedBrokerNumber)}>Remove</button>
+		{#if selectedBroker === Broker.InteractiveBrokers}
+			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={IBKRAdapter} />
+		{:else if selectedBroker === Broker.Trading212}
+			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={Trading212Adapter} />
 		{/if}
 	</div>
 	{/each}

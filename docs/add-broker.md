@@ -1,36 +1,36 @@
 # How to add a broker
 
-To add a broker, you need to write a `ServiceAdapter` which takes a data `Blob` as input and outputs an array of `ServiceTransaction`. 
+To add a broker, you need to write a `BrokerAdapter` which takes a data `Blob` as input and outputs an array of `BrokerTransaction`. 
 
-The interfaces for `ServiceAdapter` and `ServiceTransaction` are defined in `src/service_adapter` as followed:
+The interfaces for `BrokerAdapter` and `BrokerTransaction` are defined in `src/service_adapter` as followed:
 
 ```ts
-interface ServiceTransaction {
+interface BrokerTransaction {
     date: Date;
     isin: string;
     currency: CurrencyCode;
     value: number;
 }
-interface ServiceAdapter {
-    (data: Blob): Promise<ServiceTransaction[]>;
+interface BrokerAdapter {
+    (data: Blob): Promise<BrokerTransaction[]>;
 }
 ```
 
-On a higher level, you should view a service adapter as a function that simply receives data representing the transactions on a given service (such as a broker or bank) and converts that data into a format the codebase understands. The data the function receives is normally in the form of a `csv` or `xlsx` file with raw data wrapped in a `Blob` object.
+On a higher level, you should view a broker adapter as a function that simply receives data representing the transactions from a broker/bank and converts that data into a format the codebase understands. The data the function receives is normally in the form of a `csv` or `xlsx` file with raw data wrapped in a `Blob` object.
 
-Start with defining a function that implements the `SeriviceAdapter` interface, as follows:
+Start with defining a function that implements the `BrokerAdapter` interface, as follows:
 
 ```ts
-const MyAdapter: ServiceAdapter = async (data) => {
-    const serviceTransactions: ServiceTransaction[] = [];
-    return serviceTransactions;
+const MyAdapter: BrokerAdapter = async (data) => {
+    const brokerTransactions: BrokerTransaction[] = [];
+    return brokerTransactions;
 };
 ```
 
 The `data` parameter is of the [`Blob` type](https://developer.mozilla.org/en-US/docs/Web/API/Blob), meaning you can call methods such as `text()` to get the file as a string or `stream()` to get a `ReadableStream`. See `src/adapters/IBKR_adapter.ts` for a concrete example of how to process a `csv` file:
 
 ```ts
-export const IBKRAdapter: ServiceAdapter = async data => {
+export const IBKRAdapter: BrokerAdapter = async data => {
     // Convert data blob to a string
     const text = await data.text();
     
@@ -45,7 +45,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     // the first row by 
     const columnNames = rows[0].split(",");
 
-    // Recall the properties of a ServiceTransaction: date, isin, currency and value
+    // Recall the properties of a BrokerTransaction: date, isin, currency and value
     // We want to extract these properties from the input data
     // To do so, we need the indexes of the columns of those properties
     // We can find them by looking in the header row with the column names
@@ -54,7 +54,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
     const currencyCodeColumnIndex = columnNames.indexOf(`"CurrencyPrimary"`);
     const valueColumnIndex = columnNames.indexOf(`"Amount"`);
 
-    const serviceTransactions: ServiceTransaction[] = [];
+    const brokerTransactions: BrokerTransaction[] = [];
     // Now we want to loop over all the rows except the header row, hence the slice(1, -1)
     for(const rowString of rows.slice(1, -1)) {
         // Split the columns of the row into an array
@@ -64,7 +64,7 @@ export const IBKRAdapter: ServiceAdapter = async data => {
         // Save date in a variable so we can easily reuse while creating a Date object
         const dateString = row[dateColumnIndex];
 
-        serviceTransactions.push({
+        brokerTransactions.push({
             // Date is in format YYYYMMDD
             date: new Date(`${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`),
             isin: row[isinColumnIndex],
@@ -73,11 +73,11 @@ export const IBKRAdapter: ServiceAdapter = async data => {
             value: Number(row[valueColumnIndex]) * 100,
         });
     }
-    return serviceTransactions;
+    return brokerTransactions;
 };
 ```
 
-Once you have written the adapter for the service, you should add a unit test for it. `src/IBKR_adapter_test.ts` provides a good template or starting point for doing so:
+Once you have written the adapter for your broker, you should add a unit test for it. `src/IBKR_adapter_test.ts` provides a good template or starting point for doing so:
 
 ```ts
 Deno.test({
@@ -86,10 +86,10 @@ Deno.test({
         read: true,
     },
     fn: async () => {
-        const data = await Deno.readFile("src/adapters/service_adapter_test.csv");
-        const serviceTransactions = await IBKRAdapter(new Blob([data]));
+        const data = await Deno.readFile("src/adapters/broker_adapter_test.csv");
+        const brokerTransactions = await IBKRAdapter(new Blob([data]));
 
-        assertEquals(serviceTransactions[0], <ServiceTransaction> {
+        assertEquals(brokerTransactions[0], <Brokerransaction> {
             // Depending on the example data in your file
             date: new Date("2022-02-02"),
             isin: "IE00BFY0GT14",

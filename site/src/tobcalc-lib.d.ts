@@ -1,3 +1,5 @@
+import { lowerCaseRegisteredFunds } from "../../src/registered_funds.ts";
+
 export interface ECBTimePeriod {
     id: string;
     name: string;
@@ -401,6 +403,8 @@ export enum CurrencyCode {
     ZWL = 'ZWL',
 }
 
+export function isNameRegistered(name: string): boolean;
+
 export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
 export const exchangeRatesMap: ExchangeRatesMap;
 
@@ -440,18 +444,18 @@ export function fillPdf(
 
 export function formatMoney(value: number, currencyCode = "€"): string;
 
-export interface ServiceTransaction {
+export interface BrokerTransaction {
     date: Date;
     isin: string;
     currency: CurrencyCode;
     value: number;
 }
 
-export interface ServiceAdapter {
-    (data: Blob): Promise<ServiceTransaction[]>;
+export interface BrokerAdapter {
+    (data: Blob): Promise<BrokerTransaction[]>;
 }
 
-export function getTaxableTransactions(serviceTransactions: ServiceTransaction[]): Promise<TaxableTransaction[]>;
+export function getTaxableTransactions(brokerTransactions: BrokerTransaction[]): Promise<TaxableTransaction[]>;
 
 export interface TaxableTransaction {
     value: number; // EUR
@@ -473,5 +477,5 @@ export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFo
 
 export function getTaxRate(taxableTransaction: TaxableTransaction): number;
 
-export const IBKRAdapter: ServiceAdapter;
-export const Trading212Adapter: ServiceAdapter;
+export const IBKRAdapter: BrokerAdapter;
+export const Trading212Adapter: BrokerAdapter;

@@ -4,13 +4,13 @@ import { CurrencyCode } from "./enums.ts";
 
 // getServiceTransactions() -> ServiceTransactions[] -> getExchangeRates(), getSecuritiesTypes() -> TaxableTransaction[] -> getTaxFormData()
 
-export interface ServiceTransaction {
+export interface BrokerTransaction {
     date: Date;
     isin: string;
     currency: CurrencyCode;
     value: number;
 }
 
-export interface ServiceAdapter {
-    (data: Blob): Promise<ServiceTransaction[]>;
+export interface BrokerAdapter {
+    (data: Blob): Promise<BrokerTransaction[]>;
 }
