@@ -11,7 +11,7 @@ The goal of this project is to simplify the process of calculating and filing th
 ## Which brokers are currently supported?
 
 Currently, the following brokers are supported:
-- Interactive Brokers (last checked: 28 March 2022) [(guide)](docs/interactive-brokers-guide.md)
+- Interactive Brokers (last checked: 28 March 2022) [(guide)](docs/brokers/interactive-brokers-guide.md)
 
 ## How does it work?
 
@@ -33,7 +33,7 @@ tobcalc's code was written to be used with Deno. The reason Deno is being used i
 
 tobcalc is currently hosted by Netlify. The reason for this is that they allow reverse proxies to external APIs, such as the European Central Bank and Investing.com. Without a reverse proxy, a client on tobcalc.com would not be able to contact these APIs directly due to Cross Origin Resource Sharing policies. Cloudflare Pages was another static site hosting option but unfortunately, it seemed like their servers had been blacklisted from making requests to Investing.com. Deno Deploy was also an option but their Terms & Conditions do not allow proxies.
 
-### Possible attack vectors and measures taken to safeguard
+### Possible attack vectors and mitigation techniques
 
 - Web app
   - Third party analytics script will be loaded from webpage
