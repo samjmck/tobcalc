@@ -13,17 +13,27 @@ The goal of this project is to simplify the process of calculating and filing th
 Currently, the following brokers are supported:
 - Interactive Brokers (last checked: 28 March 2022) [(guide)](docs/brokers/interactive-brokers-guide.md)
 
+## Demo
+
+https://github.com/samjmck/tobcalc/docs/images/tobcalc-demo.mp4
+
 ## How does it work?
 
 Nearly all brokers allow you to export your transactions as a CSV or Excel file. That file will then be read by tobcalc and converted into a simplified format which only includes the data needed to calculate the tax on the transactions. If necessary, the data relating to a transaction's security will be fetched from an investing site so the parameters needed to accurately calculate the tax rate can be determined. If the transaction was made in a foreign currency, the exchange rate for that day will be fetched from the European Central Bank.
 
 Once the data is complete with the parameters needed to calculate the tax rates and has been converted into the right format, the actual taxes will be calculated and the PDF form will be filled in. 
 
+
 ## Is it secure?
 
 The transactions file gets processed locally. For transactions in a foreign currency, the exchange rate on the date of the transaction will be fetched from the European Central Bank. This means that the date of the transaction and the currency will be sent to their server. For securities such as ETFs, it's required to know whether the fund is accumulating or distributing to be able to calculate the correct tax rate. For this, the ISIN of the security will be sent to Investing.com's server.
 
 [Read more details on tobcalc's security details and design here.](docs/design.md)
+
+## Known issues and bugs
+
+- CORS proxy cookies giving warnings in some browsers
+- PDF viewer in Firefox glitches out sometimes
 
 ## To do (order of high to low priority)
 
