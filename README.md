@@ -15,7 +15,7 @@ Currently, the following brokers are supported:
 
 ## Demo
 
-https://github.com/samjmck/tobcalc/docs/images/tobcalc-demo.mp4
+https://github.com/samjmck/tobcalc/blob/master/docs/images/tobcalc-demo.mp4
 
 ## How does it work?
 
