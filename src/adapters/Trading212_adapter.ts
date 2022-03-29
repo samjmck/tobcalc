@@ -38,7 +38,7 @@ export const Trading212Adapter: BrokerAdapter = async data => {
     const brokerTransactions: BrokerTransaction[] = [];
     for(const rowString of rows.slice(1, -1)) {
         const row = rowString.split(",");
-        if(row[actionColumnIndex] != `"Market sell` && row[actionColumnIndex] != "`Market buy") {
+        if(row[actionColumnIndex] != `"Market sell` && row[actionColumnIndex] != `"Market buy`) {
             continue;
         }
 
@@ -62,7 +62,7 @@ export const Trading212Adapter: BrokerAdapter = async data => {
             date: new Date(dateString.slice(0, 10)),
             isin: row[isinColumnIndex],
             currency: <CurrencyCode> row[currencyCodeColumnIndex],
-            value: Number(row[pricePerShareColumnIndex]) * Number(row[numberOfSharesColumnIndex]) * 100,
+            value: Number(row[pricePerShareColumnIndex].replace(".", "")) * Number(row[numberOfSharesColumnIndex]),
         });
     }
     return brokerTransactions;

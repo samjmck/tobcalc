@@ -1,0 +1,9 @@
+Action,Time,ISIN,Ticker,Name,No. of shares,Price / share,Currency (Price / share),Exchange rate,Result (EUR),Total (EUR),Withholding tax,Currency (Withholding tax),ID,Currency conversion fee (EUR)
+"Market sell,2021-04-01 16:48:16,IE00BK5BQT80,VWRA,""Vanguard FTSE All-World UCITS ETF (USD) Accumulating"",2,586.32,EUR,1.17733,3.10,53.10,,,EOF1250970797,"
+"Market sell,2021-05-03 08:55:46,US78462F1030,SPY,""SPDR® S&P 500® ETF Trust"",1,1083.96,USD,1.00000,0.06,25.06,,,EOF1258940324,"
+"Market buy,2021-07-13 14:39:02,IE00B4L5Y983,IWDA,""iShares Core MSCI World UCITS ETF"",1.0000000000,301.22,EUR,1.00000,,65.22,,,EOF1271381371,"
+"Market sell,2021-07-13 15:57:01,IE00B0M63177,IEMM,""iShares MSCI EM UCITS ETF (Dist)"",1,483.74,EUR,1.18976,-0.50,24.50,,,EOF1271402031,"
+"Market buy,2021-08-16 13:55:15,US4781601046,MTLS,""Johnson & Johnson"",1,301.55,USD,1.19039,,83.35,,,EOF1274228116,0.13"
+"Market sell,2021-09-02 13:54:06,BE0003717312,JNJ,""Sofina"",1,205.31,EUR,1.19783,0.18,31.18,,,EOF1284939505,"
+"Dividend (Ordinary),2021-08-15 14:21:38,US4781601046,AAPL,""Johnson & Johnson"",0.3386731000,0.19,USD,Not available,,0.05,0.01,USD,,"
+"Dividend (Ordinary),2021-09-21 08:53:36,BE0003717312,CAT,""Sofina"",0.3125548000,0.88,EUR,Not available,,0.22,0.05,USD,,"

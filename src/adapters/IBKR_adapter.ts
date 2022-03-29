@@ -62,7 +62,7 @@ export const IBKRAdapter: BrokerAdapter = async data => {
             isin: row[isinColumnIndex],
             currency: <CurrencyCode> row[currencyCodeColumnIndex],
             // Number() to convert string into number and * 100 to convert into integer
-            value: Number(row[valueColumnIndex]) * 100,
+            value: Number(row[valueColumnIndex].replace(".", "")),
         });
     }
     return brokerTransactions;
