@@ -101,7 +101,7 @@
 				aggregatedFormRow.quantity += quantity;
 				aggregatedFormRow.taxBase += taxBase;
 				aggregatedFormRow.taxValue += quantity * taxValue;
-				totalTaxValue += taxValue;
+				totalTaxValue += quantity * taxValue;
 			}
 		}
 
