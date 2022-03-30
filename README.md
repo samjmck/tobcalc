@@ -34,6 +34,7 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 - CORS proxy cookies giving warnings in some browsers
 - PDF viewer in Firefox glitches out sometimes
+- PDF viewer in Safari does not refresh
 
 ## To do (order of high to low priority)
 
