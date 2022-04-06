@@ -100,8 +100,8 @@
 				}
 				aggregatedFormRow.quantity += quantity;
 				aggregatedFormRow.taxBase += taxBase;
-				aggregatedFormRow.taxValue += quantity * taxValue;
-				totalTaxValue += quantity * taxValue;
+				aggregatedFormRow.taxValue += taxValue;
+				totalTaxValue += taxValue;
 			}
 		}
 
