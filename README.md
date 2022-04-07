@@ -38,6 +38,7 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 ## To do (order of high to low priority)
 
+- [ ] Use NBB's exchange rates instead of ECB
 - [ ] Create development branch with subdomain for development deployments
 - [ ] Only deploy code to site if there are all Deno tests succeed
 - [ ] Explain in docs how floating point errors and rounding errors are handled
