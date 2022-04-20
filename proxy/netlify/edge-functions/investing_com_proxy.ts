@@ -2,7 +2,7 @@ export default async function handler(req: Request): Promise<Response> {
     const url = new URL(req.url);
     const pathname = url.pathname;
     const realPath = pathname.split("/investing_com/")[1];
-    const response = await fetch(`https://www.investing.com/${realPath}`, {
+    const response = await fetch(`https://www.investing.com/${realPath}${url.search}`, {
         "headers": {
             "accept": "application/json, text/javascript, */*; q=0.01",
             "accept-language": "en-GB,en;q=0.9,nl;q=0.8,en-US;q=0.7",
