@@ -5,7 +5,7 @@ function handler(req: Request): Promise<Response> {
     const pathname = url.pathname;
     if(pathname.startsWith("/investing_com/")) {
         const realPath = pathname.split("/investing_com/")[1];
-        return fetch(`https://www.investing.com/${realPath}`, {
+        const response = await fetch(`https://www.investing.com/${realPath}`, {
             "headers": {
                 "accept": "application/json, text/javascript, */*; q=0.01",
                 "accept-language": "en-GB,en;q=0.9,nl;q=0.8,en-US;q=0.7",
@@ -26,12 +26,14 @@ function handler(req: Request): Promise<Response> {
             "mode": "cors",
             "credentials": "include",
         });
+        return new Response(response.body);
     } else if(pathname.startsWith("/ecb/")) {
         const realPath = pathname.split("/ecb/")[1];
-        return fetch(`https://sdw-wsrest.ecb.europa.eu/${realPath}`, {
+        const response = fetch(`https://sdw-wsrest.ecb.europa.eu/${realPath}`, {
             "body": req.body,
             "method": req.method,
         });
+        return new Response(response.body);
     }
     return Promise.resolve(new Response(null, { status: 500 }));
 }
