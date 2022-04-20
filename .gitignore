@@ -4,4 +4,4 @@
 node_modules
 public/build
 src/registered_funds.ts
-.netlify/
+.netlify

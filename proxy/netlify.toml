@@ -7,9 +7,9 @@ for = "/*"
 Cache-Control = "no-cache"
 
 [[edge_functions]]
-path = "/netlify_proxy/ecb/*"
+path = "/proxy/ecb/*"
 function = "ecb_proxy"
 
 [[edge_functions]]
-path = "/netlify_proxy/investing_com/*"
+path = "/proxy/investing_com/*"
 function = "investing_com_proxy"
