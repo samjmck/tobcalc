@@ -40,8 +40,10 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 - [x] Create development branch with subdomain for development deployments
 - [ ] Only deploy code to site if all Deno tests succeed
-- [ ] Explain in docs how floating point errors and rounding errors are handled
+- [ ] Add tests for scripts such as `fetch_registered_funds.ts`, better errors
+- [ ] Test proxies periodically
 - [ ] Fix site caching
+- [ ] Explain in docs how floating point errors and rounding errors are handled
 - [x] Check if fund is registered in Belgium
 - [x] Use Web Worker to run CPU intensive code such as PDF generation on a different thread to keep UI smooth
 - [x] Write tests
