@@ -42,5 +42,6 @@ Deno.test({
             currency: CurrencyCode.EUR,
             value: 303_11,
         });
+        assertEquals(brokerTransactions[5], undefined);
     },
 });

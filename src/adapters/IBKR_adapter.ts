@@ -56,6 +56,11 @@ export const IBKRAdapter: BrokerAdapter = async data => {
             throw new InformativeError("ibkr_adapter.value_undefined", { row, columnNames });
         }
 
+        // Currency exchange transactions have empty ISINs. We want to ignore these transactions
+        if(row[isinColumnIndex] === "") {
+            continue;
+        }
+
         brokerTransactions.push({
             // Date is in format YYYYMMDD
             date: new Date(`${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`),
