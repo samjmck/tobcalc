@@ -39,7 +39,7 @@ The transactions file gets processed locally. For transactions in a foreign curr
 ## To do (order of high to low priority)
 
 - [x] Create development branch with subdomain for development deployments
-- [ ] Only deploy code to site if there are all Deno tests succeed
+- [ ] Only deploy code to site if all Deno tests succeed
 - [ ] Explain in docs how floating point errors and rounding errors are handled
 - [x] Check if fund is registered in Belgium
 - [x] Use Web Worker to run CPU intensive code such as PDF generation on a different thread to keep UI smooth
