@@ -61,7 +61,9 @@ export async function getTaxableTransactions(brokerTransactions: BrokerTransacti
             if (exchangeRate === undefined) {
                 throw new InformativeError("exchange_rates.undefined_at_date", brokerTransaction);
             }
-            value = value * exchangeRate;
+            // Cached exchange rate is EUR -> TransactionCurrency
+            // We are going from TransactionCurrency -> EUR, so inverted
+            value = value * (1/exchangeRate);
         }
         const countryCodeMatches = brokerTransaction.isin.match(/[A-Z][A-Z]/g);
         if (countryCodeMatches === null) {
