@@ -60,7 +60,7 @@ Deno.test({
         });
 
         const taxableTransactionAAPL = taxableTransactions[1];
-        const exchangeRate = 1.1216;
+        const exchangeRate = 1/1.1216;
         assertObjectMatch(taxableTransactionAAPL, {
             value: 100_00 * exchangeRate,
             countryCode: CountryCode.UnitedStates,
