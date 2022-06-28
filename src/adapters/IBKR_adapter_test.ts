@@ -42,6 +42,12 @@ Deno.test({
             currency: CurrencyCode.EUR,
             value: 303_11,
         });
-        assertEquals(brokerTransactions[5], undefined);
+        assertEquals(brokerTransactions[5], <BrokerTransaction> {
+            date: new Date("2022-02-02"),
+            isin: "IE00BFY0GT14",
+            currency: CurrencyCode.EUR,
+            value: 303_10,
+        })
+        assertEquals(brokerTransactions.length, 6);
     },
 });

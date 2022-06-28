@@ -1,6 +1,7 @@
 import { CurrencyCode } from "../enums.ts";
 import { BrokerAdapter, BrokerTransaction } from "../broker_adapter.ts";
 import { InformativeError } from "../InformativeError.ts";
+import { moneyToNumber } from "../broker_reading.ts";
 
 export const IBKRAdapter: BrokerAdapter = async data => {
     // Convert data blob to a string
@@ -67,7 +68,7 @@ export const IBKRAdapter: BrokerAdapter = async data => {
             isin: row[isinColumnIndex],
             currency: <CurrencyCode> row[currencyCodeColumnIndex],
             // Number() to convert string into number and * 100 to convert into integer
-            value: Number(row[valueColumnIndex].replace(".", "")),
+            value: moneyToNumber(row[valueColumnIndex]),
         });
     }
     return brokerTransactions;
