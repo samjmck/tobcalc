@@ -3,12 +3,7 @@
 	import { Broker, brokers } from "./broker";
 	import Adapter from "./Adapter.svelte";
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
-	import {
-		IBKRAdapter,
-		Trading212Adapter,
-		setECBHostname,
-		setInvestingComHostname
-	} from "./tobcalc-lib.js";
+	import { IBKRAdapter, Trading212Adapter } from "./tobcalc-lib.js";
 	import { runTests } from "./tests";
 	import type { TaxFormData } from "./tobcalc-lib.js";
 
@@ -24,9 +19,6 @@
 	pdfWorker.onmessage = event => {
 		resolveFillPdfPromise(event.data);
 	};
-
-	setECBHostname(process.env.ECB_HOSTNAME);
-	setInvestingComHostname(process.env.INVESTING_COM_HOSTNAME);
 
 	let failedTestsError = "";
 	runTests().then(result => {
