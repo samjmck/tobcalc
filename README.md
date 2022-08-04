@@ -38,6 +38,7 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 ## To do (order of high to low priority)
 
+- [ ] Look at OpenFIGI for more reliable ISIN numbers
 - [x] Create development branch with subdomain for development deployments
 - [ ] Only deploy code to site if all Deno tests succeed
 - [ ] Add tests for scripts such as `fetch_registered_funds.ts`, better errors

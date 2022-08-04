@@ -18,6 +18,10 @@ function = "investing_com_proxy"
 ECB_HOSTNAME = "tobcalc.com/proxy/ecb"
 INVESTING_COM_HOSTNAME = "tobcalc.com/proxy/investing_com"
 
+[context.staging.environment]
+ECB_HOSTNAME = "staging.tobcalc.com/proxy/ecb"
+INVESTING_COM_HOSTNAME = "staging.tobcalc.com/proxy/investing_com"
+
 [context.dev.environment]
 ECB_HOSTNAME = "dev.tobcalc.com/proxy/ecb"
 INVESTING_COM_HOSTNAME = "dev.tobcalc.com/proxy/investing_com"

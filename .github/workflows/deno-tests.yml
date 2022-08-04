@@ -2,11 +2,13 @@ name: deno-tests
 on:
   push:
     branches:
-      - main
+      - master
+      - staging
       - dev
   pull_request:
     branches:
-      - main
+      - master
+      - staging
       - dev
   schedule:
     - cron: '30 1 * * *'
