@@ -17,6 +17,6 @@
 
 ## Using the flex query
 
-A query named "tobcalc" should now be visible when you go to the flex queries page in your dashboard. To use it, click on the run button and then enter the dates you want to calculate the transaction tax between. **Make sure you change format to CSV as XML is not supported by tobcalc.**. Now click on the "Run" button and your browser should download a `.csv` file. This file can be imported to tobcalc.
+A query named "tobcalc" should now be visible when you go to the flex queries page in your dashboard. To use it, click on the run button and then enter the dates you want to calculate the transaction tax between. **Make sure you change format to CSV as XML is not supported by tobcalc.** Now click on the "Run" button and your browser should download a `.csv` file. This file can be imported to tobcalc.
 
 ![Flex query run](../images/ibkr-flex-query-run.png)
