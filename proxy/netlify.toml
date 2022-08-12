@@ -14,6 +14,11 @@ function = "ecb_proxy"
 path = "/proxy/investing_com/*"
 function = "investing_com_proxy"
 
+[[redirects]]
+from = "/guide-ibkr"
+to = "https://github.com/samjmck/tobcalc/blob/master/docs/brokers/interactive-brokers-guide.md"
+status = 302
+
 [context.production.environment]
 ECB_HOSTNAME = "tobcalc.com/proxy/ecb"
 INVESTING_COM_HOSTNAME = "tobcalc.com/proxy/investing_com"
