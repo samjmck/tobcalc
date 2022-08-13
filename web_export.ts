@@ -1,4 +1,5 @@
 import { IBKRAdapter } from "./src/adapters/IBKR_adapter.ts";
+import { DEGIROAdapter } from "./src/adapters/DEGIRO_adapter.ts";
 import { Trading212Adapter } from "./src/adapters/Trading212_adapter.ts";
 import { InformativeError } from "./src/InformativeError.ts";
 import { cacheExchangeRates, getSecurity, setECBHostname, setInvestingComHostname, exchangeRatesMap } from "./src/data.ts";
@@ -11,6 +12,7 @@ import { formatMoney } from "./src/formatting.ts";
 export {
     IBKRAdapter,
     Trading212Adapter,
+    DEGIROAdapter,
     InformativeError,
     exchangeRatesMap,
     SecurityType,

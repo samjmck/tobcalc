@@ -1,7 +1,5 @@
 // Converts a value such as "101.11", "90.10", "90.1" to 10111, 9010, 9010 of type number
-export function moneyToNumber(money: string, decimalSeparator = ".") {
-    const expectedDecimals = 2;
-
+export function moneyToNumber(money: string, decimalSeparator = ".", expectedDecimals = 2) {
     const decimalSeparatorIndex = money.indexOf(decimalSeparator);
     if(decimalSeparatorIndex == -1) {
         return Number(money) * (10 ** expectedDecimals);

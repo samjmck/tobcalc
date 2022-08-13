@@ -52,7 +52,12 @@ export async function cacheExchangeRates(start: Date, end: Date, currencyCode: C
     };
     const urlParamsString = new URLSearchParams(params).toString();
 
-    const response = await fetch(`https://${ECB_HOSTNAME}/service/data/EXR/D.${currencyCode}.EUR.SP00.A?${urlParamsString}`);
+    let requestCurrencyCode: CurrencyCode = currencyCode;
+    if(currencyCode === CurrencyCode.GBX) {
+        requestCurrencyCode = CurrencyCode.GBP;
+    }
+
+    const response = await fetch(`https://${ECB_HOSTNAME}/service/data/EXR/D.${requestCurrencyCode}.EUR.SP00.A?${urlParamsString}`);
     if(response.status !== 200) {
         throw new Error(`response from ECB RESTful API returned status code ${response.status}`);
     }
@@ -78,7 +83,12 @@ export async function cacheExchangeRates(start: Date, end: Date, currencyCode: C
     }
     for(let i = 0; i < timePeriods.length; i++) {
         const date = timePeriods[i].name;
-        const exchangeRate = <number> json.dataSets[0].observations[`0:0:0:0:0:${i}`][0];
+        let exchangeRate = <number> json.dataSets[0].observations[`0:0:0:0:0:${i}`][0];
+
+        if(currencyCode === CurrencyCode.GBX) {
+            exchangeRate = exchangeRate * 100;
+        }
+
         currencyMap.set(date, exchangeRate);
     }
 }

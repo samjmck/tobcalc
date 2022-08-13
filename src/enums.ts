@@ -345,6 +345,7 @@ export enum CurrencyCode {
     ERN = 'ERN',
     ETB = 'ETB',
     GBP = 'GBP',
+    GBX = 'GBX',
     GEL = 'GEL',
     GHS = 'GHS',
     GNF = 'GNF',

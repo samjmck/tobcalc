@@ -39,7 +39,12 @@ export const IBKRAdapter: BrokerAdapter = async data => {
 
     const brokerTransactions: BrokerTransaction[] = [];
     // Now we want to loop over all the rows except the header row, hence the slice(1, -1)
-    for(const rowString of rows.slice(1, -1)) {
+    for(const rowString of rows.slice(1)) {
+        // Often the sheets have an empty line at the end
+        if(rowString === "") {
+            continue;
+        }
+
         // Split the columns of the row into an array
         // And then remove the quotes which encapsulate every column value
         const row = rowString.split(",").map(s => s.substring(1, s.length - 1));

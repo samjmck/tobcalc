@@ -36,7 +36,11 @@ export const Trading212Adapter: BrokerAdapter = async data => {
     }
 
     const brokerTransactions: BrokerTransaction[] = [];
-    for(const rowString of rows.slice(1, -1)) {
+    for(const rowString of rows.slice(1)) {
+        if(rowString === "") {
+            continue;
+        }
+
         const row = rowString.split(",");
         if(row[actionColumnIndex].indexOf(`Market sell`) === -1 && row[actionColumnIndex].indexOf(`Market buy`) === -1) {
             continue;

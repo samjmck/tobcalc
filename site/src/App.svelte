@@ -6,6 +6,7 @@
 	import {
 		IBKRAdapter,
 		Trading212Adapter,
+		DEGIROAdapter,
 		setECBHostname,
 		setInvestingComHostname
 	} from "./tobcalc-lib.js";
@@ -193,6 +194,8 @@
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={IBKRAdapter} />
 		{:else if selectedBroker === Broker.Trading212}
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={Trading212Adapter} />
+		{:else if selectedBroker === Broker.DEGIROAdapter}
+			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={DEGIROAdapter} />
 		{/if}
 	</div>
 	{/each}
