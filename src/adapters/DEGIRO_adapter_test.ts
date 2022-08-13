@@ -25,7 +25,7 @@ Deno.test({
             value: 42968_00,
         });
         assertEquals(brokerTransactions[2], <BrokerTransaction> {
-            date: new Date("2021-11-13"),
+            date: new Date("2021-11-12"),
             isin: "US18915M1071",
             currency: CurrencyCode.USD,
             value: 910_00,
