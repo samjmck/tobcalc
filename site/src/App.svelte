@@ -194,7 +194,7 @@
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={IBKRAdapter} />
 		{:else if selectedBroker === Broker.Trading212}
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={Trading212Adapter} />
-		{:else if selectedBroker === Broker.DEGIROAdapter}
+		{:else if selectedBroker === Broker.DEGIRO}
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={DEGIROAdapter} />
 		{/if}
 	</div>
