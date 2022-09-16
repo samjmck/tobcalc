@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.130.0/http/server.ts";
 
-function handler(req: Request): Promise<Response> {
+async function handler(req: Request): Promise<Response> {
     const url = new URL(req.url);
     const pathname = url.pathname;
     if(pathname.startsWith("/investing_com/")) {

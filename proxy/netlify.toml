@@ -11,8 +11,12 @@ path = "/proxy/ecb/*"
 function = "ecb_proxy"
 
 [[edge_functions]]
-path = "/proxy/investing_com/*"
-function = "investing_com_proxy"
+path = "/proxy/yahoo_finance/*"
+function = "yahoo_finance"
+
+[[edge_functions]]
+path = "/proxy/yahoo_finance_query1/*"
+function = "yahoo_finance_query1"
 
 [[redirects]]
 from = "/guide-ibkr"
@@ -21,12 +25,15 @@ status = 302
 
 [context.production.environment]
 ECB_HOSTNAME = "tobcalc.com/proxy/ecb"
-INVESTING_COM_HOSTNAME = "tobcalc.com/proxy/investing_com"
+YAHOO_FINANCE_HOSTNAME = "tobcalc.com/proxy/yahoo_finance"
+YAHOO_FINANCE_QUERY1_HOSTNAME = "tobcalc.com/proxy/yahoo_finance_query1"
 
 [context.staging.environment]
 ECB_HOSTNAME = "staging.tobcalc.com/proxy/ecb"
-INVESTING_COM_HOSTNAME = "staging.tobcalc.com/proxy/investing_com"
+YAHOO_FINANCE_HOSTNAME = "staging.tobcalc.com/proxy/yahoo_finance"
+YAHOO_FINANCE_QUERY1_HOSTNAME = "staging.tobcalc.com/proxy/yahoo_finance_query1"
 
 [context.dev.environment]
 ECB_HOSTNAME = "dev.tobcalc.com/proxy/ecb"
-INVESTING_COM_HOSTNAME = "dev.tobcalc.com/proxy/investing_com"
+YAHOO_FINANCE_HOSTNAME = "dev.tobcalc.com/proxy/yahoo_finance"
+YAHOO_FINANCE_QUERY1_HOSTNAME = "dev.tobcalc.com/proxy/yahoo_finance_qu=ery1"

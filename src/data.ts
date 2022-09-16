@@ -7,14 +7,19 @@ import { InformativeError } from "./InformativeError.ts";
 // web app is to change these variables to proxies for the
 // original hostnames
 let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
-let INVESTING_COM_HOSTNAME = "www.investing.com";
+let YAHOO_FINANCE_QUERY1_HOSTNAME = "query1.finance.yahoo.com";
+let YAHOO_FINANCE_HOSTNAME = "finance.yahoo.com";
 
 export function setECBHostname(hostname: string) {
     ECB_HOSTNAME = hostname;
 }
 
-export function setInvestingComHostname(hostname: string) {
-    INVESTING_COM_HOSTNAME = hostname;
+export function setYahooFinanceQuery1Hostname(hostname: string) {
+    YAHOO_FINANCE_QUERY1_HOSTNAME = hostname;
+}
+
+export function setYahooFinanceHostname(hostname: string) {
+    YAHOO_FINANCE_HOSTNAME = hostname;
 }
 
 interface ECBTimePeriod {
@@ -101,7 +106,7 @@ export async function getSecurity(isin: string): Promise<Security> {
         return security;
     }
 
-    const response = await fetch(`https://query1.finance.yahoo.com/v1/finance/search?q=${isin}&quotesCount=1&newsCount=0`);
+    const response = await fetch(`https://${YAHOO_FINANCE_QUERY1_HOSTNAME}/v1/finance/search?q=${isin}&quotesCount=1&newsCount=0`);
 
     if(response.status !== 200) {
         throw new InformativeError("security.fetch.response_code", { status: response.status, isin });
@@ -118,7 +123,7 @@ export async function getSecurity(isin: string): Promise<Security> {
     const { quoteType, name, symbol } = json.quotes[0];
     switch(quoteType) {
         case "ETF":
-            const securityDataResponse = await fetch(`https://finance.yahoo.com/quote/${symbol}`);
+            const securityDataResponse = await fetch(`https://${YAHOO_FINANCE_HOSTNAME}/quote/${symbol}`);
             const html = await securityDataResponse.text();
             const accumulating = /data-test="TD_YIELD-value">0\.00%<\/td/g.test(html);
             security = {

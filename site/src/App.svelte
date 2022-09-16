@@ -8,7 +8,8 @@
 		Trading212Adapter,
 		DEGIROAdapter,
 		setECBHostname,
-		setInvestingComHostname
+		setYahooFinanceHostname,
+		setYahooFinanceQuery1Hostname,
 	} from "./tobcalc-lib.js";
 	import { runTests } from "./tests";
 	import type { TaxFormData } from "./tobcalc-lib.js";
@@ -27,7 +28,8 @@
 	};
 
 	setECBHostname(process.env.ECB_HOSTNAME);
-	setInvestingComHostname(process.env.INVESTING_COM_HOSTNAME);
+	setYahooFinanceHostname(process.env.YAHOO_FINANCE_HOSTNAME);
+	setYahooFinanceQuery1Hostname(process.env.YAHOO_FINANCE_QUERY1_HOSTNAME);
 
 	let failedTestsError = "";
 	runTests().then(result => {
