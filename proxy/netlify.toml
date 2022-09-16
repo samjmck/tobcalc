@@ -36,4 +36,4 @@ YAHOO_FINANCE_QUERY1_HOSTNAME = "staging.tobcalc.com/proxy/yahoo_finance_query1"
 [context.dev.environment]
 ECB_HOSTNAME = "dev.tobcalc.com/proxy/ecb"
 YAHOO_FINANCE_HOSTNAME = "dev.tobcalc.com/proxy/yahoo_finance"
-YAHOO_FINANCE_QUERY1_HOSTNAME = "dev.tobcalc.com/proxy/yahoo_finance_qu=ery1"
+YAHOO_FINANCE_QUERY1_HOSTNAME = "dev.tobcalc.com/proxy/yahoo_finance_query1"
