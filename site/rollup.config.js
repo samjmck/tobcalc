@@ -44,7 +44,9 @@ export default {
 		replace({
 			values: {
 				"process.env.ECB_HOSTNAME": `"${process.env.ECB_HOSTNAME}"`,
-				"process.env.INVESTING_COM_HOSTNAME": `"${process.env.INVESTING_COM_HOSTNAME}"`,
+				"process.env.YAHOO_FINANCE_HOSTNAME": `"${process.env.YAHOO_FINANCE_HOSTNAME}"`,
+				"process.env.YAHOO_FINANCE_QUERY1_HOSTNAME": `"${process.env.YAHOO_FINANCE_QUERY1_HOSTNAME}"`,
+
 			},
 		}),
 		svelte({
