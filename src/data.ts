@@ -101,14 +101,8 @@ export async function getSecurity(isin: string): Promise<Security> {
         return security;
     }
 
-    const response = await fetch(`https://${INVESTING_COM_HOSTNAME}/search/service/searchTopBar`, {
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `search_text=${isin}`,
-        method: "POST",
-    });
+    const response = await fetch(`https://query1.finance.yahoo.com/v1/finance/search?q=${isin}&quotesCount=1&newsCount=0`);
+
     if(response.status !== 200) {
         throw new InformativeError("security.fetch.response_code", { status: response.status, isin });
     }
@@ -117,33 +111,30 @@ export async function getSecurity(isin: string): Promise<Security> {
     if(json.quotes === undefined) {
         throw new InformativeError("security.fetch.response_format", { isin, json });
     }
-    if(json.quotes.length <= 0) {
+    if(json.quotes.length !== 1) {
         throw new InformativeError("security.fetch.not_found", { isin, json });
     }
 
-    const pairType = json.quotes[0].pair_type;
-    const name = json.quotes[0].name;
-    switch(pairType) {
-        case "etf":
-            const securityDataResponse = await fetch(`https://${INVESTING_COM_HOSTNAME}${json.quotes[0].link}`);
+    const { quoteType, name, symbol } = json.quotes[0];
+    switch(quoteType) {
+        case "ETF":
+            const securityDataResponse = await fetch(`https://finance.yahoo.com/quote/${symbol}`);
             const html = await securityDataResponse.text();
-            const accumulating = /<span class="float_lang_base_1">Dividend\sYield<\/span><span class="float_lang_base_2 bold">N\/A<\/span>/g.test(html);
+            const accumulating = /data-test="TD_YIELD-value">0\.00%<\/td/g.test(html);
             security = {
                 type: SecurityType.ETF,
                 name,
                 accumulating,
             };
             break;
-        case "equities":
+        case "EQUITY":
             security = {
                 type: SecurityType.Stock,
                 name,
             };
             break;
-    }
-
-    if(security === undefined) {
-        throw new InformativeError("security.fetch.undefined", { isin, json });
+        default:
+            throw new InformativeError("security.fetch.unknown_quote_type", { quoteType });
     }
 
     isinsMap.set(isin, security);
