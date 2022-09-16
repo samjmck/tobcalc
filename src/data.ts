@@ -120,7 +120,7 @@ export async function getSecurity(isin: string): Promise<Security> {
         throw new InformativeError("security.fetch.not_found", { isin, json });
     }
 
-    const { quoteType, name, symbol } = json.quotes[0];
+    const { quoteType, longname: name, symbol } = json.quotes[0];
     switch(quoteType) {
         case "ETF":
             const securityDataResponse = await fetch(`https://${YAHOO_FINANCE_HOSTNAME}/quote/${symbol}`);
