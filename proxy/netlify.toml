@@ -12,11 +12,11 @@ function = "ecb_proxy"
 
 [[edge_functions]]
 path = "/proxy/yahoo_finance/*"
-function = "yahoo_finance"
+function = "yahoo_finance_proxy"
 
 [[edge_functions]]
 path = "/proxy/yahoo_finance_query1/*"
-function = "yahoo_finance_query1"
+function = "yahoo_finance_query1_proxy"
 
 [[redirects]]
 from = "/guide-ibkr"
