@@ -122,10 +122,11 @@ export async function getSecurity(isin: string): Promise<Security> {
 
     const { quoteType, longname: name, symbol } = json.quotes[0];
     switch(quoteType) {
+        case "MUTUALFUND":
         case "ETF":
             const securityDataResponse = await fetch(`https://${YAHOO_FINANCE_HOSTNAME}/quote/${symbol}`);
             const html = await securityDataResponse.text();
-            const accumulating = /data-test="TD_YIELD-value">0\.00%<\/td/g.test(html);
+            const accumulating = /data-test="TD_YIELD-value">0\.00%<\/td/g.test(html) || /data-test="TD_YIELD-value">N\/A<\/td/g.test(html);
             security = {
                 type: SecurityType.ETF,
                 name,
