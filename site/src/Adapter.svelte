@@ -33,14 +33,14 @@
     let taxFormData: Map<number, FormRow> = new Map();
     let adapterError = "";
     async function loadedFile() {
-        // try {
+        try {
             brokerTransactions = await brokerAdapter(files[0]);
             taxableTransactions = await getTaxableTransactions(brokerTransactions);
             taxFormData = await getTaxFormData(taxableTransactions);
             globalTaxFormData.setTaxFormData(selectedBrokerNumber, taxFormData);
-        // } catch(error) {
-        //     adapterError = error.message;
-        // }
+        } catch(error) {
+            adapterError = error.message;
+        }
     }
 </script>
 

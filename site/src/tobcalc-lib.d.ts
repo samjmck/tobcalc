@@ -409,7 +409,8 @@ export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
 export const exchangeRatesMap: ExchangeRatesMap;
 
 export function setECBHostname(hostname: string): void;
-export function setInvestingComHostname(hostname: string): void;
+export function setYahooFinanceHostname(hostname: string): void;
+export function setYahooFinanceQuery1Hostname(hostname: string): void;
 export async function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode): Promise<void>;
 export function getSecurity(isin: string): Promise<Security>;
 
