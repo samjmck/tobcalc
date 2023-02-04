@@ -1,18 +1,17 @@
 <script lang="ts">
-	import { adapterNumber, globalTaxFormData } from "./stores";
-	import { Broker, brokers } from "./broker";
-	import Adapter from "./Adapter.svelte";
+	import { signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, SessionInfo } from "./stores";
+	import TaxRateOverride from "./components/TaxRateOverride.svelte";
+	import PersonalInfo from "./components/PersonalInfo.svelte";
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
 	import {
-		IBKRAdapter,
-		Trading212Adapter,
-		DEGIROAdapter,
 		setECBHostname,
 		setYahooFinanceHostname,
 		setYahooFinanceQuery1Hostname,
 	} from "./tobcalc-lib.js";
 	import { runTests } from "./tests";
 	import type { TaxFormData } from "./tobcalc-lib.js";
+	import PdfDownload from "./components/PdfDownload.svelte";
+	import Brokers from "./components/Brokers.svelte";
 
 	declare const process: { env: { [key: string]: string } };
 
@@ -38,47 +37,14 @@
 		}
 	});
 
-	let selectedBrokers: Map<number, Broker> = new Map();
-	selectedBrokers.set($adapterNumber++, Broker.InteractiveBrokers);
-
-	function addSelectedBroker(service: Broker) {
-		selectedBrokers.set($adapterNumber++, service);
-		// Force reactivity change
-		selectedBrokers = selectedBrokers;
-	}
-	function setSelectedBroker(selectedBrokerNumber: number, broker: Broker) {
-		selectedBrokers.set(selectedBrokerNumber, broker);
-		selectedBrokers = selectedBrokers;
-	}
-	function removeSelectedBroker(selectedBrokerNumber: number) {
-		selectedBrokers.delete(selectedBrokerNumber);
-		globalTaxFormData.delete(selectedBrokerNumber)
-		selectedBrokers = selectedBrokers;
-	}
-
 	let pdfBytes: Uint8Array;
 	fetch("tob-fillable.pdf").then(async response => {
 		pdfBytes = new Uint8Array(await response.arrayBuffer());
 	});
 
 	let pdfObjectUrl = "";
-
-	let downloadElement: HTMLAnchorElement;
-	let embedElement: HTMLEmbedElement;
-	let startDateValue: string;
-	let endDateValue: string;
-	let nationalRegistrationNumberValue: string;
-	let fullName: string;
-	let addressLine1Value: string;
-	let addressLine2Value: string;
-	let addressLine3Value: string;
-	let signatureNameValue: string;
-	let signatureCapacityValue: string;
-	let signatureFiles: File[] = [];
-	let locationValue: string;
-	let dateValue: string;
 	let pdfError = "";
-	async function setPdfUrl(pdfTaxFormData: Map<number, TaxFormData>) {
+	async function setPdfUrl(pdfTaxFormData: Map<number, TaxFormData>, personalInfo: SessionInfo) {
 		const emptyFormRow: FormRow = {
 			quantity: 0,
 			taxBase: 0,
@@ -109,14 +75,14 @@
 		}
 
 		try {
-			const objectUrl = await workerFillPdf(pdfBytes, {
-				start: startDateValue ? new Date(startDateValue) : new Date(),
-				end: startDateValue ? new Date(endDateValue) : new Date(),
-				nationalRegistrationNumber: nationalRegistrationNumberValue,
-				fullName: fullName,
-				addressLine1: addressLine1Value,
-				addressLine2: addressLine2Value,
-				addressLine3: addressLine3Value,
+			pdfObjectUrl = await workerFillPdf(pdfBytes, {
+				start: personalInfo.start ? new Date(personalInfo.start) : new Date(),
+				end: personalInfo.end ? new Date(personalInfo.end) : new Date(),
+				nationalRegistrationNumber: $nationalRegistrationNumber,
+				fullName: personalInfo.fullName,
+				addressLine1: personalInfo.addressLine1,
+				addressLine2: personalInfo.addressLine2,
+				addressLine3: personalInfo.addressLine3,
 				tableATax012Quantity: tax012FormRow.quantity,
 				tableATax035Quantity: tax035FormRow.quantity,
 				tableATax132Quantity: tax132FormRow.quantity,
@@ -129,32 +95,31 @@
 				tableATotalTaxValue: totalTaxValue,
 				totalTaxValue: totalTaxValue,
 				signaturePng: signatureFiles[0] ? new Uint8Array(await signatureFiles[0].arrayBuffer()) : undefined,
-				signatureName: signatureNameValue,
-				signatureCapacity: signatureCapacityValue,
-				location: locationValue,
-				date: dateValue,
+				signatureName: personalInfo.signatureName,
+				signatureCapacity: personalInfo.signatureCapacity,
+				location: personalInfo.location,
+				date: personalInfo.date,
 			});
-			downloadElement.href = objectUrl;
-			embedElement.src = objectUrl;
 		} catch(error) {
 			pdfError = error.message;
 		}
 	}
 
-	$: {
-		if(pdfBytes !== undefined) {
-			setPdfUrl($globalTaxFormData);
-		}
-	}
-
 	let previousTimeoutId: number;
-	function delayedPdfUpdate() {
+	function delayedPdfUpdate(taxFormData: Map<number, TaxFormData>, personalInfo: SessionInfo) {
 		if(previousTimeoutId !== undefined) {
 			clearTimeout(previousTimeoutId);
 		}
 		previousTimeoutId = setTimeout(() => {
-			setPdfUrl($globalTaxFormData);
-		}, 500);
+			setPdfUrl(taxFormData, personalInfo);
+		}, 1000);
+	}
+
+	setPdfUrl($totalTaxFormData, $lastSession);
+	$: {
+		if(pdfBytes !== undefined) {
+			delayedPdfUpdate($totalTaxFormData, $lastSession);
+		}
 	}
 </script>
 
@@ -163,51 +128,16 @@
 {/if}
 
 <div class="column">
-	<label for="start">Start date</label>
-	<input id="start" name="start" type="date" bind:value={startDateValue} on:input={delayedPdfUpdate} />
-	<label for="end">End date</label>
-	<input id="end" name="end" type="date" bind:value={endDateValue} on:input={delayedPdfUpdate} />
-	<input name="national_registration_number" placeholder="National registration number" type="text" bind:value={nationalRegistrationNumberValue} on:input={delayedPdfUpdate} />
-	<input name="full_name" placeholder="Full name" type="text" bind:value={fullName} on:input={delayedPdfUpdate} />
-	<input name="address_line_1" placeholder="Address line 1" type="text" bind:value={addressLine1Value} on:input={delayedPdfUpdate} />
-	<input name="address_line_2" placeholder="Address line 2" type="text" bind:value={addressLine2Value} on:input={delayedPdfUpdate} />
-	<input name="address_line_3" placeholder="Address line 3" type="text" bind:value={addressLine3Value} on:input={delayedPdfUpdate} />
-	<input name="signature_name" placeholder="Signature name" type="text" bind:value={signatureNameValue} on:input={delayedPdfUpdate} />
-	<input name="signature_capacity" placeholder="Signature capacity" type="text" bind:value={signatureCapacityValue} on:input={delayedPdfUpdate} />
-	<input name="location" placeholder="Location" type="text" bind:value={locationValue} on:input={delayedPdfUpdate} />
-	<input name="date" placeholder="Date" type="text" bind:value={dateValue} on:input={delayedPdfUpdate} />
-
-	<label for="signature_png">Choose signature png</label>
-	<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} on:input={delayedPdfUpdate} />
+	<PersonalInfo />
 </div>
 
 <div class="column">
-	<button on:click|preventDefault={() => addSelectedBroker(Broker.InteractiveBrokers)}>New service</button>
-
-	{#each [...selectedBrokers.entries()] as [selectedBrokerNumber, selectedBroker] (selectedBrokerNumber)}
-	<div class="selected-service">
-		<select on:change={event => setSelectedBroker(selectedBrokerNumber, event.target.value)}>
-			{#each brokers as service}
-				<option value={service}>{service}</option>
-			{/each}
-		</select>
-		<button on:click|preventDefault={() => removeSelectedBroker(selectedBrokerNumber)}>Remove</button>
-		{#if selectedBroker === Broker.InteractiveBrokers}
-			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={IBKRAdapter} />
-		{:else if selectedBroker === Broker.Trading212}
-			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={Trading212Adapter} />
-		{:else if selectedBroker === Broker.DEGIRO}
-			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={DEGIROAdapter} />
-		{/if}
-	</div>
-	{/each}
+	<TaxRateOverride />
+	<Brokers />
 </div>
 
 <div class="column">
-	<a id="download-link" bind:this={downloadElement} download="tob-filled.pdf">Download pdf</a>
-	<button on:click|preventDefault={() => downloadElement.click()}>Download pdf</button>
-	<p class="pdf-error">{pdfError}</p>
-	<embed bind:this={embedElement} width="500" height="700" />
+	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
 </div>
 
 <style>

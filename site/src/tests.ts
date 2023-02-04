@@ -1,4 +1,4 @@
-import { cacheExchangeRates, CurrencyCode, exchangeRatesMap, getSecurity, SecurityType } from "./tobcalc-lib.js";
+import { CurrencyCode, getCurrencyExchangeRatesMap, getSecurity, SecurityType } from "./tobcalc-lib.js";
 import type { ETF } from "./tobcalc-lib.js";
 
 // TODO: use informative error instead of string?
@@ -37,8 +37,7 @@ export async function runTests(): Promise<string | null> {
         "2022-02-25": 1.1216,
     };
     try {
-        await cacheExchangeRates(start, end, CurrencyCode.USD);
-        const rates = exchangeRatesMap.get(CurrencyCode.USD);
+        const rates = await getCurrencyExchangeRatesMap(start, end, CurrencyCode.USD)
         if(rates === undefined) {
             return "Failed exchange rates test";
         }

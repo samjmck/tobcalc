@@ -42,8 +42,26 @@ export function formatDate(date: Date): string {
 export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
 export const exchangeRatesMap: ExchangeRatesMap = new Map();
 
+export async function getExchangeRatesMap(currencyPeriods: { start: Date, end: Date, currencyCode: CurrencyCode }[]): Promise<ExchangeRatesMap> {
+    const promises: Promise<void>[] = [];
+    for(const { start, end, currencyCode } of currencyPeriods) {
+        promises.push(getCurrencyExchangeRatesMap(start, end, currencyCode).then(currencyMap => {
+            const existingCurrencyMap = exchangeRatesMap.get(currencyCode);
+            if(existingCurrencyMap) {
+                for(const [date, exchangeRate] of currencyMap) {
+                    existingCurrencyMap.set(date, exchangeRate);
+                }
+            } else {
+                exchangeRatesMap.set(currencyCode, currencyMap);
+            }
+        }));
+    }
+    await Promise.all(promises);
+    return exchangeRatesMap;
+}
+
 // Caches data in exchangesRatesMap
-export async function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode) {
+export async function getCurrencyExchangeRatesMap(start: Date, end: Date, currencyCode: CurrencyCode): Promise<Map<string, number>> {
     // See https://sdw-wsrest.ecb.europa.eu/help/
 
     const startPeriod = formatDate(start);
@@ -81,11 +99,7 @@ export async function cacheExchangeRates(start: Date, end: Date, currencyCode: C
         throw new Error(`could not find time periods for start date ${startPeriod}, end date ${endPeriod} and currencyCodes ${currencyCode}`);
     }
 
-    let currencyMap = exchangeRatesMap.get(currencyCode);
-    if(currencyMap === undefined) {
-        currencyMap = new Map();
-        exchangeRatesMap.set(currencyCode, currencyMap);
-    }
+    const currencyMap: Map<string, number> = new Map();
     for(let i = 0; i < timePeriods.length; i++) {
         const date = timePeriods[i].name;
         let exchangeRate = <number> json.dataSets[0].observations[`0:0:0:0:0:${i}`][0];
@@ -96,16 +110,27 @@ export async function cacheExchangeRates(start: Date, end: Date, currencyCode: C
 
         currencyMap.set(date, exchangeRate);
     }
+    return currencyMap;
 }
 
-const isinsMap: Map<string, Security> = new Map();
-// Returns a `Map` where each ISIN from `isins` maps to a `SecurityType`
-export async function getSecurity(isin: string): Promise<Security> {
-    let security = isinsMap.get(isin);
-    if(security !== undefined) {
-        return security;
+const securitiesMap: Map<string, Security> = new Map();
+// Returns a map of ISINs to securities
+// Note that the map at least contains the securities with the given ISINs in the argument
+// but it could also include other securities
+export async function getDefaultSecuritiesMap(isins: string[]): Promise<Map<string, Security>> {
+    const promises: Promise<void>[] = [];
+    for(const isin of isins) {
+        if(!securitiesMap.has(isin)) {
+            promises.push(getSecurity(isin).then(security => {
+                securitiesMap.set(isin, security);
+            }));
+        }
     }
+    await Promise.all(promises);
+    return securitiesMap;
+}
 
+export async function getSecurity(isin: string): Promise<Security> {
     const response = await fetch(`https://${YAHOO_FINANCE_QUERY1_HOSTNAME}/v1/finance/search?q=${isin}&quotesCount=1&newsCount=0`);
 
     if(response.status !== 200) {
@@ -128,22 +153,19 @@ export async function getSecurity(isin: string): Promise<Security> {
             const securityDataResponse = await fetch(`https://${YAHOO_FINANCE_HOSTNAME}/quote/${symbol}`);
             const html = await securityDataResponse.text();
             const accumulating = /data-test="TD_YIELD-value">0\.00%<\/td/g.test(html) || /data-test="TD_YIELD-value">N\/A<\/td/g.test(html);
-            security = {
+            return {
                 type: SecurityType.ETF,
                 name,
                 accumulating,
+                isin,
             };
-            break;
         case "EQUITY":
-            security = {
+            return {
                 type: SecurityType.Stock,
                 name,
+                isin,
             };
-            break;
         default:
             throw new InformativeError("security.fetch.unknown_quote_type", { quoteType });
     }
-
-    isinsMap.set(isin, security);
-    return security;
 }

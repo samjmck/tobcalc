@@ -19,11 +19,15 @@ export enum SecurityType {
 
 export interface ETF {
     type: SecurityType.ETF;
+    name: string;
+    isin: string;
     accumulating: boolean;
 }
 
 export interface Stock {
     type: SecurityType.Stock;
+    name: string;
+    isin: string;
 }
 
 export type Security = ETF | Stock;
@@ -406,13 +410,12 @@ export enum CurrencyCode {
 export function isNameRegistered(name: string): boolean;
 
 export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
-export const exchangeRatesMap: ExchangeRatesMap;
 
 export function setECBHostname(hostname: string): void;
 export function setYahooFinanceHostname(hostname: string): void;
 export function setYahooFinanceQuery1Hostname(hostname: string): void;
-export async function cacheExchangeRates(start: Date, end: Date, currencyCode: CurrencyCode): Promise<void>;
-export function getSecurity(isin: string): Promise<Security>;
+export function getExchangeRatesMap(currencyPeriods: { start: Date, end: Date, currencyCode: CurrencyCode }[]): Promise<ExchangeRatesMap>;
+export function getCurrencyExchangeRatesMap(start: Date, end: Date, currencyCode: CurrencyCode): Promise<Map<string, number>>;
 
 export function fillPdf(
     pdfFile: Uint8Array,
@@ -443,7 +446,7 @@ export function fillPdf(
     }
 ): Promise<Uint8Array>;
 
-export function formatMoney(value: number, currencyCode = "€"): string;
+export function formatMoney(value: number, currencyCode: CurrencyCode): string;
 
 export interface BrokerTransaction {
     date: Date;
@@ -456,7 +459,10 @@ export interface BrokerAdapter {
     (data: Blob): Promise<BrokerTransaction[]>;
 }
 
-export function getTaxableTransactions(brokerTransactions: BrokerTransaction[]): Promise<TaxableTransaction[]>;
+export type GetSecuritiesMapFunction = (isins: string[]) => Promise<Map<string, Security>>;
+export function getDefaultSecuritiesMap(isins: string[]): Promise<Map<string, Security>>;
+export function getSecurity(isin: string): Promise<Security>;
+export function getTaxableTransactions(brokerTransactions: BrokerTransaction[], getSecuritiesMap: GetSecuritiesMapFunction): Promise<TaxableTransaction[]>;
 
 export interface TaxableTransaction {
     value: number; // EUR
@@ -474,9 +480,11 @@ export interface FormRow {
     taxValue: number;
 }
 
-export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFormData;
+export function getTaxFormData(taxableTransactions: TaxableTransaction[], getTaxRate: TaxRateFunction): TaxFormData;
 
-export function getTaxRate(taxableTransaction: TaxableTransaction): number;
+export type TaxRateFunction = (taxableTransaction: TaxableTransaction) => number;
+
+export const getDefaultTaxRate: TaxRateFunction;
 
 export const IBKRAdapter: BrokerAdapter;
 export const Trading212Adapter: BrokerAdapter;

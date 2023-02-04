@@ -2,7 +2,7 @@
 
 To add a broker, you need to write a `BrokerAdapter` which takes a data `Blob` as input and outputs an array of `BrokerTransaction`. 
 
-The interfaces for `BrokerAdapter` and `BrokerTransaction` are defined in `src/service_adapter` as followed:
+The interfaces for `BrokerAdapter` and `BrokerTransaction` are defined in `src/broker_adapter` as followed:
 
 ```ts
 interface BrokerTransaction {
@@ -16,7 +16,7 @@ interface BrokerAdapter {
 }
 ```
 
-On a higher level, you should view a broker adapter as a function that simply receives data representing the transactions from a broker/bank and converts that data into a format the codebase understands. The data the function receives is normally in the form of a `csv` or `xlsx` file with raw data wrapped in a `Blob` object.
+At a high level, you should view a broker adapter as a function that simply receives data representing the transactions from a broker/bank and converts that data into a format the codebase understands. The data the function receives is normally in the form of a `csv` or `xlsx` file with raw data wrapped in a `Blob` object.
 
 Start with defining a function that implements the `BrokerAdapter` interface, as follows:
 

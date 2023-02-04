@@ -1,5 +1,5 @@
 import { assertEquals, assertNotEquals, assertRejects } from "https://deno.land/std@0.128.0/testing/asserts.ts";
-import { cacheExchangeRates, exchangeRatesMap, getSecurity } from "./data.ts";
+import { cacheExchangeRates, exchangeRatesMap, getDefaultSecurity } from "./data.ts";
 import { CurrencyCode, ETF, SecurityType } from "./enums.ts";
 import { InformativeError } from "./InformativeError.ts";
 
@@ -35,7 +35,7 @@ Deno.test({
         net: true,
     },
     fn: async () => {
-        const security = <ETF> (await getSecurity("IE00B4L5Y983"));
+        const security = <ETF> (await getDefaultSecurity("IE00B4L5Y983"));
         assertEquals(security.type, SecurityType.ETF);
         assertEquals(security.accumulating, true);
     },
@@ -46,7 +46,7 @@ Deno.test({
         net: true,
     },
     fn: async () => {
-        const security = <ETF> (await getSecurity("IE00BK5BQT80"));
+        const security = <ETF> (await getDefaultSecurity("IE00BK5BQT80"));
         assertEquals(security.type, SecurityType.ETF);
         assertEquals(security.accumulating, true);
     },
@@ -57,7 +57,7 @@ Deno.test({
         net: true,
     },
     fn: async () => {
-        const security = <ETF> (await getSecurity("IE00BFY0GT14"));
+        const security = <ETF> (await getDefaultSecurity("IE00BFY0GT14"));
         assertEquals(security.type, SecurityType.ETF);
         assertEquals(security.accumulating, true);
     },
@@ -68,7 +68,7 @@ Deno.test({
         net: true,
     },
     fn: async () => {
-        const security = <ETF> (await getSecurity("IE00B0M62Q58"));
+        const security = <ETF> (await getDefaultSecurity("IE00B0M62Q58"));
         assertEquals(security.type, SecurityType.ETF);
         assertEquals(security.accumulating, false);
     },
@@ -79,7 +79,7 @@ Deno.test({
         net: true,
     },
     fn: async () => {
-        const security = <ETF> (await getSecurity("US0378331005"));
+        const security = <ETF> (await getDefaultSecurity("US0378331005"));
         assertEquals(security.type, SecurityType.Stock);
     },
 });
@@ -91,7 +91,7 @@ Deno.test({
     fn: async () => {
         await assertRejects(
             () => {
-                return getSecurity("US037833100X");
+                return getDefaultSecurity("US037833100X");
             },
             InformativeError,
             "security.fetch.not_found",

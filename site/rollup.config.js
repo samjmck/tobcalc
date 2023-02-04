@@ -39,7 +39,7 @@ export default {
 		name: 'app',
 		file: 'public/app.js'
 	},
-	external: ['./tobcalc-lib.js'],
+	external: ['./tobcalc-lib.js', '../tobcalc-lib.js'],
 	plugins: [
 		replace({
 			values: {

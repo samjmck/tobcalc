@@ -1,4 +1,6 @@
-# tobcalc
+# [tobcalc](https://tobcalc.com)
+
+https://user-images.githubusercontent.com/25828757/161982707-3b84b8e1-cae3-4ec0-b348-f6d64d7d5c30.mp4
 
 tobcalc is a project that calculates the Belgian transaction tax on securities for various brokers and fills in the PDF form associated with these taxes.
 
@@ -12,10 +14,6 @@ The goal of this project is to simplify the process of calculating and filing th
 
 Currently, the following brokers are supported:
 - Interactive Brokers (last checked: 28 March 2022) [(guide)](docs/brokers/interactive-brokers-guide.md)
-
-## Demo
-
-https://user-images.githubusercontent.com/25828757/161982707-3b84b8e1-cae3-4ec0-b348-f6d64d7d5c30.mp4
 
 ## How does it work?
 

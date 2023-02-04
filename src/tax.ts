@@ -1,5 +1,8 @@
 import { CountryCode, CurrencyCode, eeaCountries, Security, SecurityType } from "./enums.ts";
-import { cacheExchangeRates, exchangeRatesMap, formatDate, getSecurity } from "./data.ts";
+import {
+    formatDate,
+    getExchangeRatesMap
+} from "./data.ts";
 import { BrokerTransaction } from "./broker_adapter.ts";
 import { InformativeError } from "./InformativeError.ts";
 import { lowerCaseRegisteredFunds } from "./registered_funds.ts";
@@ -9,7 +12,9 @@ export function isNameRegistered(name: string) {
     return lowerCaseRegisteredFunds.includes(name.toLowerCase());
 }
 
-export async function getTaxableTransactions(brokerTransactions: BrokerTransaction[]): Promise<TaxableTransaction[]> {
+export type GetSecuritiesMapFunction = (isins: string[]) => Promise<Map<string, Security>>;
+
+export async function getTaxableTransactions(brokerTransactions: BrokerTransaction[], getSecuritiesMap: GetSecuritiesMapFunction): Promise<TaxableTransaction[]> {
     const currencyCodeEarliestDate: Map<CurrencyCode, Date> = new Map();
     const currencyCodeLatestDate: Map<CurrencyCode, Date> = new Map();
     const isins = new Set<string>();
@@ -29,22 +34,21 @@ export async function getTaxableTransactions(brokerTransactions: BrokerTransacti
         isins.add(brokerTransaction.isin);
     }
 
-    const exchangeRatePromises: Promise<void>[] = [];
+    const currencyPeriods: { start: Date, end: Date, currencyCode: CurrencyCode }[] = [];
     for (const currencyCode of currencyCodeEarliestDate.keys()) {
-        exchangeRatePromises.push(cacheExchangeRates(<Date>currencyCodeEarliestDate.get(currencyCode), <Date>currencyCodeLatestDate.get(currencyCode), currencyCode));
+        currencyPeriods.push({
+            start: <Date> currencyCodeEarliestDate.get(currencyCode),
+            end: <Date> currencyCodeLatestDate.get(currencyCode),
+            currencyCode,
+        });
     }
 
-    const securitiesByIsin = new Map<string, Security>();
-    const securitiesTypePromises: Promise<void>[] = [];
-    for (const isin of isins) {
-        securitiesTypePromises.push(getSecurity(isin).then(security => {
-            securitiesByIsin.set(isin, security);
-        }));
-    }
-
-    await Promise.all([
-        await Promise.all(securitiesTypePromises),
-        await Promise.all(exchangeRatePromises),
+    const [
+        securitiesByIsin,
+        exchangeRatesMap,
+    ] = await Promise.all([
+        getSecuritiesMap([...isins]),
+        getExchangeRatesMap(currencyPeriods),
     ]);
 
     const exchangeRates = exchangeRatesMap;
@@ -88,7 +92,9 @@ export interface TaxableTransaction {
     countryCode: CountryCode;
 }
 
-export function getTaxRate(taxableTransaction: TaxableTransaction): number {
+type TaxRateFunction = (taxableTransaction: TaxableTransaction) => number;
+
+export const getDefaultTaxRate: TaxRateFunction = (taxableTransaction: TaxableTransaction) => {
     switch (taxableTransaction.security.type) {
         case SecurityType.ETF:
             // TODO: this is not right - we need to check if fund is registered in Belgium
@@ -127,7 +133,7 @@ export interface FormRow {
 
 export type TaxFormData = Map<number, FormRow>;
 
-export function getTaxFormData(taxableTransactions: TaxableTransaction[]): TaxFormData {
+export function getTaxFormData(taxableTransactions: TaxableTransaction[], getTaxRate: TaxRateFunction): TaxFormData {
     const map: Map<number, FormRow> = new Map();
     for(const taxableTransaction of taxableTransactions) {
         const taxRate = getTaxRate(taxableTransaction);

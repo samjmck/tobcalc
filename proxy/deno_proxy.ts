@@ -29,7 +29,7 @@ async function handler(req: Request): Promise<Response> {
         return new Response(response.body);
     } else if(pathname.startsWith("/ecb/")) {
         const realPath = pathname.split("/ecb/")[1];
-        const response = fetch(`https://sdw-wsrest.ecb.europa.eu/${realPath}`, {
+        const response = await fetch(`https://sdw-wsrest.ecb.europa.eu/${realPath}`, {
             "body": req.body,
             "method": req.method,
         });

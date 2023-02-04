@@ -12,11 +12,13 @@ export interface ETF {
     type: SecurityType.ETF;
     name: string;
     accumulating: boolean;
+    isin: string;
 }
 
 export interface Stock {
-    name: string;
     type: SecurityType.Stock;
+    name: string;
+    isin: string;
 }
 
 export type Security = ETF | Stock;
