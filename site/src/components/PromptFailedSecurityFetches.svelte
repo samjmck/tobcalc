@@ -76,6 +76,8 @@
 
 <style>
     dialog {
+        max-height: 100vh;
+        overflow-y: scroll;
         position: fixed;
         z-index: 1;
         top: 50%;
