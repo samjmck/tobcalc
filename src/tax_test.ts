@@ -9,6 +9,7 @@ import {
     TaxableTransaction
 } from "./tax.ts";
 import { assertEquals, assertObjectMatch } from "https://deno.land/std@0.128.0/testing/asserts.ts";
+import { getDefaultSecuritiesMap } from "./data.ts";
 
 Deno.test({
     name: "fund registered with FSMA",
@@ -41,7 +42,7 @@ Deno.test({
                 value: 100_00, // EURUSD on 25 Feb -> 1.1216
             },
         ];
-        const taxableTransactions = await getTaxableTransactions(brokerTransactions);
+        const taxableTransactions = await getTaxableTransactions(brokerTransactions, getDefaultSecuritiesMap);
 
         const taxableTransactionIWDA = taxableTransactions[0];
         // Why assertObjectMatch and not assertEquals?
