@@ -115,7 +115,6 @@
 		}, 1000);
 	}
 
-	setPdfUrl($totalTaxFormData, $lastSession);
 	$: {
 		if(pdfBytes !== undefined) {
 			delayedPdfUpdate($totalTaxFormData, $lastSession);
@@ -140,30 +139,34 @@
 	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
 </div>
 
+<footer>
+	<a href="https://github.com/samjmck/tobcalc">GitHub</a>
+	<a href="https://samjmck.com">samjmck.com</a>
+	<a href="/privacy-policy.txt">Privacy Policy</a>
+</footer>
+
 <style>
 	div.column {
 		padding-bottom: 10em;
 		margin-right: 3em;
 	}
-	#download-link {
-		display: none;
-	}
-	div.selected-service {
-		margin: 1em 0;
-	}
 	input {
 		display: block;
 		margin: 1em 0;
 	}
-	input[type="file"], input[type="date"] {
-		margin-top: 0;
-		margin-bottom: 1em;
+	footer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		text-align: center;
+		background-color: white;
+		padding: 1em;
 	}
-	label {
-		margin-top: 1em;
-		margin-bottom: 0.25em;
+	footer a {
+		margin: 0 1.5em;
 	}
-	button {
-		margin: 1em 0;
+	:global(body) {
+		margin-bottom: 2em;
 	}
 </style>

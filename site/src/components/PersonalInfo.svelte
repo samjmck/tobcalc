@@ -45,3 +45,14 @@
 
 <label for="signature_png">Choose signature png</label>
 <input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={signatureFiles} on:input={update} />
+
+<style>
+    input[type="date"] {
+        margin-top: 0;
+		margin-bottom: 1em;
+    }
+    label {
+		margin-top: 1em;
+		margin-bottom: 0.25em;
+	}
+</style>

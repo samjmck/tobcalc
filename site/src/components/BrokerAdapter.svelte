@@ -133,11 +133,15 @@
 <PromptFailedSecurityFetches bind:open={openFailedSecuritiesPrompt} failedIsins={failedSecuritiesIsins} {resolveNewSecurities} />
 
 <style>
-    dialog {
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+    input[type="file"] {
+		margin-top: 0;
+		margin-bottom: 1em;
+	}
+	label {
+		margin-top: 1em;
+		margin-bottom: 0.25em;
+	}
+	button {
+		margin: 1em 0;
+	}
 </style>
