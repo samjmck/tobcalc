@@ -44,7 +44,12 @@
 
 	let pdfObjectUrl = "";
 	let pdfError = "";
-	async function setPdfUrl(pdfTaxFormData: Map<number, TaxFormData>, personalInfo: SessionInfo) {
+	async function setPdfUrl(
+			pdfTaxFormData: Map<number, TaxFormData>,
+			personalInfo: SessionInfo,
+			signatureFiles: File[],
+			nationalRegistrationNumber: string,
+	) {
 		const emptyFormRow: FormRow = {
 			quantity: 0,
 			taxBase: 0,
@@ -78,7 +83,7 @@
 			pdfObjectUrl = await workerFillPdf(pdfBytes, {
 				start: personalInfo.start ? new Date(personalInfo.start) : new Date(),
 				end: personalInfo.end ? new Date(personalInfo.end) : new Date(),
-				nationalRegistrationNumber: $nationalRegistrationNumber,
+				nationalRegistrationNumber: nationalRegistrationNumber,
 				fullName: personalInfo.fullName,
 				addressLine1: personalInfo.addressLine1,
 				addressLine2: personalInfo.addressLine2,
@@ -106,18 +111,28 @@
 	}
 
 	let previousTimeoutId: number;
-	function delayedPdfUpdate(taxFormData: Map<number, TaxFormData>, personalInfo: SessionInfo) {
+	function delayedPdfUpdate(
+			pdfTaxFormData: Map<number, TaxFormData>,
+			personalInfo: SessionInfo,
+			signatureFiles: File[],
+			nationalRegistrationNumber: string,
+	) {
 		if(previousTimeoutId !== undefined) {
 			clearTimeout(previousTimeoutId);
 		}
 		previousTimeoutId = setTimeout(() => {
-			setPdfUrl(taxFormData, personalInfo);
+			setPdfUrl(pdfTaxFormData, personalInfo, signatureFiles, nationalRegistrationNumber);
 		}, 1000);
 	}
 
 	$: {
 		if(pdfBytes !== undefined) {
-			delayedPdfUpdate($totalTaxFormData, $lastSession);
+			delayedPdfUpdate(
+					$totalTaxFormData,
+					$lastSession,
+					$signatureFiles,
+					$nationalRegistrationNumber,
+			);
 		}
 	}
 </script>
