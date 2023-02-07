@@ -1,9 +1,6 @@
 <script lang="ts">
     import { lastSession, signatureFiles, nationalRegistrationNumber } from "../stores";
     import type { SessionInfo } from "../stores";
-
-    export let update: () => void;
-
     let pdfObjectUrl = "";
 
     function updatePersonalInfo(key: keyof SessionInfo, value: string) {
@@ -43,7 +40,7 @@
 <input name="date" placeholder="Date" type="text" bind:value={dateValue} on:input={() => updatePersonalInfo("date", dateValue)} />
 
 <label for="signature_png">Choose signature png</label>
-<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={$signatureFiles} on:input={update} />
+<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={$signatureFiles} />
 
 <style>
     input[type="date"] {

@@ -147,6 +147,11 @@ export async function getSecurity(isin: string): Promise<Security> {
 
     const { quoteType, symbol } = json.quotes[0];
     const name = json.quotes[0].longname !== undefined ? json.quotes[0].longname : json.quotes[0].shortname;
+
+    if(name === undefined) {
+        throw new InformativeError("security.fetch.name_not_found", { isin, json });
+    }
+
     switch(quoteType) {
         case "MUTUALFUND":
         case "ETF":
@@ -166,6 +171,6 @@ export async function getSecurity(isin: string): Promise<Security> {
                 isin,
             };
         default:
-            throw new InformativeError("security.fetch.unknown_quote_type", { quoteType });
+            throw new InformativeError("security.fetch.unknown_quote_type", { isin, json });
     }
 }

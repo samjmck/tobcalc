@@ -57,7 +57,7 @@
         try {
             brokerTransactions = await brokerAdapter(files[0]);
             const filteredBrokerTransactions = await filterBrokerTransactions(brokerTransactions);
-            taxableTransactions = await getTaxableTransactions(filteredBrokerTransactions, async isins => {
+            taxableTransactions = await getTaxableTransactions(filteredBrokerTransactions, isins => {
                 return getSecuritiesMapWithOverrides(isins, failedIsins => {
                     if(failedIsins.length > 0) {
                         return promptNewSecurities(failedIsins);
