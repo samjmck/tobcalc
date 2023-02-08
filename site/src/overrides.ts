@@ -1,4 +1,4 @@
-import type { GetSecuritiesMapFunction, Security, TaxableTransaction, TaxRateFunction } from "./tobcalc-lib";
+import type { Security, TaxableTransaction, TaxRateFunction } from "./tobcalc-lib";
 import { getSecurity, getDefaultTaxRate } from "./tobcalc-lib.js";
 
 export const taxRates = [

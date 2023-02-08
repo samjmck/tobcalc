@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, SessionInfo } from "./stores";
+	import { openSettings, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, SessionInfo } from "./stores";
 	import TaxRateOverride from "./components/TaxRateOverride.svelte";
 	import PersonalInfo from "./components/PersonalInfo.svelte";
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
@@ -12,6 +12,7 @@
 	import type { TaxFormData } from "./tobcalc-lib.js";
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
+	import Settings from "./components/Settings.svelte";
 
 	declare const process: { env: { [key: string]: string } };
 
@@ -154,7 +155,10 @@
 	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
 </div>
 
+<Settings open={openSettings} />
+
 <footer>
+	<a on:click|preventDefault={() => $openSettings = true}>Open settings</a>
 	<a href="https://github.com/samjmck/tobcalc">GitHub</a>
 	<a href="https://samjmck.com">samjmck.com</a>
 	<a href="/privacy-policy.txt">Privacy Policy</a>

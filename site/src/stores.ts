@@ -126,9 +126,27 @@ function createTaxRateOverridesStore(): Writable<Map<string, number>> & TaxRateO
     };
 }
 
+function createSettingStore(localStorageKey: string): Writable<boolean> {
+    const { subscribe, set, update } = writable<boolean>(window.localStorage.getItem(localStorageKey) === "true");
+
+    return {
+        subscribe,
+        set: (value: boolean) => {
+            console.log(value);
+            set(value);
+            window.localStorage.setItem(localStorageKey, value.toString());
+        },
+        update,
+    };
+}
+
 export const lastSession = createLastSessionStore();
 export const nationalRegistrationNumber = writable("");
 export const signatureFiles = writable<File[]>([]);
 export const totalTaxFormData = createTotalTaxFormDataStore();
 export const taxRateOverrides = createTaxRateOverridesStore();
 export const adapterNumber = writable(0);
+
+// Settings
+export const openSettings = writable(false);
+export const alwaysOpenFilterDialog = createSettingStore("alwaysOpenFilterDialog");

@@ -2,6 +2,7 @@
     import type { BrokerTransaction } from "../tobcalc-lib.js";
     import { formatMoney } from "../tobcalc-lib.js";
     import { formatDate } from "../format";
+    import { alwaysOpenFilterDialog } from "../stores";
 
     export let check;
     export let brokerTransactions: BrokerTransaction[];
@@ -25,9 +26,10 @@
             a.brokerTransaction.currency == b.brokerTransaction.currency &&
             a.brokerTransaction.value == b.brokerTransaction.value;
     }
+    let containsDuplicate;
     function initialiseFilteredBrokerTransactions() {
+        containsDuplicate = false;
         filteredBrokerTransactions = [];
-        let containsDuplicate = false;
         for(const brokerTransaction of brokerTransactions) {
             if(filteredBrokerTransactions.some(filteredBrokerTransaction => equalsFilteredBrokerTransaction(filteredBrokerTransaction, { include: true, brokerTransaction }))) {
                 filteredBrokerTransactions.push({
@@ -42,7 +44,7 @@
                 });
             }
         }
-        if(containsDuplicate) {
+        if($alwaysOpenFilterDialog || containsDuplicate) {
             open = true;
         } else {
             check = false;
@@ -62,10 +64,12 @@
 </script>
 
 <dialog {open}>
+    {#if containsDuplicate}
     <p>
         It seems like the transaction history you uploaded contains some duplicate transactions. We have excluded
         the duplicates by unchecking them in the table below, but you can include them again if this isn't correct.
     </p>
+    {/if}
     <p>
         After you have checked the transactions you want to include, click the "Continue" button to continue to the tax
         calculation.
