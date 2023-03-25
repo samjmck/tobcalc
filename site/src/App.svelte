@@ -7,6 +7,7 @@
 		IBKRAdapter,
 		Trading212Adapter,
 		DEGIROAdapter,
+    ETradeAdapter,
 		setECBHostname,
 		setYahooFinanceHostname,
 		setYahooFinanceQuery1Hostname,
@@ -198,6 +199,8 @@
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={Trading212Adapter} />
 		{:else if selectedBroker === Broker.DEGIRO}
 			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={DEGIROAdapter} />
+		{:else if selectedBroker === Broker.ETRADE}
+			<Adapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={ETradeAdapter} />
 		{/if}
 	</div>
 	{/each}
