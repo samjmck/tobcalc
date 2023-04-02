@@ -23,6 +23,11 @@ from = "/guide-ibkr"
 to = "https://github.com/samjmck/tobcalc/blob/master/docs/brokers/interactive-brokers-guide.md"
 status = 302
 
+[[redirects]]
+from = "/guide-degiro"
+to = "https://github.com/samjmck/tobcalc/blob/master/docs/brokers/degiro-guide.md"
+status = 302
+
 [context.production.environment]
 ECB_HOSTNAME = "tobcalc.com/proxy/ecb"
 YAHOO_FINANCE_HOSTNAME = "tobcalc.com/proxy/yahoo_finance"
