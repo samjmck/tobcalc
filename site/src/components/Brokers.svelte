@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { IBKRAdapter, DEGIROAdapter, Trading212Adapter } from "../tobcalc-lib.js";
+    import { IBKRAdapter, DEGIROAdapter, Trading212Adapter, BoursoramaAdapter } from "../tobcalc-lib.js";
     import { adapterNumber, totalTaxFormData } from "../stores";
     import BrokerAdapter from "./BrokerAdapter.svelte";
     import { Broker, brokers } from "../broker";
@@ -39,6 +39,8 @@
         <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={Trading212Adapter} />
     {:else if selectedBroker === Broker.DEGIRO}
         <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={DEGIROAdapter} />
+    {:else if selectedBroker === Broker.Boursorama}
+        <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={BoursoramaAdapter} />
     {/if}
 </div>
 {/each}
