@@ -14,7 +14,7 @@ The goal of this project is to simplify the process of calculating and filing th
 
 Currently, the following brokers are supported:
 - Interactive Brokers (last checked: 28 March 2022) [(guide)](docs/brokers/interactive-brokers-guide.md)
-- Degiro (last checked: 2 April 2023) [(guide)](docs/brokers/degiro-guide.md)
+- DEGIRO (last checked: 2 April 2023) [(guide)](docs/brokers/degiro-guide.md)
 
 ## How does it work?
 
