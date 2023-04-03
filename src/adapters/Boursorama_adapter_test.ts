@@ -13,18 +13,17 @@ Deno.test({
         const brokerTransactions = await BousoramaAdapter(new Blob([data]));
 
         assertEquals(brokerTransactions[0], <BrokerTransaction> {
-            date: new Date(2023, 2, 6),
+            date: new Date(2023, 1, 6), // 2023-06-02
             isin: "IE00B4L5Y983",
             currency: CurrencyCode.EUR,
             value: 219_24,
         });
         assertEquals(brokerTransactions[1], <BrokerTransaction> {
-            date: new Date(2023, 2, 2),
+            date: new Date(2023, 1, 2), // 2023-02-02
             isin: "IE00B4L5Y983",
             currency: CurrencyCode.EUR,
             value: 144_66,
         });
-        
         assertEquals(brokerTransactions.length, 2);
     },
 });

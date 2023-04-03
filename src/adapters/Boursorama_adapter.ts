@@ -75,7 +75,7 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
 
         brokerTransactions.push({
             // Date is in format DD/MM/YYYY
-            date: new Date(+`${dateString.substring(6, 10)}`, +`${dateString.substring(3, 5)}`, +`${dateString.substring(0, 2)}`),
+            date: new Date(+`${dateString.substring(6, 10)}`, +`${dateString.substring(3, 5)}`-1, +`${dateString.substring(0, 2)}`),
             isin: row[isinColumnIndex],
             currency: <CurrencyCode> boursoramaCurrencyCode,
             // moneyToNumber() to convert string into number and * 100 to convert into integer
