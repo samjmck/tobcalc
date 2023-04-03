@@ -25,7 +25,7 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
     const valueColumnIndex = columnNames.indexOf(`Montant`);
 
     // In the sample data set, there is no currency column and all transactions seem
-    // to be translated to EUR
+    // to be translated to EUR, so enforce this currency
     const boursoramaCurrencyCode = "EUR";
 
     if(dateColumnIndex === -1) {
@@ -46,15 +46,13 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
             continue;
         }
 
-        // Split the columns of the row into an array
-        // And then remove the quotes only if the value contains quotes
+        // remove the quotes only if the value contains quotes
         var removeSurroundingQuotesIfExist = function(value: string): string {
-            if (value.startsWith(`"`)) {
-                value = value.substring(1, value.length - 1)
-            }
-            return value
+            return value.startsWith(`"`) ? value.substring(1, value.length - 1) : value;
         }
 
+        // Split the columns of the row into an array
+        // Boursorama CSV separator is semi-colon
         const row = rowString.split(";").map(removeSurroundingQuotesIfExist);
 
         // Save date in a variable so we can easily reuse while creating a Date object
@@ -67,7 +65,8 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
             throw new InformativeError("boursorama_adapter.value_undefined", { row, columnNames });
         }
 
-        // Currency exchange transactions have empty ISINs. We want to ignore these transactions
+        // Ignore if ISIN is empty (eg cash balance statements, in case
+        // user forgot to filter them out)
         if(row[isinColumnIndex] === "") {
             continue;
         }
@@ -79,7 +78,7 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
             date: new Date(+`${dateString.substring(6, 10)}`, +`${dateString.substring(3, 5)}`, +`${dateString.substring(0, 2)}`),
             isin: row[isinColumnIndex],
             currency: <CurrencyCode> boursoramaCurrencyCode,
-            // Number() to convert string into number and * 100 to convert into integer
+            // moneyToNumber() to convert string into number and * 100 to convert into integer
             // Ignore the minus sign, we only care about absolute value of transaction
             value: moneyToNumber(row[valueColumnIndex].replace("-", "")),
         });
