@@ -8,7 +8,7 @@ If you opened your account:
 * on [degiro.nl](https://www.degiro.nl) or [degiro.fr](https://www.degiro.fr), TOB **may** already be handled automatically by DEGIRO. If this is the case, you don't need to declare it by yourself.
 * on any other DEGIRO website, TOB **may not** be handled automatically by DEGIRO.
 
-### How do I know if Degiro is already declaring TOB for me?
+### How do I know if DEGIRO is already declaring TOB for me?
 
 #### Verify if TOB declaration is enabled
 
@@ -16,7 +16,7 @@ If you opened your account:
 
 ![DEGIRO My Account > Tax Information](../images/degiro-checktob-fiscal-menu.png)
 
-2. Check the status of `manual management` switch for the TOB. If it is **`disabled`**, Degiro takes care of TOB for you
+2. Check the status of `manual management` switch for the TOB. If it is **`disabled`**, DEGIRO takes care of TOB for you
 
 ![DEGIRO TOB Management screen](../images/degiro-checktob-tob-management-status.png)
 
@@ -37,11 +37,11 @@ This can be seen in the `account` page:
 
 The `amount` column on the `Belgian TOB` lines contains the amount of the TOB paid on the transaction.
 
-## How to export transactions for `tobcalc` on Degiro
+## How to export transactions for `tobcalc` on DEGIRO
 
 Once you are sure you need to declare the TOB yourself, follow these steps:
 
-1. Login to your Degiro dashboard
+1. Login to your DEGIRO dashboard
 2. On the left bar, click on `Mail` > `Transactions`
 
 ![DEGIRO transactions menu](../images/degiro-menu-transactions.png)
