@@ -27,6 +27,7 @@ Lastly, there are a few files in the root directory:
 ## Development
 
 After making changes to the core library, you can test them in the interface of the web app. You will need to do the following:
-1. Update `web_export.ts` to re-export the new functions you added to the core library or to reflect any changes you made to the existing functions.
-2. Run `./web_bundle.sh`. This will bundle your core into ES modules that will can be used in the web app. See this as an alternative to installing the core library as a dependency with `npm` in the web app. The ES modules will be placed in the `site/public` directory as `tobcalc-lib.js` and `tobcalc-lib-pdf.js` for the worker.
-3. Within the `site` directory, run `npm run dev` to start the Vite development server with live reloading. This server will not have a proxy to Yahoo Finance, so you will need to run the Caddy proxy in the background to be able to make requests to Yahoo Finance without CORS issues. Open a new Terminal window and run `caddy run`. Now visit `localhost:3000` to see the web app.
+1. Run `deno run --allow-net --allow-write scripts/fetch_registered_funds.ts` to generate the `registered_funds.ts` file in the `src` directory. This file contains the latest registered funds from the FSMA.
+2. Update `web_export.ts` to re-export the new functions you added to the core library or to reflect any changes you made to the existing functions.
+3. Run `./web_bundle.sh`. This will bundle your core into ES modules that will can be used in the web app. See this as an alternative to installing the core library as a dependency with `npm` in the web app. The ES modules will be placed in the `site/public` directory as `tobcalc-lib.js` and `tobcalc-lib-pdf.js` for the worker.
+4. Within the `site` directory, run `npm run dev` to start the Vite development server with live reloading. This server will not have a proxy to Yahoo Finance, so you will need to run the Caddy proxy in the background to be able to make requests to Yahoo Finance without CORS issues. Open a new Terminal window and run `caddy run`. Now visit `localhost:3000` to see the web app.
