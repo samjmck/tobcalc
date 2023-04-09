@@ -2,9 +2,9 @@
 
 ## Preamble: TOB and TTF
 
-*TOB* and *TTF* are two different, cummulative, taxes. Even if they come from a joint willingness of ten European countries to introduce a stock market-related tax, they have different effects:
-* **TTF** is a tax which applies when you buy shares of certain French companies and do not trade them intraday. It applies to anybody who buys these shares, irrespective of the market place where they bought them and of the fiscal residence of the buyer.
-* **TOB** is a territorial tax: it applies to the belgian-resident principal who is buying securities, irrespective of where the securities are acquired.
+*TOB* and *TTF* are two different, cumulative, taxes. Even if they come from a joint willingness of ten European countries to introduce a stock market-related tax, they have different effects:
+* **TTF** is a tax which applies when you buy shares of certain French companies and do not trade them intraday. It applies to anybody who buys these shares, irrespective of the marketplace where they bought them and of the fiscal residence of the buyer.
+* **TOB** is a territorial tax: it applies to the Belgian-resident principal who is buying securities, irrespective of where the securities are acquired.
 
 So if you are a Belgian tax resident and buy shares of French companies with capitalization over 1 billion euro, as a *bonus pater familia* (i.e. not for intraday trading), you will have to pay both the TTF (automated with Boursorama) and the TOB (not automated with Boursorama).
 
