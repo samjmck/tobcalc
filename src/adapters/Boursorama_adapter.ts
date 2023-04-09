@@ -3,7 +3,7 @@ import { BrokerAdapter, BrokerTransaction } from "../broker_adapter.ts";
 import { InformativeError } from "../InformativeError.ts";
 import { moneyToNumber } from "../broker_reading.ts";
 
-export const BousoramaAdapter: BrokerAdapter = async data => {
+export const BoursoramaAdapter: BrokerAdapter = async data => {
     // Convert data blob to a string
     const text = await data.text();
 
@@ -47,7 +47,7 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
         }
 
         // remove the quotes only if the value contains quotes
-        var removeSurroundingQuotesIfExist = function(value: string): string {
+        const removeSurroundingQuotesIfExist = function(value: string): string {
             return value.startsWith(`"`) ? value.substring(1, value.length - 1) : value;
         }
 
@@ -70,8 +70,6 @@ export const BousoramaAdapter: BrokerAdapter = async data => {
         if(row[isinColumnIndex] === "") {
             continue;
         }
-
-        console.log()
 
         brokerTransactions.push({
             // Date is in format DD/MM/YYYY
