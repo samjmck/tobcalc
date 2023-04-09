@@ -5,7 +5,7 @@
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
 	import {
 		setECBHostname,
-		setYahooFinanceHostname,
+		setJustETFHostname,
 		setYahooFinanceQuery1Hostname,
 	} from "./tobcalc-lib.js";
 	import { runTests } from "./tests";
@@ -28,7 +28,7 @@
 	};
 
 	setECBHostname(process.env.ECB_HOSTNAME);
-	setYahooFinanceHostname(process.env.YAHOO_FINANCE_HOSTNAME);
+	setJustETFHostname(process.env.JUSTETF_HOSTNAME);
 	setYahooFinanceQuery1Hostname(process.env.YAHOO_FINANCE_QUERY1_HOSTNAME);
 
 	let failedTestsError = "";

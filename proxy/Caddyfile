@@ -6,6 +6,19 @@ localhost:8081 {
             header_up Host {upstream_hostport}
         }
     }
+    route /justetf/* {
+        uri strip_prefix /justetf
+        reverse_proxy https://www.justetf.com {
+            header_up Host {upstream_hostport}
+            header_up -sec-fetch-dest
+            header_up -sec-fetch-mode
+            header_up -sec-fetch-site
+            header_up -sec-gpc
+            header_up -referer
+            header_up -cookie
+            header_up -:path
+        }
+    }
     route /investing_com/* {
         uri strip_prefix /investing_com
         reverse_proxy https://www.investing.com {

@@ -3,7 +3,16 @@ import { DEGIROAdapter } from "./src/adapters/DEGIRO_adapter.ts";
 import { Trading212Adapter } from "./src/adapters/Trading212_adapter.ts";
 import { BoursoramaAdapter } from "./src/adapters/Boursorama_adapter.ts";
 import { InformativeError } from "./src/InformativeError.ts";
-import { setECBHostname, setYahooFinanceQuery1Hostname, setYahooFinanceHostname, exchangeRatesMap, getDefaultSecuritiesMap, getSecurity, getExchangeRatesMap, getCurrencyExchangeRatesMap } from "./src/data.ts";
+import {
+    setECBHostname,
+    setJustETFHostname,
+    setYahooFinanceQuery1Hostname,
+    exchangeRatesMap,
+    getDefaultSecuritiesMap,
+    getSecurity,
+    getExchangeRatesMap,
+    getCurrencyExchangeRatesMap
+} from "./src/data.ts";
 import { getTaxableTransactions, getTaxFormData, getDefaultTaxRate } from "./src/tax.ts";
 import { isNameRegistered } from "./src/tax.ts";
 import { CurrencyCode, SecurityType } from "./src/enums.ts";
@@ -21,7 +30,7 @@ export {
     CurrencyCode,
     formatMoney,
     isNameRegistered,
-    setECBHostname, setYahooFinanceQuery1Hostname, setYahooFinanceHostname, getDefaultSecuritiesMap, getSecurity,
+    setECBHostname, setJustETFHostname, setYahooFinanceQuery1Hostname, getDefaultSecuritiesMap, getSecurity,
     getCurrencyExchangeRatesMap, getExchangeRatesMap,
     getTaxableTransactions, getTaxFormData, getDefaultTaxRate,
 };

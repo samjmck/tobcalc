@@ -1,4 +1,4 @@
-import { assertEquals, assertNotEquals, assertRejects } from "https://deno.land/std@0.128.0/testing/asserts.ts";
+import { assertEquals, assertRejects } from "https://deno.land/std@0.128.0/testing/asserts.ts";
 import { CurrencyCode, ETF, SecurityType } from "./enums.ts";
 import { InformativeError } from "./InformativeError.ts";
 import { getCurrencyExchangeRatesMap, getSecurity } from "./data.ts";

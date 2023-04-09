@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "dev": "ECB_HOSTNAME=localhost:8081/ecb YAHOO_FINANCE_HOSTNAME=localhost:8081/yahoo_finance YAHOO_FINANCE_QUERY1_HOSTNAME=localhost:8081/yahoo_finance_query1 rollup -c -w",
+    "dev": "ECB_HOSTNAME=localhost:8081/ecb JUSTETF_HOSTNAME=localhost:8081/justetf YAHOO_FINANCE_QUERY1_HOSTNAME=localhost:8081/yahoo_finance_query1 rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },

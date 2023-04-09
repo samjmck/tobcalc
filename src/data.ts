@@ -8,7 +8,7 @@ import { InformativeError } from "./InformativeError.ts";
 // original hostnames
 let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
 let YAHOO_FINANCE_QUERY1_HOSTNAME = "query1.finance.yahoo.com";
-let YAHOO_FINANCE_HOSTNAME = "finance.yahoo.com";
+let JUSTETF_HOSTNAME = "justetf.com";
 
 export function setECBHostname(hostname: string) {
     ECB_HOSTNAME = hostname;
@@ -18,8 +18,8 @@ export function setYahooFinanceQuery1Hostname(hostname: string) {
     YAHOO_FINANCE_QUERY1_HOSTNAME = hostname;
 }
 
-export function setYahooFinanceHostname(hostname: string) {
-    YAHOO_FINANCE_HOSTNAME = hostname;
+export function setJustETFHostname(hostname: string) {
+    JUSTETF_HOSTNAME = hostname;
 }
 
 interface ECBTimePeriod {
@@ -155,33 +155,11 @@ export async function getSecurity(isin: string): Promise<Security> {
     switch(quoteType) {
         case "MUTUALFUND":
         case "ETF":
-            const securityDataResponse = await fetch(`https://${YAHOO_FINANCE_HOSTNAME}/quote/${symbol}`, {
-                "headers": {
-                    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-                    "accept-language": "en-GB,en;q=0.9,nl;q=0.8,en-US;q=0.7",
-                    "accept-encoding": "gzip",
-                    "cache-control": "no-cache",
-                    "pragma": "no-cache",
-                    "sec-ch-ua": "\"Google Chrome\";v=\"111\", \"Not(A:Brand\";v=\"8\", \"Chromium\";v=\"111\"",
-                    "sec-ch-ua-mobile": "?0",
-                    "sec-ch-ua-platform": "\"macOS\"",
-                    "sec-fetch-dest": "document",
-                    "sec-fetch-mode": "navigate",
-                    "sec-fetch-site": "same-origin",
-                    "sec-fetch-user": "?1",
-                    "sec-gpc": "1",
-                    "upgrade-insecure-requests": "1",
-                    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
-                    "cookie": "thamba=1; maex=%7B%22v2%22%3A%7B%7D%7D; GUC=AQABCAFkGV5kQkIaLQQn&s=AQAAAC_snEV8&g=ZBgXkA; A1=d=AQABBHQFjWICENVpQy1Ut1Bq-OyuRVphRj8FEgABCAFeGWRCZBT1bmUBgiAAAAcI-svRYRBHtWE&S=AQAAAkMGhgLhLkLcCaKie1CLQ5g; A3=d=AQABBHQFjWICENVpQy1Ut1Bq-OyuRVphRj8FEgABCAFeGWRCZBT1bmUBgiAAAAcI-svRYRBHtWE&S=AQAAAkMGhgLhLkLcCaKie1CLQ5g; A1S=d=AQABBHQFjWICENVpQy1Ut1Bq-OyuRVphRj8FEgABCAFeGWRCZBT1bmUBgiAAAAcI-svRYRBHtWE&S=AQAAAkMGhgLhLkLcCaKie1CLQ5g&j=GDPR; thamba=1; cmp=t=1680973789&j=1&u=1---&v=77; EuConsent=CPbbjoAPbbjoAAOACCENC-CgAAAAAEfAACiQAAAQ_AJMNG4gC7EscGTQMIoQQIwrCQiAUAEFAMLRFQAODgp2VgEuoIWACAVARgRAgxBRgACAAACAJCIAJACwQAIAiAQAAgAQAIQAEDAILACwMAgABANAxACgAECQgyICI5TAgIgSiAlsrEEoKpjTCAKssAKARGQUACIAAASAgICwcQwBICVCwQJMQLQAw0AGAAIJTiIAMAAQSnFQAYAAglOA; PRF=t%3DIWDA.L%252BIWDA.AS%252BEURUSD%253DX%252BJPM%252BNET%252B0GGH.L%252BSIVB%252BBCS%252BHSBC%252BWFC%252BBRK-A%252BBRK-B%252BAAPL%252BEXO.AS%252BSONY%26newChartbetateaser%3D1"
-                },
-                "referrerPolicy": "no-referrer-when-downgrade",
-                "body": null,
+            const response = await fetch(`https://${JUSTETF_HOSTNAME}/uk/etf-profile.html?isin=${isin}`, {
                 "method": "GET",
-                "mode": "cors",
-                "credentials": "include"
             });
-            const html = await securityDataResponse.text();
-            const accumulating = /data-test="TD_YIELD-value">0\.00%<\/td/g.test(html) || /data-test="TD_YIELD-value">N\/A<\/td/g.test(html);
+            const html = await response.text();
+            const accumulating = /<td class="val">Accumulating<\/td>/g.test(html);
             return {
                 type: SecurityType.ETF,
                 name,
