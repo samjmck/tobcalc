@@ -1,7 +1,7 @@
 // @deno-types="https://unpkg.com/xlsx/types/index.d.ts"
 import * as XLSX from 'https://unpkg.com/xlsx/xlsx.mjs';
 
-const response = await fetch("https://www.fsma.be/sites/default/files/media/files/2023-06/official_lists_fo.xlsx");
+const response = await fetch("https://www.fsma.be/sites/default/files/media/files/2023-07/official_lists_be.xls");
 const body = await response.arrayBuffer();
 const workbook = XLSX.read(body);
 const sheet = workbook.Sheets[workbook.SheetNames[0]];
