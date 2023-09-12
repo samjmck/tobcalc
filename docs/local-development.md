@@ -9,6 +9,8 @@ For developing the website you will need:
 For developing the core tobcalc library you will need:
 - Deno
 
+**Note:** this project makes use of `deno bundle` which is a built-in bundler to export the library as one file that can be imported in a browser. While this functionality still works as intended for this project, `deno bundle` has been deprecated as is planned to be removed from Deno in the future. As of now, Deno version `1.36.4` still supports `deno bundle`. If you are using a newer version and `deno bundle` is no longer available, consider downgrading to `1.36.4`.
+
 ## Directory structure
 
 - `.github/workflows` contains the GitHub Actions workflows that run on push and pull. These actions also run daily to ensure the data source (Yahoo Finance, Investing.com or a different source) for fetching security names and types is still functioning.

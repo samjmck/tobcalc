@@ -4,6 +4,27 @@ https://user-images.githubusercontent.com/25828757/161982707-3b84b8e1-cae3-4ec0-
 
 tobcalc is a project that calculates the Belgian transaction tax on securities for various brokers and fills in the PDF form associated with these taxes.
 
+## Navigation
+
+### FAQ
+
+1. [Why does this project exist?](#why-does-this-project-exist)
+2. [Which brokers are currently supported?](#which-brokers-are-currently-supported)
+3. [How does it work?](#how-does-it-work)
+4. [Is it secure?](#is-it-secure)
+
+### Using tobcalc with different brokers
+
+- [Interactive Brokers](docs/brokers/interactive-brokers-guide.md)
+- [DEGIRO](docs/brokers/degiro-guide.md)
+- [Boursorama](docs/brokers/boursorama-guide.md)
+
+#### Development
+
+- [Project design](docs/design.md)
+- [Local development](docs/local-development.md)
+- [How to add support for a broker](docs/add-broker.md)
+
 ## Why does this project exist?
 
 Belgian brokers pay the transaction tax, also known as the TOB, automatically for you. However, if you use a foreign broker, such as Interactive Brokers or tastyworks, you will have to calculate, pay and file this tax manually for every transaction you made in the period of 2 months. This process can be time-consuming and frustrating, which is why many Belgian investors decide not to use foreign brokers despite them possibly fitting their needs better than domestic brokers. 
@@ -33,33 +54,5 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 ## Known issues and bugs
 
-- CORS proxy cookies giving warnings in some browsers
 - PDF viewer in Firefox glitches out sometimes
 - PDF viewer in Safari does not refresh
-
-## To do (order of high to low priority)
-
-- [ ] Look at OpenFIGI for more reliable ISIN numbers
-- [x] Create development branch with subdomain for development deployments
-- [ ] Only deploy code to site if all Deno tests succeed
-- [ ] Add tests for scripts such as `fetch_registered_funds.ts`, better errors
-- [ ] Test proxies periodically
-- [ ] Fix site caching
-- [ ] Explain in docs how floating point errors and rounding errors are handled
-- [x] Check if fund is registered in Belgium
-- [x] Use Web Worker to run CPU intensive code such as PDF generation on a different thread to keep UI smooth
-- [x] Write tests
-- [x] Add error handling in important and critical parts of code
-- [x] Fix PDF forms
-- [x] Add checks for errors/throws in tests
-- [x] Change layout of web page so services are new column next to input boxes
-- [x] Finish `README.md`
-- [x] Write documentation on how contributors can help with adding brokers
-- [x] Add basic tests within browser to check if security data is correct for popular funds
-- [ ] Reduce browser bundle size
-  - [ ] Use more advanced package bundler such as webpack instead of `deno bundle`
-- [ ] Improve bundling and site generation workflow
-- [ ] Figure out how to do automatic type exports
-- [ ] Add tastyworks
-- [x] Add Trading 212
-- [ ] See if SvelteKit can be used for improved loading times and SEO
