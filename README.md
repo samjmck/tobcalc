@@ -4,6 +4,8 @@ https://user-images.githubusercontent.com/25828757/161982707-3b84b8e1-cae3-4ec0-
 
 tobcalc is a project that calculates the Belgian transaction tax on securities for various brokers and fills in the PDF form associated with these taxes.
 
+> Note: while tobcalc is still fully functional, I haven't had time to fix some bugs and to add new features. If you would like to contribute, please do so. [There's a list](#to-do-list) of issues that need to be fixed and features that would be nice to have.
+
 ## Navigation
 
 ### FAQ
@@ -12,6 +14,7 @@ tobcalc is a project that calculates the Belgian transaction tax on securities f
 2. [Which brokers are currently supported?](#which-brokers-are-currently-supported)
 3. [How does it work?](#how-does-it-work)
 4. [Is it secure?](#is-it-secure)
+5. [To-do list](#to-do-list)
 
 ### Using tobcalc with different brokers
 
@@ -52,7 +55,15 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 [Read more details on tobcalc's security details and design here.](docs/design.md)
 
-## Known issues and bugs
+## To-do list
 
-- PDF viewer in Firefox glitches out sometimes
-- PDF viewer in Safari does not refresh
+### Bugs
+
+1. [Issue #11](https://github.com/samjmck/tobcalc/issues/11): the calculated tax rates can go above the ceilings set by the Belgian government. The ceiling was never implemented in tobcalc as at the start of the project, it was clear that it wouldn't be reached by most users. However, to ensure correctness, this should be implemented.
+2. [Issue #11](https://github.com/samjmck/tobcalc/issues/11): on Interactive Brokers, trades that are filled in partial fills are considered separate trades. It should be possible to merge these trades into one to not only ensure the correct quantity is used for the tax calculation, but it also has an effect on the ceiling of the tax rate.
+
+### Features and other items
+
+1. It should be possible to merge trades into one. This could be implemented in a similar way to how the [filter broker transactions](site/src/components/PromptFilterBrokerTransactions.svelte) or [failed security fetches](site/src/components/PromptFailedSecurityFetches.svelte) prompts work.
+2. A clean-up of the codebase is needed. Some of the code, especially regarding the way prompts work and how default values are handled, is a bit hacky. I would like to find a more robust way to handle this. Some of the proxies are also unused and can be removed.
+3. Local development should be simplified with a proxy built in to the dev server and not with a separate proxy server such as Caddy.
