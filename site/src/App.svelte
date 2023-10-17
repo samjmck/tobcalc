@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { openSettings, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, SessionInfo } from "./stores";
+	import { openSettings, openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, SessionInfo } from "./stores";
 	import TaxRateOverride from "./components/TaxRateOverride.svelte";
 	import PersonalInfo from "./components/PersonalInfo.svelte";
 	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
@@ -13,6 +13,7 @@
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
 	import Settings from "./components/Settings.svelte";
+	import PaymentInfo from "./components/PaymentInfo.svelte";
 
 	declare const process: { env: { [key: string]: string } };
 
@@ -43,24 +44,22 @@
 		pdfBytes = new Uint8Array(await response.arrayBuffer());
 	});
 
-	let pdfObjectUrl = "";
-	let pdfError = "";
-	async function setPdfUrl(
-			pdfTaxFormData: Map<number, TaxFormData>,
-			personalInfo: SessionInfo,
-			signatureFiles: File[],
-			nationalRegistrationNumber: string,
-	) {
+	// Aggregate taxes per tax rate category and calculate total tax value
+	let tax012FormRow: FormRow;
+	let tax035FormRow: FormRow;
+	let tax132FormRow: FormRow;
+	let totalTaxValue: number = 0;
+	function aggregateTaxes(totalTaxFormData: Map<number, TaxFormData>) {
 		const emptyFormRow: FormRow = {
 			quantity: 0,
 			taxBase: 0,
 			taxValue: 0,
 		};
-		const tax012FormRow: FormRow = Object.assign({}, emptyFormRow);
-		const tax035FormRow: FormRow = Object.assign({}, emptyFormRow);
-		const tax132FormRow: FormRow = Object.assign({}, emptyFormRow);
-		let totalTaxValue = 0;
-		for(const [_, taxFormData] of pdfTaxFormData) {
+		tax012FormRow = Object.assign({}, emptyFormRow);
+		tax035FormRow = Object.assign({}, emptyFormRow);
+		tax132FormRow = Object.assign({}, emptyFormRow);
+		totalTaxValue = 0;
+		for(const [_, taxFormData] of totalTaxFormData) {
 			for(const [taxRate, { quantity, taxBase, taxValue }] of taxFormData) {
 				let aggregatedFormRow: FormRow;
 				switch(taxRate) {
@@ -79,7 +78,15 @@
 				totalTaxValue += taxValue;
 			}
 		}
+	}
 
+	let pdfObjectUrl = "";
+	let pdfError = "";
+	async function setPdfUrl(
+			personalInfo: SessionInfo,
+			signatureFiles: File[],
+			nationalRegistrationNumber: string,
+	) {
 		try {
 			pdfObjectUrl = await workerFillPdf(pdfBytes, {
 				start: personalInfo.start ? new Date(personalInfo.start) : new Date(),
@@ -113,7 +120,6 @@
 
 	let previousTimeoutId: number;
 	function delayedPdfUpdate(
-			pdfTaxFormData: Map<number, TaxFormData>,
 			personalInfo: SessionInfo,
 			signatureFiles: File[],
 			nationalRegistrationNumber: string,
@@ -122,14 +128,14 @@
 			clearTimeout(previousTimeoutId);
 		}
 		previousTimeoutId = setTimeout(() => {
-			setPdfUrl(pdfTaxFormData, personalInfo, signatureFiles, nationalRegistrationNumber);
+			setPdfUrl(personalInfo, signatureFiles, nationalRegistrationNumber);
 		}, 1000);
 	}
 
 	$: {
+		aggregateTaxes($totalTaxFormData);
 		if(pdfBytes !== undefined) {
 			delayedPdfUpdate(
-					$totalTaxFormData,
 					$lastSession,
 					$signatureFiles,
 					$nationalRegistrationNumber,
@@ -152,10 +158,12 @@
 </div>
 
 <div class="column">
+	<button on:click={() => $openPaymentInfo = true}>Payment Info</button>
 	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
 </div>
 
-<Settings open={openSettings} />
+<Settings />
+<PaymentInfo amount={totalTaxValue} />
 
 <footer>
 	<a on:click|preventDefault={() => $openSettings = true}>Open settings</a>

@@ -446,7 +446,7 @@ export function fillPdf(
     }
 ): Promise<Uint8Array>;
 
-export function formatMoney(value: number, currencyCode: CurrencyCode): string;
+export function formatMoney(value: number, currencyCode?: string, separator?: string): string;
 
 export interface BrokerTransaction {
     date: Date;
