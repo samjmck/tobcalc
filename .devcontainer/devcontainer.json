@@ -1,0 +1,38 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "tobcalc",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node",
+	"postCreateCommand": "cd site && npm install",
+	"postStartCommand": "deno run --allow-net --allow-write scripts/fetch_registered_funds.ts && ./web_bundle.sh",
+	"postAttachCommand": {
+		"caddy": "cd site && caddy run",
+		"npm": "cd site && npm run dev"
+	},
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/deno": {},
+		"ghcr.io/devcontainers-contrib/features/caddy": {}
+	},
+	"forwardPorts": [8081, 35729],
+	"portsAttributes": {
+		"8081": {
+			"label": "Web App"
+		},
+		"35729": {
+			"label": "Live Reload",
+			// "visiblity": "public" // Not supported at this moment, so needs to be manually done
+		}
+	},
+	"customizations": {
+		"codespaces": {
+			"openFiles": [
+				"docs/remote-development.md",
+				"docs/local-development.md"
+			]
+		},
+		"vscode": {
+			"extensions": [
+				"svelte.svelte-vscode"
+			]
+		}
+	}
+}

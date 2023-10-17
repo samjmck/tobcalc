@@ -9,6 +9,37 @@ import css from 'rollup-plugin-css-only';
 import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
+// By default, use the proxy hostnames as specified in the environment variables.
+const proxy_hostnames = {
+	'ecb': process.env.ECB_HOSTNAME,
+	'justetf': process.env.JUSTETF_HOSTNAME,
+	'yahoo_finance_query1': process.env.YAHOO_FINANCE_QUERY1_HOSTNAME
+};
+// When developing, use the proxy hostnames as configured in the Caddyfile if the environment variables are not set.
+if (!production) {
+	const port = 8081;
+	proxy_hostnames["ecb"] = proxy_hostnames["ecb"] || `${localhost(port)}/ecb`;
+	proxy_hostnames["justetf"] = proxy_hostnames["justetf"] || `${localhost(port)}/justetf`;
+	proxy_hostnames["yahoo_finance_query1"] = proxy_hostnames["yahoo_finance_query1"] || `${localhost(port)}/yahoo_finance_query1`;
+}
+// Parameters passed to livereload script.
+const livereload_params = new URLSearchParams();
+livereload_params.append("snipver", 1);
+if (process.env.CODESPACES) {
+	livereload_params.append("host", localhost(35729));
+	livereload_params.append("port", 443);
+}
+
+// Get the localhost address for the given port.
+// For local development, this is just 'localhost:port'.
+// For remote development on github codespaces, this becomes the forwarded port address.
+function localhost(port) {
+	if (process.env.CODESPACES) {
+		return `${process.env.CODESPACE_NAME}-${port}.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`;
+	} else {
+		return `localhost:${port}`;
+	}
+}
 
 function serve() {
 	let server;
@@ -43,9 +74,9 @@ export default {
 	plugins: [
 		replace({
 			values: {
-				"process.env.ECB_HOSTNAME": `"${process.env.ECB_HOSTNAME}"`,
-				"process.env.JUSTETF_HOSTNAME": `"${process.env.JUSTETF_HOSTNAME}"`,
-				"process.env.YAHOO_FINANCE_QUERY1_HOSTNAME": `"${process.env.YAHOO_FINANCE_QUERY1_HOSTNAME}"`,
+				"process.env.ECB_HOSTNAME": `"${proxy_hostnames['ecb']}"`,
+				"process.env.JUSTETF_HOSTNAME": `"${proxy_hostnames['justetf']}"`,
+				"process.env.YAHOO_FINANCE_QUERY1_HOSTNAME": `"${proxy_hostnames['yahoo_finance_query1']}"`,
 			},
 		}),
 		svelte({
@@ -82,7 +113,7 @@ export default {
 		// browser on changes when not in production
 		!production && livereload({
 			watch: `${__dirname}/public`,
-			clientUrl: "livereload.js?snipver=1",
+			clientUrl: `livereload.js?${livereload_params.toString()}`,
 		}),
 
 		// If we're building for production (npm run build
