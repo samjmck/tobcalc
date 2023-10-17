@@ -8,11 +8,11 @@
 		"Q": QrCode.Ecc.QUARTILE,
 		"H": QrCode.Ecc.HIGH
 	};
-    export let value: string = "";
-	export let ecl: string = "M";
-	export let extent: number = 256;
-	export let border: number = 8;
-	export let label: string = "";
+    export let value = "";
+	export let ecl = "M";
+	export let extent = 256;
+	export let border = 8;
+	export let label = "";
 	let canvas: HTMLCanvasElement;
     let qr: QrCode;
 
