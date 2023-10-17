@@ -13,5 +13,7 @@ Deno.test({
         assertEquals(formatMoney(999_99), "€ 999,99");
         assertEquals(formatMoney(999_99.9), "€ 1000,00");
         assertEquals(formatMoney(999_99.9, "$"), "$ 1000,00");
+        assertEquals(formatMoney(1_99, "$", "."), "$ 1.99");
+        assertEquals(formatMoney(1_99, "", "."), "1.99");
     },
 });

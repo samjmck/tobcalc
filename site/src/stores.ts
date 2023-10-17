@@ -150,3 +150,6 @@ export const adapterNumber = writable(0);
 // Settings
 export const openSettings = writable(false);
 export const alwaysOpenFilterDialog = createSettingStore("alwaysOpenFilterDialog");
+
+// PaymentInfo
+export const openPaymentInfo = writable(false);
