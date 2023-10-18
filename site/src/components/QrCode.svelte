@@ -1,5 +1,5 @@
 <script lang="ts">
-    import QrCode from "../qrcodegen";
+	import QrCode from "../qrcodegen";
 
 	// Error Correction Level map
 	const ECL = {
@@ -8,15 +8,15 @@
 		"Q": QrCode.Ecc.QUARTILE,
 		"H": QrCode.Ecc.HIGH
 	};
-    export let value = "";
+	export let value = "";
 	export let ecl = "M";
 	export let extent = 256;
 	export let border = 8;
 	export let label = "";
 	let canvas: HTMLCanvasElement;
-    let qr: QrCode;
+	let qr: QrCode;
 
-    // Draws the QR Code on a canvas. The canvas dimensions are set to match
+	// Draws the QR Code on a canvas. The canvas dimensions are set to match
 	// the QR Code size (integer depending on the length of the value to encode).
 	// The canvas is rescaled to match the 'extent' property using CSS style
 	// properties.
@@ -38,7 +38,7 @@
 		}
 	}
 
-    $: {
+	$: {
 		qr = QrCode.encodeText(value, ECL[ecl]);
 		drawCanvas(qr, canvas);
 	}
