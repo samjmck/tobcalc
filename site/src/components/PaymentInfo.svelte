@@ -7,7 +7,7 @@
 
     // Defaults from: https://financien.belgium.be/nl/particulieren/internationaal/buitenlandse-inkomsten-en-rekeningen/taks-op-beursverrichtingen#q3
     const defaultBeneficiary = "Inningscentrum - sectie diverse taksen";
-    const defaultIban = "BE64679200222952";
+    const defaultIban = "BE39 6792 0022 9319";
     const defaultBic = "PCHQBEBB";
     let defaultUnstructuredReference: string;
     function getDefaultUnstructuredReference(nn: string, start: string, end: string) {
