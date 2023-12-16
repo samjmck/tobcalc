@@ -2,6 +2,7 @@ import { Writable, writable } from "svelte/store";
 import type { TaxFormData } from "./tobcalc-lib";
 
 export interface SessionInfo {
+    lang: string;
     start: string;
     end: string;
     fullName: string;
@@ -36,6 +37,7 @@ function createLastSessionStore(): Writable<SessionInfo> {
         lastSession = JSON.parse(window.localStorage.getItem("lastSession"));
     } else {
         lastSession = {
+            lang: "EN",
             start: "",
             end: "",
             fullName: "",

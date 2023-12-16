@@ -39,10 +39,16 @@
 		}
 	});
 
+	let lang: string;
 	let pdfBytes: Uint8Array;
-	fetch("tob-fillable.pdf").then(async response => {
-		pdfBytes = new Uint8Array(await response.arrayBuffer());
-	});
+	function loadPdf(lang: string) {
+		fetch(`TOB-${lang}.pdf`).then(async response => {
+			console.log(`Loaded ${lang} PDF`);
+			pdfBytes = new Uint8Array(await response.arrayBuffer());
+		});
+	}
+	$: lang = $lastSession.lang;
+	$: loadPdf(lang);
 
 	// Aggregate taxes per tax rate category and calculate total tax value
 	let tax012FormRow: FormRow;
