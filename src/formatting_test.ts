@@ -11,9 +11,11 @@ Deno.test({
         assertEquals(formatMoney(1_00.1), "€ 1,01");
         assertEquals(formatMoney(1_99.99), "€ 2,00")
         assertEquals(formatMoney(999_99), "€ 999,99");
-        assertEquals(formatMoney(999_99.9), "€ 1000,00");
-        assertEquals(formatMoney(999_99.9, "$"), "$ 1000,00");
-        assertEquals(formatMoney(1_99, "$", "."), "$ 1.99");
-        assertEquals(formatMoney(1_99, "", "."), "1.99");
+        assertEquals(formatMoney(999_99.9), "€ 1 000,00");
+        assertEquals(formatMoney(999_99.9, "$"), "$ 1 000,00");
+        assertEquals(formatMoney(1_99, "$", {decimal: "."}), "$ 1.99");
+        assertEquals(formatMoney(1_99, "", {decimal: "."}), "1.99");
+        assertEquals(formatMoney(1000_00, "", {thousand: "."}), "1.000,00");
+        assertEquals(formatMoney(1000_00, "$", {decimal: ".", thousand: ","}), "$ 1,000.00");
     },
 });
