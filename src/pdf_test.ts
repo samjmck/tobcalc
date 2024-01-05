@@ -8,7 +8,7 @@ Deno.test({
         read: true,
     },
     fn: async () => {
-        const pdfFile = await Deno.readFile("pdfs/TD-OB1-NL-empty-fillable-pdfa.pdf");
+        const pdfFile = await Deno.readFile("pdfs/TOB-NL.pdf");
         const params: Parameters<typeof fillPdf>[1] = {
             start: new Date("21 December 2021 00:00:00 GMT"),
             end: new Date("22 January 2022 00:00:00 GMT"),
@@ -39,10 +39,10 @@ Deno.test({
         const filledDocument = await PDFDocument.load(filledPdf);
         const form = filledDocument.getForm();
 
-        assertEquals(form.getTextField("month_1").getText(), "12");
-        assertEquals(form.getTextField("month_2").getText(), "1");
-        assertEquals(form.getTextField("year_1").getText(), "2021");
-        assertEquals(form.getTextField("year_2").getText(), "2022");
+        assertEquals(form.getTextField("start_month").getText(), "12");
+        assertEquals(form.getTextField("end_month").getText(), "01");
+        assertEquals(form.getTextField("start_year").getText(), "2021");
+        assertEquals(form.getTextField("end_year").getText(), "2022");
 
         assertEquals(form.getTextField("national_registration_number").getText(), params.nationalRegistrationNumber);
         assertEquals(form.getTextField("full_name").getText(), params.fullName);
@@ -69,8 +69,7 @@ Deno.test({
         assertEquals(form.getTextField("location").getText(), params.location);
         assertEquals(form.getTextField("date").getText(), params.date);
 
-        assertEquals(form.getTextField("signature_name").getText(), params.signatureName);
-        assertEquals(form.getTextField("signature_capacity").getText(), params.signatureCapacity);
+        assertEquals(form.getTextField("signer").getText(), `${params.signatureName}  , ${params.signatureCapacity}`);
 
         // No getImage() method on textField so no way to check signature image
 

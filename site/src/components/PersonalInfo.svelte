@@ -14,6 +14,7 @@
 
     const initialLastSession = $lastSession;
 
+    let lang = initialLastSession.lang;
 	let startDateValue = initialLastSession.start;
 	let endDateValue = initialLastSession.end;
 	let fullName = initialLastSession.fullName
@@ -25,6 +26,14 @@
 	let locationValue = initialLastSession.location;
 	let dateValue = initialLastSession.date;
 </script>
+
+<label for="lang">Language</label>
+<select id="lang" name="lang" bind:value={lang} on:change={() => updatePersonalInfo("lang", lang)}>
+    <option value="DE">German</option>
+    <option value="EN">English</option>
+    <option value="FR">French</option>
+    <option value="NL">Dutch</option>
+</select>
 
 <label for="start">Start date</label>
 <input id="start" name="start" type="date" bind:value={startDateValue} on:input={() => updatePersonalInfo("start", startDateValue)} />

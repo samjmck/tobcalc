@@ -49,7 +49,7 @@
             bic,
             beneficiary,
             iban,
-            formatMoney(amount, "", "."),
+            formatMoney(amount, "", {decimal: ".", thousand: ""}),
             "",// Purpose code
             "",// Structured reference
             unstructuredReference,
