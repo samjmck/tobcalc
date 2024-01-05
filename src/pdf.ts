@@ -144,7 +144,11 @@ export async function fillPdf(
     if(params.signaturePng) {
         signatureField.setImage(await document.embedPng(params.signaturePng));
     }
-    setFieldText(signerField, `${params.signatureName}  , ${params.signatureCapacity}`, font);
+    let signer = params.signatureName;
+    if (params.signatureCapacity.length > 0) {
+        signer += `  , ${params.signatureCapacity}`;
+    }
+    setFieldText(signerField, signer, font);
 
     // Remove appropriate strikethrough annotation
     const identification = "inst";
