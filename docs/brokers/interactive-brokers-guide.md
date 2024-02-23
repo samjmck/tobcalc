@@ -11,7 +11,7 @@
 - Currency
 - ISIN
 - Trade Date
-- Amount
+- TradeMoney
 ![Flex query trade confirmation section](../images/ibkr-flex-trade-confirmation.png)
 7. Scroll to the bottom of the page and save the query by clicking on "Continue"
 
