@@ -22,7 +22,7 @@ export const IBKRAdapter: BrokerAdapter = async data => {
     const dateColumnIndex = columnNames.indexOf(`"TradeDate"`);
     const isinColumnIndex = columnNames.indexOf(`"ISIN"`);
     const currencyCodeColumnIndex = columnNames.indexOf(`"CurrencyPrimary"`);
-    const valueColumnIndex = columnNames.indexOf(`"Amount"`);
+    const valueColumnIndex = columnNames.indexOf(`"TradeMoney"`);
 
     if(dateColumnIndex === -1) {
         throw new InformativeError("ibkr_adapter.date_column_index", columnNames);
