@@ -1,6 +1,6 @@
 /node_modules/
-/public/app*
 /src/tobcalc-lib.js
 /public/tobcalc-lib-pdf.js
+/dist
 
 .DS_Store
