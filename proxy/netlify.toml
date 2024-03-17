@@ -27,8 +27,3 @@ status = 302
 from = "/guide-degiro"
 to = "https://github.com/samjmck/tobcalc/blob/master/docs/brokers/degiro-guide.md"
 status = 302
-
-[context.production.environment]
-ECB_HOSTNAME = "tobcalc.com/proxy/ecb"
-JUSTETF_HOSTNAME = "tobcalc.com/proxy/justetf"
-YAHOO_FINANCE_QUERY1_HOSTNAME = "tobcalc.com/proxy/yahoo_finance_query1"
