@@ -4,9 +4,9 @@ import { Trading212Adapter } from "./src/adapters/Trading212_adapter.ts";
 import { BoursoramaAdapter } from "./src/adapters/Boursorama_adapter.ts";
 import { InformativeError } from "./src/InformativeError.ts";
 import {
-    setECBHostname,
-    setJustETFHostname,
-    setYahooFinanceQuery1Hostname,
+    setECBUrlStart,
+    setJustETFUrlStart,
+    setYahooFinanceQuery1UrlStart,
     exchangeRatesMap,
     getDefaultSecuritiesMap,
     getSecurity,
@@ -30,7 +30,7 @@ export {
     CurrencyCode,
     formatMoney,
     isNameRegistered,
-    setECBHostname, setJustETFHostname, setYahooFinanceQuery1Hostname, getDefaultSecuritiesMap, getSecurity,
+    setECBUrlStart, setJustETFUrlStart, setYahooFinanceQuery1UrlStart, getDefaultSecuritiesMap, getSecurity,
     getCurrencyExchangeRatesMap, getExchangeRatesMap,
     getTaxableTransactions, getTaxFormData, getDefaultTaxRate,
 };

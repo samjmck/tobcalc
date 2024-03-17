@@ -409,9 +409,10 @@ export function isNameRegistered(name: string): boolean;
 
 export type ExchangeRatesMap = Map<CurrencyCode, Map<string, number>>;
 
-export function setECBHostname(hostname: string): void;
-export function setJustETFHostname(hostname: string): void;
-export function setYahooFinanceQuery1Hostname(hostname: string): void;
+export function setECBUrlStart(urlStart: string): void;
+export function setJustETFUrlStart(urlStart: string): void;
+export function setYahooFinanceQuery1UrlStart(urlStart: string): void;
+
 export function getExchangeRatesMap(currencyPeriods: { start: Date, end: Date, currencyCode: CurrencyCode }[]): Promise<ExchangeRatesMap>;
 export function getCurrencyExchangeRatesMap(start: Date, end: Date, currencyCode: CurrencyCode): Promise<Map<string, number>>;
 

@@ -6,20 +6,20 @@ import { InformativeError } from "./InformativeError.ts";
 // due to CORS, so the way to make this script work in a
 // web app is to change these variables to proxies for the
 // original hostnames
-let ECB_HOSTNAME = "sdw-wsrest.ecb.europa.eu";
-let YAHOO_FINANCE_QUERY1_HOSTNAME = "query1.finance.yahoo.com";
-let JUSTETF_HOSTNAME = "justetf.com";
+let ECB_URL_START = "https://sdw-wsrest.ecb.europa.eu";
+let YAHOO_FINANCE_QUERY1_URL_START = "https://query1.finance.yahoo.com";
+let JUSTETF_URL_START = "https://justetf.com";
 
-export function setECBHostname(hostname: string) {
-    ECB_HOSTNAME = hostname;
+export function setECBUrlStart(urlStart: string) {
+    ECB_URL_START = urlStart;
 }
 
-export function setYahooFinanceQuery1Hostname(hostname: string) {
-    YAHOO_FINANCE_QUERY1_HOSTNAME = hostname;
+export function setYahooFinanceQuery1UrlStart(urlStart: string) {
+    YAHOO_FINANCE_QUERY1_URL_START = urlStart;
 }
 
-export function setJustETFHostname(hostname: string) {
-    JUSTETF_HOSTNAME = hostname;
+export function setJustETFUrlStart(urlStart: string) {
+    JUSTETF_URL_START = urlStart;
 }
 
 interface ECBTimePeriod {
@@ -80,7 +80,7 @@ export async function getCurrencyExchangeRatesMap(start: Date, end: Date, curren
         requestCurrencyCode = CurrencyCode.GBP;
     }
 
-    const response = await fetch(`https://${ECB_HOSTNAME}/service/data/EXR/D.${requestCurrencyCode}.EUR.SP00.A?${urlParamsString}`);
+    const response = await fetch(`${ECB_URL_START}/service/data/EXR/D.${requestCurrencyCode}.EUR.SP00.A?${urlParamsString}`);
     if(response.status !== 200) {
         throw new Error(`response from ECB RESTful API returned status code ${response.status}`);
     }
@@ -131,7 +131,7 @@ export async function getDefaultSecuritiesMap(isins: string[]): Promise<Map<stri
 }
 
 export async function getSecurity(isin: string): Promise<Security> {
-    const response = await fetch(`https://${YAHOO_FINANCE_QUERY1_HOSTNAME}/v1/finance/search?q=${isin}&quotesCount=1&newsCount=0`);
+    const response = await fetch(`${YAHOO_FINANCE_QUERY1_URL_START}/v1/finance/search?q=${isin}&quotesCount=1&newsCount=0`);
 
     if(response.status !== 200) {
         throw new InformativeError("security.fetch.response_code", { status: response.status, isin });
@@ -155,7 +155,7 @@ export async function getSecurity(isin: string): Promise<Security> {
     switch(quoteType) {
         case "MUTUALFUND":
         case "ETF":
-            const response = await fetch(`https://${JUSTETF_HOSTNAME}/uk/etf-profile.html?isin=${isin}`, {
+            const response = await fetch(`${JUSTETF_URL_START}/uk/etf-profile.html?isin=${isin}`, {
                 "method": "GET",
             });
             const html = await response.text();

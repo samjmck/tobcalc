@@ -2,11 +2,12 @@
 	import { openSettings, openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, type SessionInfo } from "./stores";
 	import TaxRateOverride from "./components/TaxRateOverride.svelte";
 	import PersonalInfo from "./components/PersonalInfo.svelte";
-	import type { fillPdf, FormRow } from "./tobcalc-lib";
 	import {
-		setECBHostname,
-		setJustETFHostname,
-		setYahooFinanceQuery1Hostname,
+		type fillPdf,
+		type FormRow,
+		setECBUrlStart,
+		setJustETFUrlStart,
+		setYahooFinanceQuery1UrlStart,
 	} from "./tobcalc-lib";
 	import { runTests } from "./tests";
 	import type { TaxFormData } from "./tobcalc-lib";
@@ -26,9 +27,9 @@
 		resolveFillPdfPromise(event.data);
 	};
 
-	setECBHostname(import.meta.env.VITE_ECB_HOSTNAME);
-	setJustETFHostname(import.meta.env.VITE_JUSTETF_HOSTNAME);
-	setYahooFinanceQuery1Hostname(import.meta.env.VITE_YAHOO_FINANCE_QUERY1_HOSTNAME);
+	setECBUrlStart(import.meta.env.VITE_ECB_URL_START);
+	setJustETFUrlStart(import.meta.env.VITE_JUSTETF_URL_START);
+	setYahooFinanceQuery1UrlStart(import.meta.env.VITE_YAHOO_FINANCE_QUERY1_URL_START);
 
 	let failedTestsError = "";
 	runTests().then(result => {
