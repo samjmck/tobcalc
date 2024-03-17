@@ -1,21 +1,19 @@
 <script lang="ts">
-	import { openSettings, openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, SessionInfo } from "./stores";
+	import { openSettings, openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, type SessionInfo } from "./stores";
 	import TaxRateOverride from "./components/TaxRateOverride.svelte";
 	import PersonalInfo from "./components/PersonalInfo.svelte";
-	import type { fillPdf, FormRow } from "./tobcalc-lib.js";
+	import type { fillPdf, FormRow } from "./tobcalc-lib";
 	import {
 		setECBHostname,
 		setJustETFHostname,
 		setYahooFinanceQuery1Hostname,
-	} from "./tobcalc-lib.js";
+	} from "./tobcalc-lib";
 	import { runTests } from "./tests";
-	import type { TaxFormData } from "./tobcalc-lib.js";
+	import type { TaxFormData } from "./tobcalc-lib";
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
 	import Settings from "./components/Settings.svelte";
 	import PaymentInfo from "./components/PaymentInfo.svelte";
-
-	declare const process: { env: { [key: string]: string } };
 
 	const pdfWorker = new Worker("tobcalc-lib-pdf.js");
 
@@ -28,9 +26,9 @@
 		resolveFillPdfPromise(event.data);
 	};
 
-	setECBHostname(process.env.ECB_HOSTNAME);
-	setJustETFHostname(process.env.JUSTETF_HOSTNAME);
-	setYahooFinanceQuery1Hostname(process.env.YAHOO_FINANCE_QUERY1_HOSTNAME);
+	setECBHostname(import.meta.env.VITE_ECB_HOSTNAME);
+	setJustETFHostname(import.meta.env.VITE_JUSTETF_HOSTNAME);
+	setYahooFinanceQuery1Hostname(import.meta.env.VITE_YAHOO_FINANCE_QUERY1_HOSTNAME);
 
 	let failedTestsError = "";
 	runTests().then(result => {
@@ -113,14 +111,15 @@
 				tableATax132TaxValue: tax132FormRow.taxValue,
 				tableATotalTaxValue: totalTaxValue,
 				totalTaxValue: totalTaxValue,
-				signaturePng: signatureFiles[0] ? new Uint8Array(await signatureFiles[0].arrayBuffer()) : undefined,
+				signaturePng: <Uint8Array> (signatureFiles[0] ? new Uint8Array(await signatureFiles[0].arrayBuffer()) : undefined),
 				signatureName: personalInfo.signatureName,
 				signatureCapacity: personalInfo.signatureCapacity,
 				location: personalInfo.location,
 				date: personalInfo.date,
 			});
 		} catch(error) {
-			pdfError = error.message;
+			pdfError = "Error while generating pdf";
+			console.error(error);
 		}
 	}
 

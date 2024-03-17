@@ -7,7 +7,7 @@
         Security,
         TaxableTransaction
     } from "../tobcalc-lib";
-    import { formatMoney, isNameRegistered, SecurityType, getTaxableTransactions, getTaxFormData } from "../tobcalc-lib.js";
+    import { formatMoney, isNameRegistered, SecurityType, getTaxableTransactions, getTaxFormData } from "../tobcalc-lib";
     import { Broker } from "../broker";
     import { getSecuritiesMapWithOverrides, getTaxRateWithOverrides } from "../overrides";
     import { formatPercentage } from "../format";
@@ -28,7 +28,7 @@
     }
 
     let openFailedSecuritiesPrompt = false;
-    let failedSecuritiesIsins = [];
+    let failedSecuritiesIsins: string[] = [];
     let resolveNewSecurities: (newSecurities: Map<string, Security>) => void;
     function promptNewSecurities(failedIsins: string[]): Promise<Map<string, Security>> {
         return new Promise(resolve => {

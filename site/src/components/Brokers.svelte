@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { IBKRAdapter, DEGIROAdapter, Trading212Adapter, BoursoramaAdapter } from "../tobcalc-lib.js";
+    import { IBKRAdapter, DEGIROAdapter, Trading212Adapter, BoursoramaAdapter } from "../tobcalc-lib";
     import { adapterNumber, totalTaxFormData } from "../stores";
     import BrokerAdapter from "./BrokerAdapter.svelte";
     import { Broker, brokers } from "../broker";

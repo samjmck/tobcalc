@@ -1,8 +1,8 @@
-html, body {
+html, body, #app {
 	position: relative;
 }
 
-body {
+#app {
 	color: #333;
 	margin: 0;
 	padding: 1em;

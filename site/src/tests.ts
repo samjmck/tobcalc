@@ -1,5 +1,5 @@
-import { CurrencyCode, getCurrencyExchangeRatesMap, getSecurity, SecurityType } from "./tobcalc-lib.js";
-import type { ETF } from "./tobcalc-lib.js";
+import { CurrencyCode, getCurrencyExchangeRatesMap, getSecurity, SecurityType } from "./tobcalc-lib";
+import type { ETF } from "./tobcalc-lib";
 
 // TODO: use informative error instead of string?
 export async function runTests(): Promise<string | null> {

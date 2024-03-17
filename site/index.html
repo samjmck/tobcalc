@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-	<meta charset='utf-8'>
+  <head>
+    <meta charset='utf-8'>
 	<meta name='viewport' content='width=device-width,initial-scale=1'>
 	<meta name="description" content="Calculate the Belgian transaction tax from foreign brokers and automatically fill in the tax declaration PDF" />
 
@@ -9,14 +9,13 @@
 
 	<link rel='icon' type='image/png' href='/favicon.png'>
 	<link rel='stylesheet' href='/global.css'>
-	<link rel='stylesheet' href='/app.css'>
-
-	<script defer type="module" src='/app.js'></script>
 
 	<script async defer data-collect-dnt="true" src="https://a.tobcalc.com/v9/app.js" integrity="sha384-hFrVEAdqyGUOb6hGXhvZfv74NfUZ1dq9NFP0wCSS3wu9FAJzbCDuclFBC4IDfM0s" crossorigin="anonymous"></script>
-	<noscript><img src="https://a.tobcalc.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
-</head>
 
-<body>
-</body>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  	<noscript><img src="https://a.tobcalc.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+  </body>
 </html>

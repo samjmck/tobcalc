@@ -1,5 +1,3 @@
-import { lowerCaseRegisteredFunds } from "../../src/registered_funds.ts";
-
 export interface ECBTimePeriod {
     id: string;
     name: string;

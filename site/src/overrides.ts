@@ -1,5 +1,5 @@
-import type { Security, TaxableTransaction, TaxRateFunction } from "./tobcalc-lib.js";
-import { getDefaultTaxRate, getSecurity, SecurityType } from "./tobcalc-lib.js";
+import type { Security, TaxableTransaction, TaxRateFunction } from "./tobcalc-lib";
+import { getDefaultTaxRate, getSecurity, SecurityType } from "./tobcalc-lib";
 
 export const taxRates = [
     0.0012,
@@ -37,7 +37,7 @@ export async function getSecuritiesMapWithOverrides(
     getFailedIsinsSecurities: (failedIsins: string[]) => Promise<Map<string, Security>>,
 ): Promise<Map<string, Security>> {
     const securitiesMap = new Map<string, Security>();
-    const failedIsins = [];
+    const failedIsins: string[] = [];
     const promises = [];
     for(const isin of isins) {
         const hardcodedSecurity = hardcodedSecurities.get(isin);

@@ -1,10 +1,10 @@
 <script lang="ts">
-    import type { BrokerTransaction } from "../tobcalc-lib.js";
-    import { formatMoney } from "../tobcalc-lib.js";
+    import type { BrokerTransaction } from "../tobcalc-lib";
+    import { formatMoney } from "../tobcalc-lib";
     import { formatDate } from "../format";
     import { alwaysOpenFilterDialog } from "../stores";
 
-    export let check;
+    export let check: boolean;
     export let brokerTransactions: BrokerTransaction[];
     export let resolveFilteredBrokerTransactions: (filteredBrokerTransactions: BrokerTransaction[]) => void;
 

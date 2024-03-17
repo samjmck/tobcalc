@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Security } from "../tobcalc-lib";
-    import { SecurityType } from "../tobcalc-lib.js";
+    import { SecurityType } from "../tobcalc-lib";
 
     export let open: boolean;
     export let failedIsins: string[];

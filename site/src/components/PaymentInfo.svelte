@@ -1,6 +1,6 @@
 <script lang="ts">
     import { openPaymentInfo, nationalRegistrationNumber, lastSession } from "../stores";
-    import { formatMoney } from "../tobcalc-lib.js";
+    import { formatMoney } from "../tobcalc-lib";
     import QrCode from "./QrCode.svelte";
 
     export let amount = 0.00;
