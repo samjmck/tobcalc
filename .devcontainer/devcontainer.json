@@ -5,21 +5,15 @@
 	"postCreateCommand": "cd site && npm install",
 	"postStartCommand": "deno run --allow-net --allow-write scripts/fetch_registered_funds.ts && ./web_bundle.sh",
 	"postAttachCommand": {
-		"caddy": "cd site && caddy run",
 		"npm": "cd site && npm run dev"
 	},
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/deno": {},
-		"ghcr.io/devcontainers-contrib/features/caddy": {}
+		"ghcr.io/devcontainers-contrib/features/deno": {}
 	},
-	"forwardPorts": [8081, 35729],
+	"forwardPorts": [5173],
 	"portsAttributes": {
-		"8081": {
+		"5173": {
 			"label": "Web App"
-		},
-		"35729": {
-			"label": "Live Reload",
-			// "visiblity": "public" // Not supported at this moment, so needs to be manually done
 		}
 	},
 	"customizations": {
