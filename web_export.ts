@@ -30,7 +30,10 @@ export {
     CurrencyCode,
     formatMoney,
     isNameRegistered,
-    setECBUrlStart, setJustETFUrlStart, setYahooFinanceQuery1UrlStart, getDefaultSecuritiesMap, getSecurity,
+    setECBUrlStart,
+    setJustETFUrlStart,
+    setYahooFinanceQuery1UrlStart,
+    getDefaultSecuritiesMap, getSecurity,
     getCurrencyExchangeRatesMap, getExchangeRatesMap,
     getTaxableTransactions, getTaxFormData, getDefaultTaxRate,
 };
