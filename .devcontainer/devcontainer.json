@@ -13,7 +13,7 @@
 	"forwardPorts": [5173],
 	"portsAttributes": {
 		"5173": {
-			"label": "Web App"
+			"label": "Vite web app"
 		}
 	},
 	"customizations": {
