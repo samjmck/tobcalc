@@ -66,4 +66,3 @@ The transactions file gets processed locally. For transactions in a foreign curr
 
 1. It should be possible to merge trades into one. This could be implemented in a similar way to how the [filter broker transactions](site/src/components/PromptFilterBrokerTransactions.svelte) or [failed security fetches](site/src/components/PromptFailedSecurityFetches.svelte) prompts work.
 2. A clean-up of the codebase is needed. Some of the code, especially regarding the way prompts work and how default values are handled, is a bit hacky. I would like to find a more robust way to handle this. Some of the proxies are also unused and can be removed.
-3. Local development should be simplified with a proxy built in to the dev server and not with a separate proxy server such as Caddy.
