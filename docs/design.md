@@ -8,7 +8,7 @@ As this project will be handling sensitive financial data, the majority of the c
 
 Most third-party services or APIs have [Cross-Origin Resource Sharing headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) that prevent websites other than their own from using them. This makes it impossible for tobcalc to contact the APIs needed to fetch exchange rates and basic data for securities, such as the name or type of security. This information is required to determine the correct tax rate for the transaction and is not always included in a broker's transactions export. 
 
-To get around this, tobcalc uses Netlify, the host of [tobcalc.com](tobcalc.com), as a proxy. This means requests from the client get forwarded by the host to the API. The downside of this workaround is that some data passes through an extra server instead of being sent straight to the API. This data includes the dates of transactions being sent to the European Central Bank's API for exchange rates and transaction's ISIN numbers being searched on Investing.com to determine the type of security.
+To get around this, tobcalc uses Netlify, the host of [tobcalc.com](tobcalc.com), as a proxy. This means requests from the client get forwarded by the host to the API. The downside of this workaround is that some data passes through an extra server instead of being sent straight to the API. This data includes the dates of transactions being sent to the European Central Bank's API for exchange rates and transaction's ISIN numbers being searched on JustETF to determine the type of security.
 
 The user can also self-host the site and proxy by building cloning the repository, building the code and running the development server.
 

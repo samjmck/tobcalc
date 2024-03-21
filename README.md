@@ -30,7 +30,7 @@ tobcalc is a project that calculates the Belgian transaction tax on securities f
 
 ## Why does this project exist?
 
-Belgian brokers pay the transaction tax, also known as the TOB, automatically for you. However, if you use a foreign broker, such as Interactive Brokers or tastyworks, you will have to calculate, pay and file this tax manually for every transaction you made in the period of 2 months. This process can be time-consuming and frustrating, which is why many Belgian investors decide not to use foreign brokers despite them possibly fitting their needs better than domestic brokers. 
+Belgian brokers pay the transaction tax, also known as the TOB, automatically for you. However, if you use a foreign broker, such as Interactive Brokers or Trading212, you will have to calculate, pay and file this tax manually for every transaction you made in the period of 2 months. This process can be time-consuming and frustrating, which is why many Belgian investors decide not to use foreign brokers despite them possibly fitting their needs better than domestic brokers. 
 
 The goal of this project is to simplify the process of calculating and filing the TOB. By doing so, the threshold is lowered for Belgian investors that would like to invest using their broker of choice.
 
@@ -51,7 +51,7 @@ Once the data is complete with the parameters needed to calculate the tax rates 
 
 ## Is it secure?
 
-The transactions file gets processed locally. For transactions in a foreign currency, the exchange rate on the date of the transaction will be fetched from the European Central Bank. This means that the date of the transaction and the currency will be sent to their server. For securities such as ETFs, it's required to know whether the fund is accumulating or distributing to be able to calculate the correct tax rate. For this, the ISIN of the security will be sent to Investing.com's server.
+The transactions file gets processed locally. For transactions in a foreign currency, the exchange rate on the date of the transaction will be fetched from the European Central Bank. This means that the date of the transaction and the currency will be sent to their server. To determine the type of security in a transaction, the security's ISIN is sent to Yahoo Finance. If the security is an ETF, the ISIN will also be sent to JustETF to determine whether the fund is accumulating or distributing. 
 
 [Read more details on tobcalc's security details and design here.](docs/design.md)
 
