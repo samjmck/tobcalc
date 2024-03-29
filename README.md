@@ -4,8 +4,6 @@ https://user-images.githubusercontent.com/25828757/161982707-3b84b8e1-cae3-4ec0-
 
 tobcalc is a project that calculates the Belgian transaction tax on securities for various brokers and fills in the PDF form associated with these taxes.
 
-> Note: while tobcalc is still fully functional, I haven't had time to fix some bugs and to add new features. If you would like to contribute, please do so. [There's a list](#to-do-list) of issues that need to be fixed and features that would be nice to have.
-
 ## Navigation
 
 ### FAQ
@@ -21,12 +19,6 @@ tobcalc is a project that calculates the Belgian transaction tax on securities f
 - [Interactive Brokers](docs/brokers/interactive-brokers-guide.md)
 - [DEGIRO](docs/brokers/degiro-guide.md)
 - [Boursorama](docs/brokers/boursorama-guide.md)
-
-#### Development
-
-- [Project design](docs/design.md)
-- [Local development](docs/local-development.md)
-- [How to add support for a broker](docs/add-broker.md)
 
 ## Why does this project exist?
 
