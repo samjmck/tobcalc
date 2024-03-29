@@ -51,7 +51,7 @@
 
     let files: File[] = [];
     let taxableTransactions: TaxableTransaction[] = [];
-    let taxFormData: Map<number, FormRow> = new Map();
+    let taxResults: [string, FormRow][] = [];
     let adapterError = "";
     async function updateTaxableTransactions() {
         try {
@@ -70,8 +70,13 @@
             adapterError = error.message;
         }
     }
-    async function updateTaxFormData(taxableTransactions: TaxableTransaction[], taxRateOverrides: Map<string, number>) {
-        taxFormData = await getTaxFormData(taxableTransactions, getTaxRateWithOverrides(taxRateOverrides));
+    function updateTaxFormData(taxableTransactions: TaxableTransaction[], taxRateOverrides: Map<string, number>) {
+        const taxFormData = getTaxFormData(taxableTransactions, getTaxRateWithOverrides(taxRateOverrides));
+		taxResults = [
+			['0.12%', taxFormData['012']],
+            ['0.35%', taxFormData['035']],
+            ['1.32%', taxFormData['132']]
+        ]
         totalTaxFormData.setTaxFormData(selectedBrokerNumber, taxFormData);
     }
 
@@ -118,10 +123,10 @@
         <th>Tax base</th>
         <th>Tax value</th>
     </tr>
-    {#each [...taxFormData.entries()] as [taxRate, formRow], i}
+    {#each taxResults as [taxRate, formRow], i}
     <tr>
         <td>{i + 1}</td>
-        <td>{formatPercentage(taxRate)}</td>
+        <td>{taxRate}</td>
         <td>{formRow.quantity}</td>
         <td>{formatMoney(formRow.taxBase)}</td>
         <td>{formatMoney(formRow.taxValue)}</td>

@@ -13,8 +13,9 @@
 	import Brokers from "./components/Brokers.svelte";
 	import Settings from "./components/Settings.svelte";
 	import PaymentInfo from "./components/PaymentInfo.svelte";
+	import PdfWorker from "./pdf-worker?worker";
 
-	const pdfWorker = new Worker("tobcalc-lib-pdf.js");
+	const pdfWorker = new PdfWorker();
 
 	let resolveFillPdfPromise: (result: string) => void;
 	const workerFillPdf = (...params: Parameters<typeof fillPdf>): Promise<string> => {
@@ -51,7 +52,7 @@
 	let tax012FormRow: FormRow;
 	let tax035FormRow: FormRow;
 	let tax132FormRow: FormRow;
-	let totalTaxValue: number = 0;
+	let totalTaxValue = 0;
 	function aggregateTaxes(totalTaxFormData: Map<number, TaxFormData>) {
 		const emptyFormRow: FormRow = {
 			quantity: 0,
@@ -62,24 +63,26 @@
 		tax035FormRow = Object.assign({}, emptyFormRow);
 		tax132FormRow = Object.assign({}, emptyFormRow);
 		totalTaxValue = 0;
+
 		for(const [_, taxFormData] of totalTaxFormData) {
-			for(const [taxRate, { quantity, taxBase, taxValue }] of taxFormData) {
-				let aggregatedFormRow: FormRow;
-				switch(taxRate) {
-					case 0.0012:
-						aggregatedFormRow = tax012FormRow;
-						break;
-					case 0.0035:
-						aggregatedFormRow = tax035FormRow;
-						break;
-					default:
-						aggregatedFormRow = tax132FormRow;
-				}
-				aggregatedFormRow.quantity += quantity;
-				aggregatedFormRow.taxBase += taxBase;
-				aggregatedFormRow.taxValue += taxValue;
-				totalTaxValue += taxValue;
-			}
+			const formRow012 = <FormRow> taxFormData['012'];
+			const formRow035 = <FormRow> taxFormData['035'];
+			const formRow132 = <FormRow> taxFormData['132'];
+			const formRowTotalTax = taxFormData['total'];
+
+			tax012FormRow.quantity += formRow012.quantity;
+			tax012FormRow.taxBase += formRow012.taxBase;
+			tax012FormRow.taxValue += formRow012.taxValue;
+
+			tax035FormRow.quantity += formRow035.quantity;
+			tax035FormRow.taxBase += formRow035.taxBase;
+			tax035FormRow.taxValue += formRow035.taxValue;
+
+			tax132FormRow.quantity += formRow132.quantity;
+			tax132FormRow.taxBase += formRow132.taxBase;
+			tax132FormRow.taxValue += formRow132.taxValue;
+
+			totalTaxValue += formRowTotalTax;
 		}
 	}
 
