@@ -4,6 +4,8 @@ https://user-images.githubusercontent.com/25828757/161982707-3b84b8e1-cae3-4ec0-
 
 tobcalc is a project that calculates the Belgian transaction tax on securities for various brokers and fills in the PDF form associated with these taxes.
 
+The core library used by tobcalc is in a separate repository: [tobcalc-lib](https://github.com/samjmck/tobcalc-lib)
+
 ## Navigation
 
 ### FAQ
