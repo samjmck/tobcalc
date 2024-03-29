@@ -1,11 +1,9 @@
-// For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "tobcalc",
 	"image": "mcr.microsoft.com/devcontainers/typescript-node",
-	"postCreateCommand": "cd site && npm install",
-	"postStartCommand": "deno run --allow-net --allow-write scripts/fetch_registered_funds.ts && ./web_bundle.sh",
+	"postCreateCommand": "npm install",
 	"postAttachCommand": {
-		"npm": "cd site && npm run dev"
+		"npm": "npm run dev"
 	},
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/deno": {}
@@ -19,8 +17,7 @@
 	"customizations": {
 		"codespaces": {
 			"openFiles": [
-				"docs/remote-development.md",
-				"docs/local-development.md"
+				"README.md"
 			]
 		},
 		"vscode": {

@@ -2,8 +2,5 @@
 .idea
 .vscode
 node_modules
-pdfs/assets/PDFAHelvetica.pfb
-pdfs/build
-public/build
 src/registered_funds.ts
 .netlify
