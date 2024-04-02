@@ -13,6 +13,7 @@
     import { formatPercentage } from "../format";
     import PromptFailedSecurityFetches from "./PromptFailedSecurityFetches.svelte";
     import PromptFilterBrokerTransactions from "./PromptFilterBrokerTransactions.svelte";
+    import PromptMergeTransactions from "./PromptMergeTransactions.svelte";
 
     export let broker: Broker;
     export let selectedBrokerNumber: number;
@@ -49,6 +50,16 @@
         });
     }
 
+    let shouldCheckMergeTransactionPrompt = false;
+    let resolveMergedBrokerTransactions: (mergedTransactions: BrokerTransaction[]) => void;
+    function mergeBrokerTransactions(brokerTransactions: BrokerTransaction[]): Promise<BrokerTransaction[]> {
+        return new Promise(resolve => {
+            brokerTransactions = brokerTransactions;
+            shouldCheckMergeTransactionPrompt = true;
+            resolveMergedBrokerTransactions = resolve;
+        });
+    }
+
     let files: File[] = [];
     let taxableTransactions: TaxableTransaction[] = [];
     let taxResults: [string, FormRow][] = [];
@@ -56,8 +67,9 @@
     async function updateTaxableTransactions() {
         try {
             brokerTransactions = await brokerAdapter(files[0]);
-            const filteredBrokerTransactions = await filterBrokerTransactions(brokerTransactions);
-            taxableTransactions = await getTaxableTransactions(filteredBrokerTransactions, isins => {
+            brokerTransactions = await filterBrokerTransactions(brokerTransactions);
+            brokerTransactions = await mergeBrokerTransactions(brokerTransactions);
+            taxableTransactions = await getTaxableTransactions(brokerTransactions, isins => {
                 return getSecuritiesMapWithOverrides(isins, failedIsins => {
                     if(failedIsins.length > 0) {
                         return promptNewSecurities(failedIsins);
@@ -134,7 +146,8 @@
     {/each}
 </table>
 
-<PromptFilterBrokerTransactions bind:check={checkDuplicateBrokerTransactions} brokerTransactions={brokerTransactions} {resolveFilteredBrokerTransactions} />
+<PromptFilterBrokerTransactions bind:check={checkDuplicateBrokerTransactions} {brokerTransactions} {resolveFilteredBrokerTransactions} />
+<PromptMergeTransactions bind:shouldCheck={shouldCheckMergeTransactionPrompt} {brokerTransactions} {resolveMergedBrokerTransactions} />
 <PromptFailedSecurityFetches bind:open={openFailedSecuritiesPrompt} failedIsins={failedSecuritiesIsins} {resolveNewSecurities} />
 
 <style>
