@@ -11,9 +11,9 @@
     import { Broker } from "../broker";
     import { getSecuritiesMapWithOverrides, getTaxRateWithOverrides } from "../overrides";
     import { formatPercentage } from "../format";
-    import PromptFailedSecurityFetches from "./PromptFailedSecurityFetches.svelte";
-    import PromptFilterBrokerTransactions from "./PromptFilterBrokerTransactions.svelte";
-    import PromptMergeTransactions from "./PromptMergeTransactions.svelte";
+    import PromptFailedSecurityFetches from "./modal/PromptFailedSecurityFetches.svelte";
+    import PromptFilterBrokerTransactions from "./modal/PromptFilterBrokerTransactions.svelte";
+    import PromptMergeTransactions from "./modal/PromptMergeTransactions.svelte";
 
     export let broker: Broker;
     export let selectedBrokerNumber: number;

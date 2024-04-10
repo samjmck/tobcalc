@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
-    import { formatDate } from "../format";
-    import { alwaysOpenFilterDialog } from "../stores";
+    import { formatDate } from "../../format";
+    import { alwaysOpenFilterDialog } from "../../stores";
 
     export let check: boolean;
     export let brokerTransactions: BrokerTransaction[];

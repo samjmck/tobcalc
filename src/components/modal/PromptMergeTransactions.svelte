@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
-    import { formatDate } from "../format";
+    import { formatDate } from "../../format";
 
     export let shouldCheck: boolean;
     export let brokerTransactions: BrokerTransaction[];

@@ -11,8 +11,8 @@
 	import type { TaxFormData, fillPdf, FormRow } from "@samjmck/tobcalc-lib";
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
-	import Settings from "./components/Settings.svelte";
-	import PaymentInfo from "./components/PaymentInfo.svelte";
+	import Settings from "./components/modal/Settings.svelte";
+	import PaymentInfo from "./components/modal/PaymentInfo.svelte";
 	import PdfWorker from "./pdf-worker?worker";
 
 	const pdfWorker = new PdfWorker();

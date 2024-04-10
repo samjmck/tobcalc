@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { openSettings, alwaysOpenFilterDialog } from "../stores";
+    import { openSettings, alwaysOpenFilterDialog } from "../../stores";
 </script>
 
 <dialog open={$openSettings}>
