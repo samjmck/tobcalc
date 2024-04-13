@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { openSettings, openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, type SessionInfo } from "./stores";
+	import { openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, type SessionInfo } from "./stores";
 	import TaxRateOverride from "./components/TaxRateOverride.svelte";
 	import PersonalInfo from "./components/PersonalInfo.svelte";
 	import {
@@ -11,7 +11,6 @@
 	import type { TaxFormData, fillPdf, FormRow } from "@samjmck/tobcalc-lib";
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
-	import Settings from "./components/modal/Settings.svelte";
 	import PaymentInfo from "./components/modal/PaymentInfo.svelte";
 	import PdfWorker from "./pdf-worker?worker";
 	import Header from "./components/Header.svelte";
@@ -172,11 +171,10 @@
 	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
 </div>
 
-<Settings />
+<!-- Modals -->
 <PaymentInfo amount={totalTaxValue} />
 
 <footer>
-	<a on:click|preventDefault={() => $openSettings = true}>Open settings</a>
 	<a href="https://github.com/samjmck/tobcalc">GitHub</a>
 	<a href="https://samjmck.com">samjmck.com</a>
 	<a href="/privacy-policy.txt">Privacy Policy</a>
@@ -192,12 +190,13 @@
 		margin: 1em 0;
 	}
 	footer {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		text-align: center;
-		background-color: white;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		gap: 5%;
+		margin-top: 1rem;
+		background-color: rgb(238, 238, 238);
+		border-top: 1px solid #bebebe;
 		padding: 1em;
 	}
 	footer a {

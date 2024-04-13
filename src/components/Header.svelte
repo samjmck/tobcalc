@@ -1,11 +1,19 @@
 <script>
   import { openSettings } from "../stores";
+  import Settings from "./modal/Settings.svelte";
+  import Ic_setting from "./icon/Setting.svelte";
 </script>
 
+<Settings />
 <header>
   <div class="content">
     <div>
       <h1 class="header-brand">TOBCALC</h1>
+    </div>
+    <div class="action-menu">
+      <button on:click={() => $openSettings = true}>
+        <Ic_setting color="white" />
+      </button>
     </div>
   </div>
 </header>
