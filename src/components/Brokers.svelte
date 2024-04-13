@@ -8,6 +8,7 @@
     import { adapterNumber, totalTaxFormData } from "../stores";
     import BrokerAdapter from "./BrokerAdapter.svelte";
     import { Broker, brokers } from "../broker";
+    import Button from "./ui/Button.svelte";
 
     let selectedBrokers: Map<number, Broker> = new Map();
 	selectedBrokers.set($adapterNumber++, Broker.InteractiveBrokers);
@@ -28,7 +29,7 @@
 	}
 </script>
 
-<button on:click|preventDefault={() => addSelectedBroker(Broker.InteractiveBrokers)}>Import extra transactions file</button>
+<Button style='primary' on:click={() => addSelectedBroker(Broker.InteractiveBrokers)}>Add import file</Button>
 
 {#each [...selectedBrokers.entries()] as [selectedBrokerNumber, selectedBroker] (selectedBrokerNumber)}
 <div class="selected-service">

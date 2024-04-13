@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Button from "./ui/Button.svelte";
+
     export let objectUrl: string;
     export let error: string;
 
@@ -15,7 +17,7 @@
 </script>
 
 <a id="download-link" on:click={() => sa_event("download_pdf")} bind:this={downloadElement} download="tob-filled.pdf">Download PDF</a>
-<button on:click|preventDefault={() => downloadElement.click()}>Download pdf</button>
+<Button style="primary" on:click={() => downloadElement.click()}>Download pdf</Button>
 <p class="pdf-error">{error}</p>
 <embed bind:this={embedElement} width="500" height="700" />
 
@@ -23,7 +25,4 @@
     #download-link {
         display: none;
     }
-    button {
-		margin: 1em 0;
-	}
 </style>

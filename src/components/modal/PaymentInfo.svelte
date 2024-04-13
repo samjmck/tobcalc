@@ -2,6 +2,7 @@
     import { openPaymentInfo, nationalRegistrationNumber, lastSession } from "../../stores";
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import QrCode from "../ui/QrCode.svelte";
+    import Button from "../ui/Button.svelte";
 
     export let amount = 0.00;
 
@@ -76,6 +77,7 @@
         <QrCode value={qrData} ecl="M" label="Scan to pay in banking app" />
         <!--{/if}-->
     </div>
+    <Button style="secondary" slot="footer" on:click={() => $openPaymentInfo = false}>Close</Button>
 </dialog>
 
 <style>

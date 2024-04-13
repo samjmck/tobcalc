@@ -3,6 +3,7 @@
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import { formatDate } from "../../format";
     import { alwaysOpenFilterDialog } from "../../stores";
+    import Button from "../ui/Button.svelte";
 
     export let check: boolean;
     export let brokerTransactions: BrokerTransaction[];
@@ -94,7 +95,7 @@
         {/each}
     </table>
     <form method="dialog">
-        <button on:click={finishedFiltering}>Continue</button>
+        <Button style=secondary on:click={finishedFiltering}>Continue</Button>
     </form>
 </dialog>
 

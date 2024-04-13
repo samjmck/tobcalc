@@ -2,6 +2,7 @@
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import { formatDate } from "../../format";
+    import Button from "../ui/Button.svelte";
 
     export let shouldCheck: boolean;
     export let brokerTransactions: BrokerTransaction[];
@@ -95,7 +96,7 @@
         {/each}
     </table>
     <form method="dialog">
-        <button on:click={finishedMerging}>Continue</button>
+        <Button style="secondary" on:click={finishedMerging}>Continue</Button>
     </form>
 </dialog>
 

@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Security } from "@samjmck/tobcalc-lib";
     import { SecurityType } from "@samjmck/tobcalc-lib";
+    import Button from "../ui/Button.svelte";
 
     export let open: boolean;
     export let failedIsins: string[];
@@ -70,7 +71,7 @@
         {/each}
     </table>
     <form method="dialog">
-        <button on:click={finishedNewSecurities}>Continue</button>
+        <Button style="secondary" on:click={finishedNewSecurities}>Continue</Button>
     </form>
 </dialog>
 

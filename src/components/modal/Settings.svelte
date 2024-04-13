@@ -1,11 +1,12 @@
 <script lang="ts">
     import { openSettings, alwaysOpenFilterDialog } from "../../stores";
+    import Button from "../ui/Button.svelte";
 </script>
 
 <dialog open={$openSettings}>
     <label for="alwaysOpenFilterDialog">Always open transactions filter dialog</label> <input id="alwaysOpenFilterDialog" type="checkbox" bind:checked={$alwaysOpenFilterDialog} />
     <form method="dialog">
-        <button on:click={() => $openSettings = false}>Close</button>
+        <Button style="secondary" on:click={() => $openSettings = false}>Close</Button>
     </form>
 </dialog>
 

@@ -14,6 +14,7 @@
 	import Settings from "./components/modal/Settings.svelte";
 	import PaymentInfo from "./components/modal/PaymentInfo.svelte";
 	import PdfWorker from "./pdf-worker?worker";
+	import Button from "./components/ui/Button.svelte";
 
 	const pdfWorker = new PdfWorker();
 
@@ -165,7 +166,7 @@
 </div>
 
 <div class="column">
-	<button on:click={() => $openPaymentInfo = true}>Payment Info</button>
+	<Button style="primary" on:click={() => $openPaymentInfo = true}>Payment Info</Button>
 	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
 </div>
 
