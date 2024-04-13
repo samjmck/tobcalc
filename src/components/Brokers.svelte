@@ -9,6 +9,7 @@
     import BrokerAdapter from "./BrokerAdapter.svelte";
     import { Broker, brokers } from "../broker";
     import Button from "./ui/Button.svelte";
+    import Select from "./ui/Select.svelte";
 
     let selectedBrokers: Map<number, Broker> = new Map();
 	selectedBrokers.set($adapterNumber++, Broker.InteractiveBrokers);
@@ -33,11 +34,11 @@
 
 {#each [...selectedBrokers.entries()] as [selectedBrokerNumber, selectedBroker] (selectedBrokerNumber)}
 <div class="selected-service">
-    <select on:change={event => setSelectedBroker(selectedBrokerNumber, event.target.value)}>
-        {#each brokers as service}
-            <option value={service}>{service}</option>
-        {/each}
-    </select>
+    <Select on:change={event => setSelectedBroker(selectedBrokerNumber, event.target.value)}>
+    {#each brokers as service}
+        <option value={service}>{service}</option>
+    {/each}
+    </Select>
     <button on:click|preventDefault={() => removeSelectedBroker(selectedBrokerNumber)}>Remove</button>
     {#if selectedBroker === Broker.InteractiveBrokers}
         <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={IBKRAdapter} />

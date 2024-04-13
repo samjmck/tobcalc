@@ -1,6 +1,7 @@
 <script lang="ts">
     import { lastSession, signatureFiles, nationalRegistrationNumber } from "../stores";
     import type { SessionInfo } from "../stores";
+    import Select from "./ui/Select.svelte";
     let pdfObjectUrl = "";
 
     function updatePersonalInfo(key: keyof SessionInfo, value: string) {
@@ -28,12 +29,12 @@
 </script>
 
 <label for="lang">Language</label>
-<select id="lang" name="lang" bind:value={lang} on:change={() => updatePersonalInfo("lang", lang)}>
+    <Select id="lang" name="lang" bind:value={lang} on:change={() => updatePersonalInfo("lang", lang)}>
     <option value="DE">German</option>
     <option value="EN">English</option>
     <option value="FR">French</option>
     <option value="NL">Dutch</option>
-</select>
+    </Select>
 
 <label for="start">Start date</label>
 <input id="start" name="start" type="date" bind:value={startDateValue} on:input={() => updatePersonalInfo("start", startDateValue)} />

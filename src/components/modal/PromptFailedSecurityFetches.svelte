@@ -2,6 +2,7 @@
     import type { Security } from "@samjmck/tobcalc-lib";
     import { SecurityType } from "@samjmck/tobcalc-lib";
     import Button from "../ui/Button.svelte";
+    import Select from "../ui/Select.svelte";
 
     export let open: boolean;
     export let failedIsins: string[];
@@ -52,17 +53,17 @@
             <td>{newSecurity.isin}</td>
             <td><input type="text" bind:value={newSecurity.name} /></td>
             <td>
-                <select bind:value={newSecurity.type}>
+                <Select bind:value={newSecurity.type}>
                     <option value={SecurityType.Stock}>Stock</option>
                     <option value={SecurityType.ETF}>ETF</option>
-                </select>
+                </Select>
             </td>
             {#if newSecurity.type === SecurityType.ETF}
             <td>
-                <select bind:value={newSecurity.accumulating}>
+                <Select bind:value={newSecurity.accumulating}>
                     <option value={true}>Accumulating</option>
                     <option value={false}>Distributing</option>
-                </select>
+                </Select>
             </td>
             {:else}
             <td>Not a fund</td>
