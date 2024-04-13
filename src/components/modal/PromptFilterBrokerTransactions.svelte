@@ -3,6 +3,7 @@
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import { formatDate } from "../../format";
     import { alwaysOpenFilterDialog } from "../../stores";
+    import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";
 
     export let check: boolean;
@@ -75,15 +76,15 @@
         After you have checked the transactions you want to include, click the "Continue" button to continue to the tax
         calculation.
     </p>
-    <table>
-        <tr>
+    <Table>
+        <svelte:fragment slot="head">
             <th>Include</th>
             <th>No.</th>
             <th>Date</th>
             <th>ISIN</th>
             <th>Currency</th>
             <th>Value</th>
-        </tr>
+        </svelte:fragment>
         {#each filteredBrokerTransactions as filteredBrokerTransaction, i}
         <tr>
             <td><input type="checkbox" bind:checked={filteredBrokerTransactions[i].include} /></td>
@@ -93,7 +94,7 @@
             <td>{filteredBrokerTransaction.brokerTransaction.currency}</td>
             <td>{formatMoney(filteredBrokerTransaction.brokerTransaction.value, "")}</td>
         {/each}
-    </table>
+    </Table>
     <form method="dialog">
         <Button style=secondary on:click={finishedFiltering}>Continue</Button>
     </form>

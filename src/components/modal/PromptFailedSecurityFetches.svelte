@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Security } from "@samjmck/tobcalc-lib";
     import { SecurityType } from "@samjmck/tobcalc-lib";
+    import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";
     import Select from "../ui/Select.svelte";
 
@@ -41,13 +42,13 @@
         Please enter the details for these securities manually. Note that overrides also apply to these securities, so
         if it's easier, you can just leave these details blank and enter the overrides instead.
     </p>
-    <table>
-        <tr>
+    <Table>
+        <svelte:fragment slot="head" >
             <th>ISIN</th>
             <th>Name</th>
             <th>Type</th>
             <th>Fund type</th>
-        </tr>
+        </svelte:fragment>
         {#each newSecurities as newSecurity}
         <tr>
             <td>{newSecurity.isin}</td>
@@ -70,7 +71,7 @@
             {/if}
         </tr>
         {/each}
-    </table>
+    </Table>
     <form method="dialog">
         <Button style="secondary" on:click={finishedNewSecurities}>Continue</Button>
     </form>

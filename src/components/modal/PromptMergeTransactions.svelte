@@ -2,6 +2,7 @@
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import { formatDate } from "../../format";
+    import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";
 
     export let shouldCheck: boolean;
@@ -73,15 +74,16 @@
     <p>
         It seems like some transactions have been split. Please check the transactions that should be merged back together.
     </p>
-    <table>
-        <tr>
+    <Table>
+        <svelte:fragment slot="head">
             <th>Merge</th>
             <th>No.</th>
             <th>Date</th>
             <th>ISIN</th>
             <th>Currency</th>
             <th>Value</th>
-        </tr>
+        </svelte:fragment>
+
         {#each groupedMergedBrokerTransactions.filter(group => group.length > 1) as mergedBrokerTransactions, i}
         {#each mergedBrokerTransactions as mergedBrokerTransaction, j}
         <tr class="{j || !i ? '' : 'sep'}">
@@ -94,7 +96,7 @@
         </tr>
         {/each}
         {/each}
-    </table>
+    </Table>
     <form method="dialog">
         <Button style="secondary" on:click={finishedMerging}>Continue</Button>
     </form>

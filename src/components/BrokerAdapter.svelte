@@ -14,6 +14,7 @@
     import PromptFailedSecurityFetches from "./modal/PromptFailedSecurityFetches.svelte";
     import PromptFilterBrokerTransactions from "./modal/PromptFilterBrokerTransactions.svelte";
     import PromptMergeTransactions from "./modal/PromptMergeTransactions.svelte";
+    import Table from './ui/Table.svelte';
 
     export let broker: Broker;
     export let selectedBrokerNumber: number;
@@ -105,8 +106,8 @@
 <label for={`adapter_${selectedBrokerNumber}`}>Choose {broker} csv</label>
 <input name={`adapter_${selectedBrokerNumber}`} type="file" accept="text/csv, .csv" bind:files />
 <p class="adapter-error">{adapterError}</p>
-<table class="taxable-transactions">
-    <tr>
+    <Table>
+        <svelte:fragment slot="head">
         <th>Name</th>
         <th>Value</th>
         <th>Type</th>
@@ -114,7 +115,8 @@
         <th>Registered</th>
         <th>Tax</th>
         <th>Overridden</th>
-    </tr>
+        </svelte:fragment>
+
     {#each taxableTransactions as taxableTransaction}
     <tr>
         <td>{taxableTransaction.security.name}</td>
@@ -126,15 +128,16 @@
         <td>{$taxRateOverrides.has(taxableTransaction.security.isin)}</td>
     </tr>
     {/each}
-</table>
-<table class="tax-form-data">
-    <tr>
+    </Table>
+    <Table>
+        <svelte:fragment slot="head">
         <th>Row no.</th>
         <th>Tax</th>
         <th>Quantity</th>
         <th>Tax base</th>
         <th>Tax value</th>
-    </tr>
+        </svelte:fragment>
+
     {#each taxResults as [taxRate, formRow], i}
     <tr>
         <td>{i + 1}</td>
@@ -144,7 +147,7 @@
         <td>{formatMoney(formRow.taxValue)}</td>
     </tr>
     {/each}
-</table>
+    </Table>
 
 <PromptFilterBrokerTransactions bind:check={checkDuplicateBrokerTransactions} {brokerTransactions} {resolveFilteredBrokerTransactions} />
 <PromptMergeTransactions bind:shouldCheck={shouldCheckMergeTransactionPrompt} {brokerTransactions} {resolveMergedBrokerTransactions} />
