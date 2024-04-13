@@ -2,6 +2,7 @@
     import { taxRates } from "../overrides";
     import { taxRateOverrides } from "../stores";
     import Select from './ui/Select.svelte';
+    import Input from './ui/Input.svelte';
 
     function formatPercentage(value: number) {
         return `${(value * 100).toFixed(2)}%`;
@@ -39,7 +40,7 @@
         <th></th>
     </tr>
     <tr>
-        <td><input type="text" bind:value={newIsin} /></td>
+        <td><Input type="text" placeholder="ISIN" bind:value={newIsin} /></td>
         <td>
             <Select bind:value={newRate}>
                 {#each taxRates as rate}

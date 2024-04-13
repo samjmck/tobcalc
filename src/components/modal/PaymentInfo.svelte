@@ -2,6 +2,7 @@
     import { openPaymentInfo, nationalRegistrationNumber, lastSession } from "../../stores";
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import QrCode from "../ui/QrCode.svelte";
+    import Input from "../ui/Input.svelte";
     import Button from "../ui/Button.svelte";
 
     export let amount = 0.00;
@@ -64,39 +65,36 @@
 
 <dialog open={$openPaymentInfo}>
     <p>Note that it's your responsibility to make sure the payment detail are up to date. You should be able to find the latest <a href="https://financien.belgium.be/nl/particulieren/internationaal/buitenlandse-inkomsten-en-rekeningen/taks-op-beursverrichtingen#q3" target="_blank">here</a>.</p>
+
+
+    <div class="payment-info">
+        <div class="form">
+            <div><label for="beneficiary">Beneficiary</label> <Input id="beneficiary" type="text" bind:value={beneficiary} /></div>
+            <div><label for="iban">IBAN</label> <Input id="iban" type="text" bind:value={iban} /></div>
+            <div><label for="bic">BIC</label> <Input id="bic" type="text" bind:value={bic} /></div>
+            <div><label for="unstructuredReference">Reference</label> <Input id="unstructuredReference" type="text" on:input={() => customUnstructuredReference=true} bind:value={unstructuredReference} /></div>
     <div>
-        <form method="dialog">
-            <label for="beneficiary">Beneficiary</label> <input id="beneficiary" type="text" bind:value={beneficiary} />
-            <label for="iban">IBAN</label> <input id="iban" type="text" bind:value={iban} />
-            <label for="bic">BIC</label> <input id="bic" type="text" bind:value={bic} />
-            <label for="unstructuredReference">Reference</label> <input id="unstructuredReference" type="text" on:input={() => customUnstructuredReference=true} bind:value={unstructuredReference} />
             <p>Amount {formatMoney(amount)}</p>
-            <button on:click={() => $openPaymentInfo = false}>Close</button>
-        </form>
-        <!--{#if amount >= 1}-->
+            </div>
+        </div>
+        <div>
         <QrCode value={qrData} ecl="M" label="Scan to pay in banking app" />
-        <!--{/if}-->
+        </div>
     </div>
+
     <Button style="secondary" slot="footer" on:click={() => $openPaymentInfo = false}>Close</Button>
 </dialog>
 
 <style>
-    dialog {
-        margin: 0;
-        max-height: 100vh;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    dialog > div {
+    .payment-info {
+        margin-top: 2rem;
         display: flex;
+        justify-content: space-around;
     }
-    form {
-        margin-right: 1em;
-    }
-    input {
-        width: 20em;
+
+    .form > div {
+        margin-top: 1em;
+        display: flex;
+        flex-direction: column;
     }
 </style>
