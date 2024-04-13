@@ -14,6 +14,7 @@
 	import Settings from "./components/modal/Settings.svelte";
 	import PaymentInfo from "./components/modal/PaymentInfo.svelte";
 	import PdfWorker from "./pdf-worker?worker";
+	import Header from "./components/Header.svelte";
 	import Button from "./components/ui/Button.svelte";
 
 	const pdfWorker = new PdfWorker();
@@ -156,6 +157,7 @@
 <h2>Error while performing checks: {failedTestsError}</h2>
 {/if}
 
+<Header />
 <div class="column">
 	<PersonalInfo />
 </div>
