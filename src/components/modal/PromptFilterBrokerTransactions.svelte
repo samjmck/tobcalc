@@ -3,6 +3,7 @@
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import { formatDate } from "../../format";
     import { alwaysOpenFilterDialog } from "../../stores";
+    import Modal from "./Modal.svelte";
     import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";
 
@@ -28,7 +29,7 @@
             a.brokerTransaction.currency == b.brokerTransaction.currency &&
             a.brokerTransaction.value == b.brokerTransaction.value;
     }
-    let containsDuplicate;
+    let containsDuplicate: boolean;
     function initialiseFilteredBrokerTransactions() {
         containsDuplicate = false;
         filteredBrokerTransactions = [];
@@ -65,7 +66,8 @@
     }
 </script>
 
-<dialog {open}>
+<Modal force={true} bind:open>
+    <span slot="head">Filter Broker Transactions</span>
     {#if containsDuplicate}
     <p>
         It seems like the transaction history you uploaded contains some duplicate transactions. We have excluded
@@ -98,16 +100,10 @@
     <form method="dialog">
         <Button style=secondary on:click={finishedFiltering}>Continue</Button>
     </form>
-</dialog>
+</Modal>
 
 <style>
-    dialog {
-        max-height: 100vh;
-        overflow-y: scroll;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    form {
+        margin-top: 1rem;
     }
 </style>

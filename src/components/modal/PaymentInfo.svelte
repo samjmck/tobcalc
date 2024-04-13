@@ -2,6 +2,7 @@
     import { openPaymentInfo, nationalRegistrationNumber, lastSession } from "../../stores";
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import QrCode from "../ui/QrCode.svelte";
+    import Modal from "./Modal.svelte";
     import Input from "../ui/Input.svelte";
     import Button from "../ui/Button.svelte";
 
@@ -63,7 +64,9 @@
     $: qrData = getSCTData(beneficiary, bic, iban, amount, unstructuredReference);
 </script>
 
-<dialog open={$openPaymentInfo}>
+<Modal bind:open={$openPaymentInfo}>
+    <span slot="head">Payment Info</span>
+
     <p>Note that it's your responsibility to make sure the payment detail are up to date. You should be able to find the latest <a href="https://financien.belgium.be/nl/particulieren/internationaal/buitenlandse-inkomsten-en-rekeningen/taks-op-beursverrichtingen#q3" target="_blank">here</a>.</p>
 
 
@@ -73,17 +76,17 @@
             <div><label for="iban">IBAN</label> <Input id="iban" type="text" bind:value={iban} /></div>
             <div><label for="bic">BIC</label> <Input id="bic" type="text" bind:value={bic} /></div>
             <div><label for="unstructuredReference">Reference</label> <Input id="unstructuredReference" type="text" on:input={() => customUnstructuredReference=true} bind:value={unstructuredReference} /></div>
-    <div>
-            <p>Amount {formatMoney(amount)}</p>
+            <div>
+                <p>Amount {formatMoney(amount)}</p>
             </div>
         </div>
         <div>
-        <QrCode value={qrData} ecl="M" label="Scan to pay in banking app" />
+            <QrCode value={qrData} ecl="M" label="Scan to pay in banking app" />
         </div>
     </div>
 
     <Button style="secondary" slot="footer" on:click={() => $openPaymentInfo = false}>Close</Button>
-</dialog>
+</Modal>
 
 <style>
     .payment-info {

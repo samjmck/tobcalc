@@ -2,6 +2,7 @@
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
     import { formatDate } from "../../format";
+    import Modal from "./Modal.svelte";
     import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";
 
@@ -70,7 +71,7 @@
 
 </script>
 
-<dialog {open}>
+<Modal force={true} bind:open>
     <p>
         It seems like some transactions have been split. Please check the transactions that should be merged back together.
     </p>
@@ -100,23 +101,14 @@
     <form method="dialog">
         <Button style="secondary" on:click={finishedMerging}>Continue</Button>
     </form>
-</dialog>
+</Modal>
 
 <style>
-    dialog {
-        max-height: 100vh;
-        width: 50%;
-        overflow-y: scroll;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
     tr.sep {
-        border-top: solid black 1px;
+        border-top: solid gray 5px;
     }
 
-    table { border-collapse: collapse; }
+    form {
+        margin-top: 1rem;
+    }
 </style>

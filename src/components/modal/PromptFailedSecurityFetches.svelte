@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Security } from "@samjmck/tobcalc-lib";
     import { SecurityType } from "@samjmck/tobcalc-lib";
+    import Modal from "./Modal.svelte";
     import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";
     import Select from "../ui/Select.svelte";
@@ -33,7 +34,7 @@
     }
 </script>
 
-<dialog {open}>
+<Modal force={true} bind:open>
     <p>
         Some of the securities in your transaction history cannot be found online. This could be due to them being delisted
         or not being available in the database we use.
@@ -75,16 +76,14 @@
     <form method="dialog">
         <Button style="secondary" on:click={finishedNewSecurities}>Continue</Button>
     </form>
-</dialog>
+</Modal>
 
 <style>
-    dialog {
-        max-height: 100vh;
-        overflow-y: scroll;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    p {
+        margin-bottom: 0.8em;
+    }
+
+    form {
+        margin-top: 1rem;
     }
 </style>
