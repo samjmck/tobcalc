@@ -157,19 +157,28 @@
 {/if}
 
 <Header />
-<div class="column">
-	<PersonalInfo />
-</div>
 
-<div class="column">
-	<TaxRateOverride />
-	<Brokers />
-</div>
+<main>
+	<section class="content mt-3">
+		<Brokers />
+	</section>
 
-<div class="column">
-	<Button style="primary" on:click={() => $openPaymentInfo = true}>Payment Info</Button>
-	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
-</div>
+	<section class="taxe-override">
+		<div class="content">
+			<TaxRateOverride />
+		</div>
+	</section>
+
+	<section class="content form">
+		<div>
+			<PersonalInfo />
+		</div>
+		<div>
+			<Button style="primary" on:click={() => $openPaymentInfo = true}>Payment Info</Button>
+			<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
+		</div>
+	</section>
+</main>
 
 <!-- Modals -->
 <PaymentInfo amount={totalTaxValue} />
@@ -181,14 +190,10 @@
 </footer>
 
 <style>
-	div.column {
-		padding-bottom: 10em;
-		margin-right: 3em;
+	main > section {
+		padding: 1rem;
 	}
-	input {
-		display: block;
-		margin: 1em 0;
-	}
+
 	footer {
 		display: flex;
 		flex-direction: row;
@@ -199,10 +204,38 @@
 		border-top: 1px solid #bebebe;
 		padding: 1em;
 	}
-	footer a {
-		margin: 0 1.5em;
-	}
+
 	:global(body) {
-		margin-bottom: 2em;
+		background-color: var(--main-bg-color);
 	}
+
+	.content {
+		max-width: var(--break-lg);
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.taxe-override {
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+ 		background-color: #fffcda;
+	}
+
+	.form>*:nth-child(2) {
+		margin-top: 1rem;
+	}
+
+	@media only screen and (min-width: 1024px) {
+		.form>*:nth-child(2) {
+			margin-top: 0;
+		}
+		.form {
+			margin-top: 0;
+			display: flex;
+			justify-content: space-between;
+			flex-direction: row;
+			align-items: start;
+		}
+	}
+
 </style>
