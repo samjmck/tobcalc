@@ -6,7 +6,6 @@
     let pdfObjectUrl = "";
 
     function updatePersonalInfo(key: keyof SessionInfo, value: string) {
-        console.log("update");
         const oldLastSession = $lastSession;
         $lastSession = {
             ...oldLastSession,
