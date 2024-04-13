@@ -6,7 +6,6 @@
     let pdfObjectUrl = "";
 
     function updatePersonalInfo(key: keyof SessionInfo, value: string) {
-        console.log("update");
         const oldLastSession = $lastSession;
         $lastSession = {
             ...oldLastSession,
@@ -30,18 +29,18 @@
 </script>
 
 <div class="form">
-<label for="lang">Language</label>
+    <label for="lang">Language</label>
     <Select id="lang" name="lang" bind:value={lang} on:change={() => updatePersonalInfo("lang", lang)}>
-    <option value="DE">German</option>
-    <option value="EN">English</option>
-    <option value="FR">French</option>
-    <option value="NL">Dutch</option>
+        <option value="DE">German</option>
+        <option value="EN">English</option>
+        <option value="FR">French</option>
+        <option value="NL">Dutch</option>
     </Select>
 
-<label for="start">Start date</label>
+    <label for="start">Start date</label>
     <Input id="start" name="start" type="date" bind:value={startDateValue} on:input={() => updatePersonalInfo("start", startDateValue)} />
 
-<label for="end">End date</label>
+    <label for="end">End date</label>
     <Input id="end" name="end" type="date" bind:value={endDateValue} on:input={() => updatePersonalInfo("end", endDateValue)} />
 
     <label for="national_registration_number">National registration number</label>
@@ -67,8 +66,8 @@
     <label for="date">Date</label>
     <Input id="date" name="date" placeholder="Date" type="text" bind:value={dateValue} on:input={() => updatePersonalInfo("date", dateValue)} />
 
-<label for="signature_png">Choose signature png</label>
-<input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={$signatureFiles} />
+    <label for="signature_png">Choose signature png</label>
+    <input id="signature_png" name="signature_png" type="file" accept="image/png" bind:files={$signatureFiles} />
 </div>
 
 <style>
