@@ -1,5 +1,5 @@
 <script lang="ts">
-	import QrCode from "../qrcodegen";
+	import QrCode from "../../qrcodegen";
 
 	// Error Correction Level map
 	const ECL = {

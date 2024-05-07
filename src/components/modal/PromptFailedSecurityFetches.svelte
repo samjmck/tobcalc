@@ -1,6 +1,10 @@
 <script lang="ts">
     import type { Security } from "@samjmck/tobcalc-lib";
     import { SecurityType } from "@samjmck/tobcalc-lib";
+    import Modal from "./Modal.svelte";
+    import Table from "../ui/Table.svelte";
+    import Button from "../ui/Button.svelte";
+    import Select from "../ui/Select.svelte";
 
     export let open: boolean;
     export let failedIsins: string[];
@@ -30,7 +34,7 @@
     }
 </script>
 
-<dialog {open}>
+<Modal force={true} bind:open>
     <p>
         Some of the securities in your transaction history cannot be found online. This could be due to them being delisted
         or not being available in the database we use.
@@ -39,49 +43,47 @@
         Please enter the details for these securities manually. Note that overrides also apply to these securities, so
         if it's easier, you can just leave these details blank and enter the overrides instead.
     </p>
-    <table>
-        <tr>
+    <Table>
+        <svelte:fragment slot="head" >
             <th>ISIN</th>
             <th>Name</th>
             <th>Type</th>
             <th>Fund type</th>
-        </tr>
+        </svelte:fragment>
         {#each newSecurities as newSecurity}
         <tr>
             <td>{newSecurity.isin}</td>
             <td><input type="text" bind:value={newSecurity.name} /></td>
             <td>
-                <select bind:value={newSecurity.type}>
+                <Select bind:value={newSecurity.type}>
                     <option value={SecurityType.Stock}>Stock</option>
                     <option value={SecurityType.ETF}>ETF</option>
-                </select>
+                </Select>
             </td>
             {#if newSecurity.type === SecurityType.ETF}
             <td>
-                <select bind:value={newSecurity.accumulating}>
+                <Select bind:value={newSecurity.accumulating}>
                     <option value={true}>Accumulating</option>
                     <option value={false}>Distributing</option>
-                </select>
+                </Select>
             </td>
             {:else}
             <td>Not a fund</td>
             {/if}
         </tr>
         {/each}
-    </table>
+    </Table>
     <form method="dialog">
-        <button on:click={finishedNewSecurities}>Continue</button>
+        <Button style="secondary" on:click={finishedNewSecurities}>Continue</Button>
     </form>
-</dialog>
+</Modal>
 
 <style>
-    dialog {
-        max-height: 100vh;
-        overflow-y: scroll;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    p {
+        margin-bottom: 0.8em;
+    }
+
+    form {
+        margin-top: 1rem;
     }
 </style>

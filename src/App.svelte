@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { openSettings, openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, type SessionInfo } from "./stores";
+	import { openPaymentInfo, signatureFiles, totalTaxFormData, lastSession, nationalRegistrationNumber, type SessionInfo } from "./stores";
 	import TaxRateOverride from "./components/TaxRateOverride.svelte";
 	import PersonalInfo from "./components/PersonalInfo.svelte";
 	import {
@@ -11,9 +11,10 @@
 	import type { TaxFormData, fillPdf, FormRow } from "@samjmck/tobcalc-lib";
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
-	import Settings from "./components/Settings.svelte";
-	import PaymentInfo from "./components/PaymentInfo.svelte";
+	import PaymentInfo from "./components/modal/PaymentInfo.svelte";
 	import PdfWorker from "./pdf-worker?worker";
+	import Header from "./components/Header.svelte";
+	import Button from "./components/ui/Button.svelte";
 
 	const pdfWorker = new PdfWorker();
 
@@ -155,52 +156,86 @@
 <h2>Error while performing checks: {failedTestsError}</h2>
 {/if}
 
-<div class="column">
-	<PersonalInfo />
-</div>
+<Header />
 
-<div class="column">
-	<TaxRateOverride />
-	<Brokers />
-</div>
+<main>
+	<section class="content mt-3">
+		<Brokers />
+	</section>
 
-<div class="column">
-	<button on:click={() => $openPaymentInfo = true}>Payment Info</button>
-	<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
-</div>
+	<section class="taxe-override">
+		<div class="content">
+			<TaxRateOverride />
+		</div>
+	</section>
 
-<Settings />
+	<section class="content form">
+		<div>
+			<PersonalInfo />
+		</div>
+		<div>
+			<Button style="primary" on:click={() => $openPaymentInfo = true}>Payment Info</Button>
+			<PdfDownload objectUrl={pdfObjectUrl} error={pdfError} />
+		</div>
+	</section>
+</main>
+
+<!-- Modals -->
 <PaymentInfo amount={totalTaxValue} />
 
 <footer>
-	<a on:click|preventDefault={() => $openSettings = true}>Open settings</a>
 	<a href="https://github.com/samjmck/tobcalc">GitHub</a>
 	<a href="https://samjmck.com">samjmck.com</a>
 	<a href="/privacy-policy.txt">Privacy Policy</a>
 </footer>
 
 <style>
-	div.column {
-		padding-bottom: 10em;
-		margin-right: 3em;
+	main > section {
+		padding: 1rem;
 	}
-	input {
-		display: block;
-		margin: 1em 0;
-	}
+
 	footer {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		text-align: center;
-		background-color: white;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		gap: 5%;
+		margin-top: 1rem;
+		background-color: rgb(238, 238, 238);
+		border-top: 1px solid #bebebe;
 		padding: 1em;
 	}
-	footer a {
-		margin: 0 1.5em;
-	}
+
 	:global(body) {
-		margin-bottom: 2em;
+		background-color: var(--main-bg-color);
 	}
+
+	.content {
+		max-width: var(--break-lg);
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.taxe-override {
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+ 		background-color: #fffcda;
+	}
+
+	.form>*:nth-child(2) {
+		margin-top: 1rem;
+	}
+
+	@media only screen and (min-width: 1024px) {
+		.form>*:nth-child(2) {
+			margin-top: 0;
+		}
+		.form {
+			margin-top: 0;
+			display: flex;
+			justify-content: space-between;
+			flex-direction: row;
+			align-items: start;
+		}
+	}
+
 </style>

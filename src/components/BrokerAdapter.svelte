@@ -11,9 +11,10 @@
     import { Broker } from "../broker";
     import { getSecuritiesMapWithOverrides, getTaxRateWithOverrides } from "../overrides";
     import { formatPercentage } from "../format";
-    import PromptFailedSecurityFetches from "./PromptFailedSecurityFetches.svelte";
-    import PromptFilterBrokerTransactions from "./PromptFilterBrokerTransactions.svelte";
-    import PromptMergeTransactions from "./PromptMergeTransactions.svelte";
+    import PromptFailedSecurityFetches from "./modal/PromptFailedSecurityFetches.svelte";
+    import PromptFilterBrokerTransactions from "./modal/PromptFilterBrokerTransactions.svelte";
+    import PromptMergeTransactions from "./modal/PromptMergeTransactions.svelte";
+    import Table from './ui/Table.svelte';
 
     export let broker: Broker;
     export let selectedBrokerNumber: number;
@@ -102,64 +103,88 @@
     }
 </script>
 
-<label for={`adapter_${selectedBrokerNumber}`}>Choose {broker} csv</label>
-<input name={`adapter_${selectedBrokerNumber}`} type="file" accept="text/csv, .csv" bind:files />
+<div style="margin-top: 20px;">
+    <label class="import-file" for={`adapter_${selectedBrokerNumber}`}>
+        <input class="hidden" id={`adapter_${selectedBrokerNumber}`} name={`adapter_${selectedBrokerNumber}`} type="file" accept="text/csv, .csv" bind:files />
+        Import {broker} csv
+    </label>
+</div>
+
+
 <p class="adapter-error">{adapterError}</p>
-<table class="taxable-transactions">
-    <tr>
-        <th>Name</th>
-        <th>Value</th>
-        <th>Type</th>
-        <th>Country</th>
-        <th>Registered</th>
-        <th>Tax</th>
-        <th>Overridden</th>
-    </tr>
-    {#each taxableTransactions as taxableTransaction}
-    <tr>
-        <td>{taxableTransaction.security.name}</td>
-        <td>{formatMoney(taxableTransaction.value)}</td>
-        <td>{getSecurityTypeString(taxableTransaction.security.type)}</td>
-        <td>{taxableTransaction.countryCode}</td>
-        <td>{isNameRegistered(taxableTransaction.security.name) ? "Registered" : "Not registered"}</td>
-        <td>{formatPercentage(getTaxRateWithOverrides($taxRateOverrides)(taxableTransaction))}</td>
-        <td>{$taxRateOverrides.has(taxableTransaction.security.isin)}</td>
-    </tr>
-    {/each}
-</table>
-<table class="tax-form-data">
-    <tr>
-        <th>Row no.</th>
-        <th>Tax</th>
-        <th>Quantity</th>
-        <th>Tax base</th>
-        <th>Tax value</th>
-    </tr>
-    {#each taxResults as [taxRate, formRow], i}
-    <tr>
-        <td>{i + 1}</td>
-        <td>{taxRate}</td>
-        <td>{formRow.quantity}</td>
-        <td>{formatMoney(formRow.taxBase)}</td>
-        <td>{formatMoney(formRow.taxValue)}</td>
-    </tr>
-    {/each}
-</table>
+
+{#if taxableTransactions.length}
+<div class="table-transaction">
+    <Table>
+        <svelte:fragment slot="head">
+            <th>Name</th>
+            <th>Value</th>
+            <th>Type</th>
+            <th>Country</th>
+            <th>Registered</th>
+            <th>Tax</th>
+            <th>Overridden</th>
+        </svelte:fragment>
+
+        {#each taxableTransactions as taxableTransaction}
+        <tr>
+            <td>{taxableTransaction.security.name}</td>
+            <td>{formatMoney(taxableTransaction.value)}</td>
+            <td>{getSecurityTypeString(taxableTransaction.security.type)}</td>
+            <td>{taxableTransaction.countryCode}</td>
+            <td>{isNameRegistered(taxableTransaction.security.name) ? "Registered" : "Not registered"}</td>
+            <td>{formatPercentage(getTaxRateWithOverrides($taxRateOverrides)(taxableTransaction))}</td>
+            <td>{$taxRateOverrides.has(taxableTransaction.security.isin)}</td>
+        </tr>
+        {/each}
+    </Table>
+</div>
+
+<div class="table-transaction">
+    <Table>
+        <svelte:fragment slot="head">
+            <th>Row no.</th>
+            <th>Tax</th>
+            <th>Quantity</th>
+            <th>Tax base</th>
+            <th>Tax value</th>
+        </svelte:fragment>
+
+        {#each taxResults as [taxRate, formRow], i}
+        <tr>
+            <td>{i + 1}</td>
+            <td>{taxRate}</td>
+            <td>{formRow.quantity}</td>
+            <td>{formatMoney(formRow.taxBase)}</td>
+            <td>{formatMoney(formRow.taxValue)}</td>
+        </tr>
+        {/each}
+    </Table>
+</div>
+
+{/if}
 
 <PromptFilterBrokerTransactions bind:check={checkDuplicateBrokerTransactions} {brokerTransactions} {resolveFilteredBrokerTransactions} />
 <PromptMergeTransactions bind:shouldCheck={shouldCheckMergeTransactionPrompt} {brokerTransactions} {resolveMergedBrokerTransactions} />
 <PromptFailedSecurityFetches bind:open={openFailedSecuritiesPrompt} failedIsins={failedSecuritiesIsins} {resolveNewSecurities} />
 
 <style>
-    input[type="file"] {
-		margin-top: 0;
-		margin-bottom: 1em;
-	}
-	label {
-		margin-top: 1em;
-		margin-bottom: 0.25em;
-	}
-	button {
-		margin: 1em 0;
-	}
+    .import-file {
+        cursor: pointer;
+        color: white;
+        padding: 10px;
+        background-color: var(--primary-color);
+        border-radius: 5px;
+    }
+
+    .import-file:hover {
+        background-color: var(--primary-color-hover);
+    }
+
+    .table-transaction {
+        margin-top: 1rem;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
 </style>

@@ -1,7 +1,10 @@
 <script lang="ts">
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
-    import { formatDate } from "../format";
+    import { formatDate } from "../../format";
+    import Modal from "./Modal.svelte";
+    import Table from "../ui/Table.svelte";
+    import Button from "../ui/Button.svelte";
 
     export let shouldCheck: boolean;
     export let brokerTransactions: BrokerTransaction[];
@@ -68,19 +71,20 @@
 
 </script>
 
-<dialog {open}>
+<Modal force={true} bind:open>
     <p>
         It seems like some transactions have been split. Please check the transactions that should be merged back together.
     </p>
-    <table>
-        <tr>
+    <Table>
+        <svelte:fragment slot="head">
             <th>Merge</th>
             <th>No.</th>
             <th>Date</th>
             <th>ISIN</th>
             <th>Currency</th>
             <th>Value</th>
-        </tr>
+        </svelte:fragment>
+
         {#each groupedMergedBrokerTransactions.filter(group => group.length > 1) as mergedBrokerTransactions, i}
         {#each mergedBrokerTransactions as mergedBrokerTransaction, j}
         <tr class="{j || !i ? '' : 'sep'}">
@@ -93,27 +97,18 @@
         </tr>
         {/each}
         {/each}
-    </table>
+    </Table>
     <form method="dialog">
-        <button on:click={finishedMerging}>Continue</button>
+        <Button style="secondary" on:click={finishedMerging}>Continue</Button>
     </form>
-</dialog>
+</Modal>
 
 <style>
-    dialog {
-        max-height: 100vh;
-        width: 50%;
-        overflow-y: scroll;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
     tr.sep {
-        border-top: solid black 1px;
+        border-top: solid gray 5px;
     }
 
-    table { border-collapse: collapse; }
+    form {
+        margin-top: 1rem;
+    }
 </style>

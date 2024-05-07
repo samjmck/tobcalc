@@ -1,8 +1,11 @@
 <script lang="ts">
     import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
     import { formatMoney } from "@samjmck/tobcalc-lib";
-    import { formatDate } from "../format";
-    import { alwaysOpenFilterDialog } from "../stores";
+    import { formatDate } from "../../format";
+    import { alwaysOpenFilterDialog } from "../../stores";
+    import Modal from "./Modal.svelte";
+    import Table from "../ui/Table.svelte";
+    import Button from "../ui/Button.svelte";
 
     export let check: boolean;
     export let brokerTransactions: BrokerTransaction[];
@@ -26,7 +29,7 @@
             a.brokerTransaction.currency == b.brokerTransaction.currency &&
             a.brokerTransaction.value == b.brokerTransaction.value;
     }
-    let containsDuplicate;
+    let containsDuplicate: boolean;
     function initialiseFilteredBrokerTransactions() {
         containsDuplicate = false;
         filteredBrokerTransactions = [];
@@ -63,7 +66,8 @@
     }
 </script>
 
-<dialog {open}>
+<Modal force={true} bind:open>
+    <span slot="head">Filter Broker Transactions</span>
     {#if containsDuplicate}
     <p>
         It seems like the transaction history you uploaded contains some duplicate transactions. We have excluded
@@ -74,15 +78,15 @@
         After you have checked the transactions you want to include, click the "Continue" button to continue to the tax
         calculation.
     </p>
-    <table>
-        <tr>
+    <Table>
+        <svelte:fragment slot="head">
             <th>Include</th>
             <th>No.</th>
             <th>Date</th>
             <th>ISIN</th>
             <th>Currency</th>
             <th>Value</th>
-        </tr>
+        </svelte:fragment>
         {#each filteredBrokerTransactions as filteredBrokerTransaction, i}
         <tr>
             <td><input type="checkbox" bind:checked={filteredBrokerTransactions[i].include} /></td>
@@ -92,20 +96,14 @@
             <td>{filteredBrokerTransaction.brokerTransaction.currency}</td>
             <td>{formatMoney(filteredBrokerTransaction.brokerTransaction.value, "")}</td>
         {/each}
-    </table>
+    </Table>
     <form method="dialog">
-        <button on:click={finishedFiltering}>Continue</button>
+        <Button style=secondary on:click={finishedFiltering}>Continue</Button>
     </form>
-</dialog>
+</Modal>
 
 <style>
-    dialog {
-        max-height: 100vh;
-        overflow-y: scroll;
-        position: fixed;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    form {
+        margin-top: 1rem;
     }
 </style>

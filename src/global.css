@@ -1,0 +1,147 @@
+:root {
+  --main-bg-color: #fff;
+  --header-color: #132c4d;
+  --primary-color: #336094;
+  --primary-color-hover: #2a4e77;
+  --secondary-color: #d1d1d1;
+  --secondary-color-hover: #b8b8b8;
+
+  --break-sm: 640px;
+  --break-md: 768px;
+  --break-lg: 1024px;
+  --break-xl: 1280px;
+  --break-2xl: 1536px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app {
+  font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
+    sans-serif;
+  color: #081425;
+}
+
+input,
+textarea,
+select,
+button,
+label,
+input:hover,
+textarea:hover,
+select:hover,
+button:hover,
+label:hover {
+  font-family: inherit;
+  border: none;
+  background-color: transparent;
+}
+
+button:hover, select:hover {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media only screen and (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+h2,
+h3 {
+  font-size: 1.4em;
+}
+h4,
+h5,
+h6 {
+  font-size: 1.1em;
+}
+
+h1,
+h2,
+h3 {
+  color: #052849;
+  font-weight: 500;
+  margin-bottom: 0.5em;
+}
+h4,
+h5,
+h6 {
+  color: #383838;
+}
+
+input,
+button,
+select,
+label,
+file {
+  font-size: 1em;
+}
+
+a {
+  color: #377ac7;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #2d63a1;
+  text-decoration: underline;
+}
+
+.block {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
