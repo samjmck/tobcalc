@@ -152,6 +152,8 @@
 	}
 </script>
 
+<h2>We are aware of an issue with the ECB exchange rates not working. See <a href="https://github.com/samjmck/tobcalc-lib/issues/6">this</a> issue on GitHub for more details. Transactions with foreign currencies may not work, while transactions in euros should still work.</h2>
+
 {#if failedTestsError !== ""}
 <h2>Error while performing checks: {failedTestsError}</h2>
 {/if}
