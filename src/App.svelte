@@ -6,9 +6,9 @@
 		setECBUrlStart,
 		setJustETFUrlStart,
 		setYahooFinanceQuery1UrlStart,
-	} from "@samjmck/tobcalc-lib";
+	} from "#lib";
 	import { runTests } from "./tests";
-	import type { TaxFormData, fillPdf, FormRow } from "@samjmck/tobcalc-lib";
+	import type { TaxFormData, fillPdf, FormRow } from "#lib";
 	import PdfDownload from "./components/PdfDownload.svelte";
 	import Brokers from "./components/Brokers.svelte";
 	import PaymentInfo from "./components/modal/PaymentInfo.svelte";

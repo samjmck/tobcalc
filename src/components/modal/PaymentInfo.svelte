@@ -1,6 +1,6 @@
 <script lang="ts">
     import { openPaymentInfo, nationalRegistrationNumber, lastSession } from "../../stores";
-    import { formatMoney } from "@samjmck/tobcalc-lib";
+    import { formatMoney } from "#lib";
     import QrCode from "../ui/QrCode.svelte";
     import Modal from "./Modal.svelte";
     import Input from "../ui/Input.svelte";

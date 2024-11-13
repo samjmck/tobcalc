@@ -1,5 +1,5 @@
 import { type Writable, writable } from "svelte/store";
-import type { TaxFormData } from "@samjmck/tobcalc-lib";
+import type { TaxFormData } from "#lib";
 
 export interface SessionInfo {
     lang: string;

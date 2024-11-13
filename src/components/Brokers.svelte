@@ -4,7 +4,7 @@
         DEGIROAdapter,
         Trading212Adapter,
         BoursoramaAdapter
-	} from "@samjmck/tobcalc-lib";
+	} from "#lib";
     import { adapterNumber, totalTaxFormData } from "../stores";
     import BrokerAdapter from "./BrokerAdapter.svelte";
     import { Broker, brokers } from "../broker";

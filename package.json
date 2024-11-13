@@ -20,5 +20,11 @@
   },
   "dependencies": {
     "@samjmck/tobcalc-lib": "npm:@jsr/samjmck__tobcalc-lib@^1.0.10"
+  },
+  "imports": {
+    "#lib": [
+      "./tobcalc-lib/lib/esm/export",
+      "@samjmck/tobcalc-lib"
+    ]
   }
 }

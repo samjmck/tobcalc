@@ -1,3 +1,3 @@
-import { workerMessageEventListener } from "@samjmck/tobcalc-lib";
+import { workerMessageEventListener } from "#lib";
 
 self.onmessage = workerMessageEventListener;
