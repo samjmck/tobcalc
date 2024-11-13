@@ -6,8 +6,8 @@
         FormRow,
         Security,
         TaxableTransaction
-    } from "@samjmck/tobcalc-lib";
-    import { formatMoney, isNameRegistered, SecurityType, getTaxableTransactions, getTaxFormData } from "@samjmck/tobcalc-lib";
+    } from "#lib";
+    import { formatMoney, isNameRegistered, SecurityType, getTaxableTransactions, getTaxFormData } from "#lib";
     import { Broker } from "../broker";
     import { getSecuritiesMapWithOverrides, getTaxRateWithOverrides } from "../overrides";
     import { formatPercentage } from "../format";

@@ -4,3 +4,5 @@
 node_modules
 src/registered_funds.ts
 .netlify
+lib/
+tobcalc-lib/

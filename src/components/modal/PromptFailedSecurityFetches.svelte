@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { Security } from "@samjmck/tobcalc-lib";
-    import { SecurityType } from "@samjmck/tobcalc-lib";
+    import type { Security } from "#lib";
+    import { SecurityType } from "#lib";
     import Modal from "./Modal.svelte";
     import Table from "../ui/Table.svelte";
     import Button from "../ui/Button.svelte";

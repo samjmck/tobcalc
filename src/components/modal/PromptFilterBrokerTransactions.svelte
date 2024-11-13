@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { BrokerTransaction } from "@samjmck/tobcalc-lib";
-    import { formatMoney } from "@samjmck/tobcalc-lib";
+    import type { BrokerTransaction } from "#lib";
+    import { formatMoney } from "#lib";
     import { formatDate } from "../../format";
     import { alwaysOpenFilterDialog } from "../../stores";
     import Modal from "./Modal.svelte";

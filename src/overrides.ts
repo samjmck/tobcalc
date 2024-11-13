@@ -1,5 +1,5 @@
-import type { Security, TaxableTransaction, TaxRateFunction } from "@samjmck/tobcalc-lib";
-import { getDefaultTaxRate, getSecurity, SecurityType } from "@samjmck/tobcalc-lib";
+import type { Security, TaxableTransaction, TaxRateFunction } from "#lib";
+import { getDefaultTaxRate, getSecurity, SecurityType } from "#lib";
 
 export const taxRates = [
     0.0012,
