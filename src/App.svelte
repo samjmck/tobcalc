@@ -184,6 +184,7 @@
 <PaymentInfo amount={totalTaxValue} />
 
 <footer>
+	<a href="/help/en/">Help</a>
 	<a href="https://github.com/samjmck/tobcalc">GitHub</a>
 	<a href="https://samjmck.com">samjmck.com</a>
 	<a href="/privacy-policy.txt">Privacy Policy</a>
