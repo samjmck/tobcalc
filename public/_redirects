@@ -1,2 +1,2 @@
-/help/ https://help.tobcalc.com/en/ 200
-/help/* https://help.tobcalc.com/:splat 200
+/help/ https://tobcalc-help.netlify.app/en/ 200
+/help/* https://tobcalc-help.netlify.app/:splat 200
