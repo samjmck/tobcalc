@@ -2,6 +2,6 @@
     X-Frame-Options: SAMEORIGIN
     X-Content-Type-Options: nosniff
     Referrer-Policy: origin
-    Content-Security-Policy: style-src 'unsafe-inline' 'self' blob:; frame-src 'self' blob:; object-src 'self' blob:; default-src 'self' *.tobcalc.com
+    Content-Security-Policy: style-src 'unsafe-inline' 'self' blob:; frame-src 'self' blob:; object-src 'self' blob:; script-src 'sha256-psymWIvJwUxb4CZu9mCpHaT/a5TfkGJazI3BahEqIO8='; default-src 'self' *.tobcalc.com
     Permissions-Policy: autoplay=(), microphone=(), geolocation=(), camera=(), fullscreen=()
     Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
