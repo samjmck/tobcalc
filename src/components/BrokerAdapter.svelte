@@ -5,9 +5,9 @@
         BrokerTransaction,
         FormRow,
         Security,
-        TaxableTransaction
+        TaxableTransaction,
     } from "@samjmck/tobcalc-lib";
-    import { formatMoney, isNameRegistered, SecurityType, getTaxableTransactions, getTaxFormData } from "@samjmck/tobcalc-lib";
+    import { formatMoney, isNameRegistered, SecurityType, getTaxableTransactions, getTaxFormData, RevolutAdapter, } from "@samjmck/tobcalc-lib";
     import { Broker } from "../broker";
     import { getSecuritiesMapWithOverrides, getTaxRateWithOverrides } from "../overrides";
     import { formatPercentage } from "../format";
@@ -109,6 +109,16 @@
         Import {broker} csv
     </label>
 </div>
+
+{#if brokerAdapter === RevolutAdapter}
+    <p>
+        Revolut only records income generated from closed positions, not the buy and sell transactions separately.
+        This means for positions that haven't been closed, the sell transactions will not be included in the csv and the
+        TOB cannot be calculated for those transactions. For those transactions, i.e. the transactions from positions
+        that haven't been closed, you will have to calculate the TOB manually. See <a href="https://github.com/samjmck/tobcalc-lib/pull/12#issuecomment-3071049749">this</a>
+        discussion on GitHub for more information.
+    </p>
+{/if}
 
 
 <p class="adapter-error">{adapterError}</p>

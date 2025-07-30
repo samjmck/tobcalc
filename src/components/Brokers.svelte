@@ -3,7 +3,8 @@
 		IBKRAdapter,
         DEGIROAdapter,
         Trading212Adapter,
-        BoursoramaAdapter
+        BoursoramaAdapter,
+        RevolutAdapter,
 	} from "@samjmck/tobcalc-lib";
     import { adapterNumber, totalTaxFormData } from "../stores";
     import BrokerAdapter from "./BrokerAdapter.svelte";
@@ -58,6 +59,8 @@
             <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={DEGIROAdapter} />
         {:else if selectedBroker === Broker.Boursorama}
             <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={BoursoramaAdapter} />
+        {:else if selectedBroker === Broker.Revolut}
+            <BrokerAdapter selectedBrokerNumber={selectedBrokerNumber} broker={selectedBroker} brokerAdapter={RevolutAdapter} />
         {/if}
     </div>
 </div>
