@@ -19,6 +19,6 @@
     "vite": "^5.1.6"
   },
   "dependencies": {
-    "@samjmck/tobcalc-lib": "npm:@jsr/samjmck__tobcalc-lib@1.0.13"
+    "@samjmck/tobcalc-lib": "npm:@jsr/samjmck__tobcalc-lib@^1.0.15"
   }
 }
