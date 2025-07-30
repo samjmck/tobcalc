@@ -33,7 +33,7 @@
 
 <h2>Import transactions</h2>
 
-<p>Buy orders have a negative (-) value because they represent money leaving your account to purchase securities. On the other hand, sell orders have a positive (+) value because they represent money coming into your account when you sell securities. This mirrors how you'd record expenses and income in a regular bank account.</p>
+<p>Buy orders have a negative (-) value because they represent money leaving your account to purchase securities. On the other hand, sell orders have a positive (+) value because they represent money coming into your account when you sell securities. This mirrors how you would record the cash flow in a bank account.</p>
 
 <Button style='primary' on:click={() => addSelectedBroker(Broker.InteractiveBrokers)}>Add import file</Button>
 
