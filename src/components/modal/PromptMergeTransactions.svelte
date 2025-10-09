@@ -55,7 +55,7 @@
                 const currentValue = resultMap.get(key)?.value || 0;
                 resultMap.set(key, {
                     ...group.brokerTransaction,
-                    value: group.brokerTransaction.value + currentValue
+                    value: Math.abs(group.brokerTransaction.value) + currentValue
                 });
             } else {
                 mergedBrokerTransactions.push(group.brokerTransaction)
