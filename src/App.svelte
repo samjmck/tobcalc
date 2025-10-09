@@ -159,11 +159,18 @@
 <Header />
 
 <main>
+
 	<section class="content mt-3">
+        <h4>
+            If you filed your TOB between July 30th and October 9th using tobcalc and you used the <b>merge transactions</b> functionality,
+            please read <a href="https://tobcalc.com/help/en/updates/#important-bug-fix--tob-potentially-miscalculated-for-merged-transactions">this</a>.
+            It is possible that the TOB was calculated incorrectly during that period. Apologies for any inconvenience caused.
+        </h4>
+
 		<Brokers />
 	</section>
 
-	<section class="taxe-override">
+	<section class="taxes-override">
 		<div class="content">
 			<TaxRateOverride />
 		</div>
