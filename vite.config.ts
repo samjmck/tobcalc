@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/proxy/ecb': {
-        target: 'https://sdw-wsrest.ecb.europa.eu',
+        target: 'https://data-api.ecb.europa.eu',
         changeOrigin: true,
         secure: true,
         followRedirects: true,
